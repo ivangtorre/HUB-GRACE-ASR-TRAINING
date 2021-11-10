@@ -31,7 +31,7 @@ def parse_args():
     parser.add_argument("--test_paths", type=str, required=True, help='one or several test file csv')
     parser.add_argument("--num_proc", default=1, type=int, required=False, help='Number of processors')
 
-    parser.add_argument('--lm_path', default="None", type=str,
+    parser.add_argument('--lm_path', default=None, type=str,
                         help='Path to kenlm language model for use with beam search (req\'d with trie)')
     parser.add_argument('--alpha', default=0, type=float, help='Language model weight')
     parser.add_argument('--beta', default=0, type=float, help='Language model word bonus (all words)')
