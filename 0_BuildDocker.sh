@@ -6,4 +6,4 @@
 # VARIABLES ####################
 NAME=${NAME:-"wav2vec2"}
 
-docker build -t ${NAME} Docker/.
+docker build --network=host -t ${NAME} Docker/.
