@@ -35,7 +35,7 @@ def parse_args():
                         help='Path to kenlm language model for use with beam search (req\'d with trie)')
     parser.add_argument('--alpha', default=0, type=float, help='Language model weight')
     parser.add_argument('--beta', default=0, type=float, help='Language model word bonus (all words)')
-    parser.add_argument('--beam_width', default=None, type=int, help='Beam width to use')
+    parser.add_argument('--beam_width', default=256, type=int, help='Beam width to use')
 
 
     return parser.parse_args()
