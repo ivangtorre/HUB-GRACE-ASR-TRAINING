@@ -4,7 +4,7 @@ FROM ${FROM_IMAGE_NAME}
 
 RUN apt update && apt install -y libsndfile1 && apt install -y sox && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspace/jasper
+WORKDIR /workspace/wav2vec2
 
 # Install requirements (do this first for better caching)
 COPY requirements.txt .
