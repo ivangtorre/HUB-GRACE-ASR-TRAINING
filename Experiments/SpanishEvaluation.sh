@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##### PARAMETERS ##################################
-MODEL_PATH=${1:-${MODEL_PATH:-"results/spanish.-EPOCH-10.-21-09-10.11.44.25/"}}
+MODEL_PATH=${1:-${MODEL_PATH:-"results/spanish.-EPOCH-10.-21-09-17.15.35.43/"}}
 DATA_DIR=${2:-${DATA_DIR:-""}}
 TEST_1=${3:-${TEST_1:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_MEDIA.csv"}}
 TEST_2=${3:-${TEST_2:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_RTVE.csv"}}
