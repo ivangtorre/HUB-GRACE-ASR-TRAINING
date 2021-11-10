@@ -66,14 +66,16 @@ def transcribe(model_path, data_file, processor, model):
             else:
                 logits = torch.cat((logits, partial_logits[0]))
 
-    logits = logits.unsqueeze(0)
+    #logits = logits.unsqueeze(0)
 
     #print(data)
     #data = data.squeeze()
     #print(data)
     print("DECODING")
-    print(np.asarray(logits.cpu()))
-    beams = decoder.decode_beams(np.asarray(logits.cpu()))
+    line = np.asarray(logits.cpu())
+    print(line)
+
+    beams = decoder.decode_beams(line)
     print(beams)
     top_beam = beams[0]
     print(top_beam)
