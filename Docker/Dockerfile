@@ -49,7 +49,6 @@ RUN apt-get -y install python-dev
 RUN apt-get update && apt-get -y install \
     build-essential \
     cmake \
-    git \
     language-pack-en \
     libsndfile1-dev \
     libsndfile1 \
