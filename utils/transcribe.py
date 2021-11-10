@@ -55,7 +55,7 @@ def transcribe(model_path, data_file, processor, model):
 
     speech_arrayfull, sampling_rate = librosa.load(data_file, sr=None, mono=False)
     logits = None
-    n = 4000000
+    n = 3000000
     for speech_array in [speech_arrayfull[x:x + n] for x in range(0, len(speech_arrayfull), n)]:
         inputs = processor(speech_array, sampling_rate=16_000, return_tensors="pt", padding=True)
         with torch.no_grad():
