@@ -24,7 +24,7 @@ TEST_13=${4:-${TEST_13:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PIS
 CMD="python3 utils/eval_transcript.py"
 CMD+=" --model_path=$MODEL_PATH"
 CMD+=" --cache_dir=$DATA_DIR"
-CMD+=" --lm_path=/DATA/GRACE/IVANbackup/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa.bin"
+CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa.bin"
 CMD+=" --alpha=0.4"
 CMD+=" --beta=1"
 CMD+=" --beam_width=256"
