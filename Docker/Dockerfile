@@ -1,10 +1,9 @@
-#ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:20.10-py3
-ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:21.03-py3
+ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:20.10-py3
 FROM ${FROM_IMAGE_NAME}
 
 RUN apt update && apt install -y libsndfile1 && apt install -y sox && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspace/wav2vec2
+WORKDIR /workspace/jasper
 
 # Install requirements (do this first for better caching)
 COPY requirements.txt .
@@ -44,12 +43,13 @@ ENV LC_ALL='en_US.utf8'
 #RUN git clone --recursive https://github.com/parlance/ctcdecode.git
 #RUN cd ctcdecode && pip3 install .
 
-#RUN pip3 install pyctcdecode
-#RUN pip3 install kenlm
+RUN pip3 install pyctcdecode
 
-WORKDIR /workspace/wav2vec2
 
-CMD ["/bin/bash"]
+RUN pip3 install kenlm
+
+WORKDIR /workspace/jasper
+COPY . .
 
 
 
