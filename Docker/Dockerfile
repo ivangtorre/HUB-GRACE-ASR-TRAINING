@@ -43,7 +43,9 @@ RUN pip3 install datasets && \
 RUN git clone --recursive https://github.com/parlance/ctcdecode.git && \
     cd ctcdecode && pip3 install . && cd ..
 
-RUN pip3 install pyctcdecode kenlm
+RUN pip3 install pyctcdecode
+RUN pip3 install kenlm
+
 
 WORKDIR /workspace/wav2vec2
 
