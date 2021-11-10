@@ -1,4 +1,5 @@
 FROM nvcr.io/nvidia/pytorch:21.03-py3
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
     apt install -y bash \
