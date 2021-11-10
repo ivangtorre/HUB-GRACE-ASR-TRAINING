@@ -1,6 +1,7 @@
 import torch
 import librosa
 import pandas as pd
+import numpy as np
 #from ctcdecode import CTCBeamDecoder
 import json
 from pyctcdecode import build_ctcdecoder
@@ -71,8 +72,8 @@ def transcribe(model_path, data_file, processor, model):
     #data = data.squeeze()
     #print(data)
     print("DECODING")
-    print(logits)
-    beams = decoder.decode_beams(logits)
+    print(np.asarray(logits.cpu()))
+    beams = decoder.decode_beams(np.asarray(logits.cpu()))
     print(beams)
     top_beam = beams[0]
     print(top_beam)
