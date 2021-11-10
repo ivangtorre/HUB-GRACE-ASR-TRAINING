@@ -42,7 +42,9 @@ ENV LC_ALL='en_US.utf8'
 
 #RUN git clone --recursive https://github.com/parlance/ctcdecode.git
 #RUN cd ctcdecode && pip3 install .
-
+RUN git clone https://github.com/huggingface/transformers.git && \
+    cd transformers && \
+    pip3 install -e .
 
 WORKDIR /workspace/wav2vec2
 
