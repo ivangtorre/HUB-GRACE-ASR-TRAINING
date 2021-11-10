@@ -8,3 +8,10 @@ soundfile
 sox==1.4.1
 tqdm==4.53.0
 wrapt==1.10.11
+datasets
+jiwer
+kenlm
+lang-trans
+#librosa
+pyctcdecode
+unidecode
