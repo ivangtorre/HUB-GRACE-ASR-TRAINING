@@ -61,7 +61,7 @@ RUN apt-get update && apt-get -y install \
 #    python3-pip \
     protobuf-compiler \
     swig \
-    sox \
+    sox
 
 RUN pip3 install kenlm
 
