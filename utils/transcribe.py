@@ -2,7 +2,6 @@ import torch
 import librosa
 import pandas as pd
 import numpy as np
-#from ctcdecode import CTCBeamDecoder
 import json
 from pyctcdecode import build_ctcdecoder
 
@@ -30,7 +29,7 @@ def get_time_stamps(trans, offsets, window_size):
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
 
 
-def transcribe(model_path, data_file, processor, model):
+def transcribe(model_path, data_file, processor, model, args):
     """
     Transcribe an audio wav file
     """
@@ -40,11 +39,8 @@ def transcribe(model_path, data_file, processor, model):
         contents = json.loads(j.read())
 
     vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
-    decoder = build_ctcdecoder(vocab)#,
+    decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
                                 #"/home/jetsontx2/models/asr_decode_LM_spanish/LM_SPANISH.bin",
-                                    # str(parent_path) + "/LM_SPANISH.bin",
-                                #alpha=0.8,
-                                #beta=0)
 
     #decoder = CTCBeamDecoder(vocab, model_path=None, alpha=0, beta=0, cutoff_top_n=10, cutoff_prob=1,
     #                         beam_width=1, num_processes=30, blank_id=0, log_probs_input=True)
@@ -66,31 +62,17 @@ def transcribe(model_path, data_file, processor, model):
             else:
                 logits = torch.cat((logits, partial_logits[0]))
 
-    #logits = logits.unsqueeze(0)
-
-    #print(data)
-    #data = data.squeeze()
-    #print(data)
-    print("DECODING")
     line = np.asarray(logits.cpu())
-    print(line)
-
-    beams = decoder.decode_beams(line)
-    print(beams)
+    beams = decoder.decode_beams(line, args.beam_width)
     top_beam = beams[0]
-    print(top_beam)
-    #hypothesis.append(transcript)
     trans, _, indices, _, _ = top_beam
 
     # ITERATE OVERALL TO DECODE TIMESTAMPS
-    n = len(indices)
     w = 0.02  # 0.02
     begin = []
     end = []
     wd = []
     ones = []
-    # assert n == len(offsets)
-    i = 0
     for item in indices:
         wd.append(item[0])
         begin.append(item[1][0] * w)
@@ -98,9 +80,3 @@ def transcribe(model_path, data_file, processor, model):
         ones.append(1)
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
 
-    #hypotheses = ''.join(contents[int(x)] for x in beam_results[0][0][0:out_lens[0][0]])
-    #offsets = [int(item) for item in timesteps[0][0][0:out_lens[0][0]]]
-    #transcript_df = get_time_stamps(hypotheses, offsets, window_size=0.02)
-    #print(transcript_df)
-    #print("\n\nTRANSCRIPTION: " + data_file)
-#    return(transcript_df)

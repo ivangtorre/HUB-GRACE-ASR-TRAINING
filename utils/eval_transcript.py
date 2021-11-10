@@ -30,6 +30,14 @@ def parse_args():
     parser.add_argument("--cache_dir", type=str, required=True, help='where audios are stored')
     parser.add_argument("--test_paths", type=str, required=True, help='one or several test file csv')
     parser.add_argument("--num_proc", default=1, type=int, required=False, help='Number of processors')
+
+    parser.add_argument('--lm_path', default="None", type=str,
+                        help='Path to kenlm language model for use with beam search (req\'d with trie)')
+    parser.add_argument('--alpha', default=0, type=float, help='Language model weight')
+    parser.add_argument('--beta', default=0, type=float, help='Language model word bonus (all words)')
+    parser.add_argument('--beam_width', default=None, type=int, help='Beam width to use')
+
+
     return parser.parse_args()
 
 def main(args):
@@ -65,7 +73,7 @@ def main(args):
                 list_references = []
                 list_predictions = []
                 for item in dataset:
-                    transcript_df = transcribe(args.model_path, item["path"], processor, model)
+                    transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
                     reference = item["sentence"]
                     prediction = " ".join(transcript_df["words"].tolist())
                     list_references.append(reference)
