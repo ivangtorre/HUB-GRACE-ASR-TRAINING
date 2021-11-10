@@ -44,6 +44,8 @@ RUN git clone --recursive https://github.com/parlance/ctcdecode.git && \
     cd ctcdecode && pip3 install . && cd ..
 
 RUN pip3 install pyctcdecode
+RUN apt-get install python-dev
+
 RUN pip3 install kenlm
 
 
