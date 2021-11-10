@@ -39,7 +39,7 @@ def transcribe(model_path, data_file, processor, model):
         contents = json.loads(j.read())
 
     vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
-    decoder = build_ctcdecoder(vocab[0:-1])#,
+    decoder = build_ctcdecoder(vocab)#,
                                 #"/home/jetsontx2/models/asr_decode_LM_spanish/LM_SPANISH.bin",
                                     # str(parent_path) + "/LM_SPANISH.bin",
                                 #alpha=0.8,
