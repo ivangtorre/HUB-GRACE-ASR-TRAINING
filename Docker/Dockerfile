@@ -43,13 +43,11 @@ ENV LC_ALL='en_US.utf8'
 #RUN git clone --recursive https://github.com/parlance/ctcdecode.git
 #RUN cd ctcdecode && pip3 install .
 
-RUN pip3 install pyctcdecode
 
+WORKDIR /workspace/wav2vec2
 
-RUN pip3 install kenlm
-
-WORKDIR /workspace/jasper
-COPY . .
+CMD ["/bin/bash"]
+#COPY . .
 
 
 
