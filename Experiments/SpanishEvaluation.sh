@@ -12,10 +12,10 @@ TEST_6=${4:-${TEST_6:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_
 TEST_7=${4:-${TEST_7:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_TEKNOPOLIS.csv"}}
 TEST_8=${4:-${TEST_8:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_VASCOSPORELMUNDO.csv"}}
 TEST_9=${4:-${TEST_9:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_JUEGODECARTAS.csv"}}
-TEST_11=${4:-${TEST_10:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_LANOCHEDE.csv"}}
-TEST_12=${4:-${TEST_11:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_ATRAPAMESIPUEDES.csv"}}
-TEST_13=${4:-${TEST_12:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_ABOCADOS.csv"}}
-TEST_14=${4:-${TEST_13:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
+TEST_10=${4:-${TEST_10:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_LANOCHEDE.csv"}}
+TEST_11=${4:-${TEST_11:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_ATRAPAMESIPUEDES.csv"}}
+TEST_12=${4:-${TEST_12:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_ABOCADOS.csv"}}
+TEST_13=${4:-${TEST_13:-"/data/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
 
 ######################################################
 
@@ -26,7 +26,7 @@ CMD+=" --test_paths="
 CMD+="$TEST_1"
 CMD+=",$TEST_2"
 CMD+=",$TEST_3"
-CMD+="$TEST_4"
+CMD+=",$TEST_4"
 CMD+=",$TEST_5"
 CMD+=",$TEST_6"
 CMD+=",$TEST_7"
