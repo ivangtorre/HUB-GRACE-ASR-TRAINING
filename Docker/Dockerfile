@@ -60,7 +60,6 @@ RUN apt-get update && apt-get -y install \
 #    python3-libnvinfer-dev \
 #    python3-pip \
     protobuf-compiler \
-    swig \
     sox
 
 RUN pip3 install kenlm
