@@ -46,6 +46,24 @@ RUN git clone --recursive https://github.com/parlance/ctcdecode.git && \
 RUN pip3 install pyctcdecode
 RUN apt-get -y install python-dev
 
+RUN apt-get update && apt-get -y install \
+    build-essential \
+    cmake \
+    git \
+    language-pack-en \
+    libsndfile1-dev \
+    libsndfile1 \
+    libstdc++6 \
+    libprotobuf-dev \
+    nano \
+#    python3-libnvinfer \
+#    python3-libnvinfer-dev \
+#    python3-pip \
+    protobuf-compiler \
+    swig \
+    sox \
+    wget
+
 RUN pip3 install kenlm
 
 
