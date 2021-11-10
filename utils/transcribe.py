@@ -70,6 +70,8 @@ def transcribe(model_path, data_file, processor, model):
     #print(data)
     #data = data.squeeze()
     #print(data)
+    print("DECODING")
+    print(logits)
     beams = decoder.decode_beams(logits)
     print(beams)
     top_beam = beams[0]
