@@ -64,7 +64,7 @@ def main(args):
         print("Csv file")
         for data_path in args.test_paths.split(","):
             dataset = load_test(data_path, args)
-
+            print(dataset)
             if len(dataset) > 1:
                 dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
                 result = dataset.map(evaluate, batched=True, batch_size=8)
