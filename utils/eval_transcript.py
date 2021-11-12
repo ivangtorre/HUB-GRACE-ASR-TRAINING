@@ -65,22 +65,24 @@ def main(args):
         for data_path in args.test_paths.split(","):
             dataset = load_test(data_path, args)
             print(dataset)
-            if len(dataset) > 1:
-                dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
-                result = dataset.map(evaluate, batched=True, batch_size=8)
+            #if len(dataset) > 1:
+            #    dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
+            #    result = dataset.map(evaluate, batched=True, batch_size=8)
 
-            else:
-                list_references = []
-                list_predictions = []
-                for item in dataset:
-                    transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
-                    reference = item["sentence"]
-                    prediction = " ".join(transcript_df["words"].tolist())
-                    list_references.append(reference)
-                    list_predictions.append(prediction)
+            #else:
+            list_references = []
+            list_predictions = []
+            for item in dataset:
+                print(item)
+                transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
+                reference = item["sentence"]
+                prediction = " ".join(transcript_df["words"].tolist())
+                list_references.append(reference)
+                list_predictions.append(prediction)
 
-                my_dict = pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references})
-                result = Dataset.from_dict(my_dict)
+
+            my_dict = pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references})
+            result = Dataset.from_dict(my_dict)
 
             print("************************************************\n\n")
             print("predictions:")
