@@ -12,7 +12,7 @@ def load_test(path, args):
     df = df.reset_index(drop=True)
     df = df[["transcription", "file_path"]]
     df.columns = ["sentence", "path"]
-    df["path"] = args.cache_dir + df["path"]
+    df["path"] = df["path"]
     return Dataset.from_pandas(df)
 
 
@@ -27,7 +27,7 @@ def speech_file_to_array_fn(batch):
 def parse_args():
     parser = argparse.ArgumentParser(description='Jasper')
     parser.add_argument("--model_path", type=str, required=True, help='Path to pretrained model')
-    parser.add_argument("--cache_dir", type=str, required=True, help='where audios are stored')
+#    parser.add_argument("--cache_dir", type=str, required=True, help='where audios are stored')
     parser.add_argument("--test_paths", type=str, required=True, help='one or several test file csv')
     parser.add_argument("--num_proc", default=1, type=int, required=False, help='Number of processors')
 
