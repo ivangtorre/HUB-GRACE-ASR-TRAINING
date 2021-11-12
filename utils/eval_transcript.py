@@ -81,19 +81,19 @@ def main(args):
                 list_predictions.append(prediction)
 
 
-            my_dict = pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references})
-            result = Dataset.from_dict(my_dict)
+                my_dict = pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references})
+                result = Dataset.from_dict(my_dict)
 
-            print("************************************************\n\n")
-            print("predictions:")
-            print(result["pred_strings"][0:10])
-            print("\nreference:")
-            print(result["target_text"][0:10])
+                print("************************************************\n\n")
+                print("predictions:")
+                print(result["pred_strings"][0:10])
+                print("\nreference:")
+                print(result["target_text"][0:10])
 
-            print("TRANSCRIPTION: " + data_path)
-            print("WER: {:2f} ------------".format(
-                100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
-            print("************************************************\n\n")
+                print("TRANSCRIPTION: " + data_path)
+                print("WER: {:2f} ------------".format(
+                    100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
+                print("************************************************\n\n")
 
     # TRANSCRIPTION ------------------------------------------------------------------------------------------
     elif args.test_paths.split(",")[0].split(".")[-1] == "wav":
