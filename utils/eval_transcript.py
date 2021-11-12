@@ -97,8 +97,8 @@ def main(args):
                 #    100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
                 print("************************************************\n\n")
 
-                with open("flie_prediction.txt", 'w') as fp:
-                    fp.write('\n'.join(list_predictions))
+            with open("file_prediction.txt", 'w') as fp:
+                fp.write('\n'.join(list_predictions))
 
     # TRANSCRIPTION ------------------------------------------------------------------------------------------
     elif args.test_paths.split(",")[0].split(".")[-1] == "wav":
