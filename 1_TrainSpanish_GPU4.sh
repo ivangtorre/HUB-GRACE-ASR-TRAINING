@@ -29,6 +29,6 @@ fi
 set -x
 nvidia-docker run -it -d --rm --name ${CONTAINER} --runtime=nvidia --shm-size=4g --ulimit memlock=-1 --ulimit stack=67108864 -v /data/TMP_IVAN/:/data/TMP_IVAN  -v /data/:/data/:ro -v /home:/home -v $PWD:/workspace/wav2vec2/ ${NAME}
 set +x
-nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
+#nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishTrain.sh
+nvidia-docker exec -it ${CONTAINER} bash Experiments/RetrainSpanish.sh
