@@ -2,7 +2,7 @@
 import json
 import logging
 import os
-os.environ['TRANSFORMERS_CACHE'] = "/data/TMP_IVAN/GRACE/cache"
+os.environ['TRANSFORMERS_CACHE'] = "/DATA/TMP_IVAN/GRACE/cache"
 
 import pandas as pd
 import sys
@@ -282,11 +282,11 @@ def main():
 
     del df_train, df_test
 
-    train_dataset.save_to_disk("/data/TMP_IVAN/GRACE/cache/trainset")
-    eval_dataset.save_to_disk("/data/TMP_IVAN/GRACE/cache/evalset")
+    train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset")
+    eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset")
 
-    train_dataset=load_from_disk("/data/TMP_IVAN/GRACE/cache/trainset")
-    eval_dataset=load_from_disk("/data/TMP_IVAN/GRACE/cache/evalset")
+    train_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/trainset")
+    eval_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/evalset")
 
 
     #################################################################################################################
