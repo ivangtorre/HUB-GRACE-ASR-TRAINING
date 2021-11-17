@@ -64,7 +64,7 @@ class ModelArguments:
     mask_time_prob: Optional[float] = field(default=0.05,metadata={
             "help": "Approximately ``mask_time_prob * sequence_length // mask_time_length`` feature"
                     "vectors will be masked along the time axis. This is only relevant if ``apply_spec_augment is True``."},)
-    gradient_checkpointing: Optional[bool] = field(default=False,metadata={"help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."},)
+#    gradient_checkpointing: Optional[bool] = field(default=False,metadata={"help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."},)
     layerdrop: Optional[float] = field(default=0.0, metadata={"help": "The LayerDrop probability."})
 
 
@@ -305,6 +305,7 @@ def main():
     with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
         json.dump(vocab_dict, vocab_file)
 
+
     # Load pretrained model and tokenizer
     tokenizer = Wav2Vec2CTCTokenizer(training_args.output_dir + "/vocab.json", unk_token="[UNK]", pad_token="[PAD]", word_delimiter_token="|")
     feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16_000, padding_value=0.0, do_normalize=True, return_attention_mask=True)
@@ -317,7 +318,8 @@ def main():
         hidden_dropout=model_args.hidden_dropout,
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
-        gradient_checkpointing=model_args.gradient_checkpointing,
+#        gradient_checkpointing=model_args.gradient_checkpointing,
+        gradient_checkpointing=True,
         layerdrop=model_args.layerdrop,
         ctc_loss_reduction="mean",
         pad_token_id=processor.tokenizer.pad_token_id,
