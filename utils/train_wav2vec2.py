@@ -64,7 +64,7 @@ class ModelArguments:
     mask_time_prob: Optional[float] = field(default=0.05,metadata={
             "help": "Approximately ``mask_time_prob * sequence_length // mask_time_length`` feature"
                     "vectors will be masked along the time axis. This is only relevant if ``apply_spec_augment is True``."},)
-    gradient_checkpointing: Optional[bool] = field(default=True,metadata={"help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."},)
+    gradient_checkpointing: Optional[bool] = field(default=False,metadata={"help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."},)
     layerdrop: Optional[float] = field(default=0.0, metadata={"help": "The LayerDrop probability."})
 
 
