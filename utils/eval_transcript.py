@@ -5,6 +5,7 @@ from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 from datasets import Dataset, load_metric
 import argparse
 from transcribe import transcribe
+import os
 
 def load_test(path, args):
     df = pd.read_csv(path, delimiter=',')
@@ -73,7 +74,10 @@ def main(args):
             list_references = []
             list_predictions = []
             for item in dataset:
-                print(item)
+                print(item["path"])
+
+                filename = os.path.basename(item["path"])[0:-4]
+                args.savename = "/home/igonzalez/quartznet/outputs/nbeams/" + filename + ".txt"
                 transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
                 reference = item["sentence"]
                 prediction = " ".join(transcript_df["words"].tolist())
