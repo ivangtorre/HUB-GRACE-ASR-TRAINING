@@ -77,7 +77,7 @@ def main(args):
                 print(item["path"])
 
                 filename = os.path.basename(item["path"])[0:-4]
-                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams" + filename + ".txt"
+                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
                 transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
                 reference = item["sentence"]
                 prediction = " ".join(transcript_df["words"].tolist())
