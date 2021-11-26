@@ -14,7 +14,7 @@ RUN apt-get update && apt-get -y install \
     protobuf-compiler \
     swig \
     sox \
-    wget \
+    wget
 
 RUN locale-gen en_US.UTF-8
 ENV LANG=en_US.utf8
