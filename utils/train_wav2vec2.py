@@ -43,7 +43,6 @@ torch.backends.cudnn.benchmark = True
 
 multi_gpu = torch.distributed.is_initialized()
 print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
-
 # define amp optimiation level
 optim_level = 1
 
