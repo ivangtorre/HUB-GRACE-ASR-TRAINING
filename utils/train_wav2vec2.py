@@ -207,6 +207,14 @@ def extract_all_chars(batch):
 
 
 def main():
+    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
+    if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
+        # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
+        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
+    else:
+        model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+
+
     assert(torch.cuda.is_available())
     torch.backends.cudnn.benchmark = True
 
@@ -231,12 +239,7 @@ def main():
     print("################################")
 
 
-    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
-    if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
-        # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
-        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
-    else:
-        model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+
 
     # Detecting last checkpoint.
     last_checkpoint = None
