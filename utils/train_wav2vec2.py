@@ -230,6 +230,9 @@ def main():
     #if args.local_rank is not None:
     #    torch.cuda.set_device(args.local_rank)
     #torch.distributed.init_process_group(backend='nccl', init_method='env://')
+    if local_rank is not None:
+        torch.cuda.set_device(local_rank)
+        torch.distributed.init_process_group(backend='nccl', init_method='env://')
 
     multi_gpu = torch.distributed.is_initialized()
     if multi_gpu:
