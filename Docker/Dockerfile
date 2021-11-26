@@ -1,10 +1,6 @@
 ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:21.03-py3
 FROM ${FROM_IMAGE_NAME}
 
-RUN locale-gen en_US.UTF-8
-ENV LANG=en_US.utf8
-ENV LC_ALL='en_US.utf8'
-
 RUN apt-get update && apt-get -y install \
     build-essential \
     cmake \
@@ -18,7 +14,11 @@ RUN apt-get update && apt-get -y install \
     protobuf-compiler \
     swig \
     sox \
-    wget
+    wget \
+
+RUN locale-gen en_US.UTF-8
+ENV LANG=en_US.utf8
+ENV LC_ALL='en_US.utf8'
 
 WORKDIR /workspace
 
