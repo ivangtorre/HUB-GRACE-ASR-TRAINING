@@ -30,21 +30,8 @@ from transformers import (
     set_seed,
 )
 
-os.environ["WANDB_DISABLED"] = "true"
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
-
-if is_apex_available():
-    from apex import amp
-
-
-assert(torch.cuda.is_available())
-torch.backends.cudnn.benchmark = True
-
-multi_gpu = torch.distributed.is_initialized()
-print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
-# define amp optimiation level
-optim_level = 1
 
 #if version.parse(torch.__version__) >= version.parse("1.6"):
 #    _is_native_amp_available = True
@@ -226,10 +213,26 @@ def main():
     else:
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
-    assert (torch.cuda.is_available())
+    if args.local_rank is not None:
+        torch.cuda.set_device(args.local_rank)
+        torch.distributed.init_process_group(backend='nccl', init_method='env://')
+
     multi_gpu = torch.distributed.is_initialized()
     if multi_gpu:
         print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
+
+    assert (torch.cuda.is_available())
+
+    if is_apex_available():
+        from apex import amp
+
+    torch.backends.cudnn.benchmark = True
+
+    multi_gpu = torch.distributed.is_initialized()
+    print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
+
+
+    # define amp optimiation level
 
     # Detecting last checkpoint.
     last_checkpoint = None
