@@ -27,7 +27,7 @@ fi
 
 # Run the container
 set -x
-nvidia-docker run -it -d --rm --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=4g --ulimit memlock=-1 --ulimit stack=67108864 -v /DATA/GRACE/IVANbackup/GRACE_train/TMP_IVAN:/DATA/TMP_IVAN -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/ALBAYZIN2020/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/ -v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/:ro -v /home:/home -v $PWD:/workspace/wav2vec2 -w $PWD ${NAME}
+nvidia-docker run -it -d --rm --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=4g --ulimit memlock=-1 --ulimit stack=67108864 -v /DATA/GRACE/IVANbackup/GRACE_train/TMP_IVAN:/DATA/TMP_IVAN -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/ALBAYZIN2020/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/:ro -v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/:ro -v /home:/home -v $PWD:/workspace/wav2vec2 -w $PWD ${NAME}
 set +x
 
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
