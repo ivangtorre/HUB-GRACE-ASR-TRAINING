@@ -10,7 +10,7 @@ DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  
 RESULT_DIR=${3:-${RESULT_DIR:-"results"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
-NUM_GPUS=${7:-${NUM_GPUS:-2}}
+NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-1}}
 SEED=${10:-${SEED:-6}}
 BATCH_SIZE=${11:-${BATCH_SIZE:-6}} # original 16
@@ -39,7 +39,7 @@ mkdir -p "$RESULT_DIR"
 
 
 #CMD="python3 utils/train_wav2vec2.py"
-CMD="python -m torch.distributed.launch --nproc_per_node 2 utils/train_wav2vec2.py"
+CMD="python -m torch.distributed.launch --nproc_per_node 1 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
 CMD+=" --dataset_eval=$DATASET_EVAL"
