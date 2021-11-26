@@ -227,6 +227,7 @@ def main():
     # define amp optimiation level
     optim_level = 1# if args.amp else 0
 
+    print("################################")
 
 
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
@@ -235,14 +236,6 @@ def main():
         model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
     else:
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
-    print("################################")
-    #import argparse
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument("--local_rank", type=int)
-    #args = parser.parse_args()
-
-    #local_rank = args.local_rank
-
 
     # Detecting last checkpoint.
     last_checkpoint = None
