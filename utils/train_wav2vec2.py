@@ -223,6 +223,8 @@ def main():
     print(local_rank)
     print("################################")
 
+    print(torch.distributed.is_initialized())
+    print("#####################")
     # set up distributed training
     if local_rank is not None:
         torch.cuda.set_device(local_rank)
