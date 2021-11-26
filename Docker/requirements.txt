@@ -10,7 +10,7 @@ tqdm==4.53.0
 wrapt==1.10.11
 datasets
 jiwer
-kenlm
+#kenlm
 lang-trans
 #librosa
 #pyctcdecode
