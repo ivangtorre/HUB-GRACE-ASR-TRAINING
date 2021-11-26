@@ -21,9 +21,6 @@ RUN apt-get update && apt-get -y install \
     libstdc++6 \
     libprotobuf-dev \
     nano \
-#    python3-libnvinfer \
-#    python3-libnvinfer-dev \
-#    python3-pip \
     protobuf-compiler \
     swig \
     sox \
@@ -33,15 +30,6 @@ RUN locale-gen en_US.UTF-8
 ENV LANG=en_US.utf8
 ENV LC_ALL='en_US.utf8'
 
-#RUN git clone https://github.com/kpu/kenlm && \
-#    wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.6.3.tar.gz && \
-#    tar -xzvf openfst-1.6.3.tar.gz && \
-#    git clone https://github.com/progschj/ThreadPool.git && \
-#    python3 setup.py install --num_processes 8
-
-
-#RUN git clone --recursive https://github.com/parlance/ctcdecode.git
-#RUN cd ctcdecode && pip3 install .
 RUN git clone https://github.com/huggingface/transformers.git && \
     cd transformers && \
     pip3 install -e .
@@ -49,4 +37,3 @@ RUN git clone https://github.com/huggingface/transformers.git && \
 WORKDIR /workspace/wav2vec2
 
 CMD ["/bin/bash"]
-#COPY . .
