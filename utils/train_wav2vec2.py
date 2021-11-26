@@ -230,9 +230,9 @@ def main():
     #    torch.cuda.set_device(local_rank)
     #    torch.distributed.init_process_group(backend='nccl', init_method='env://')
 
-    multi_gpu = torch.distributed.is_initialized()
-    if multi_gpu:
-        print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
+    #multi_gpu = torch.distributed.is_initialized()
+    #if multi_gpu:
+    #    print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
 
     # define amp optimiation level
     optim_level = 1# if args.amp else 0
