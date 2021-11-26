@@ -1,15 +1,9 @@
 ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:21.03-py3
 FROM ${FROM_IMAGE_NAME}
 
-RUN apt update && apt install -y libsndfile1 && apt install -y sox && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /workspace/jasper
-
-# Install requirements (do this first for better caching)
-COPY requirements.txt .
-RUN conda install -y pyyaml==5.4.1
-RUN pip install --disable-pip-version-check -U -r requirements.txt
-
+RUN locale-gen en_US.UTF-8
+ENV LANG=en_US.utf8
+ENV LC_ALL='en_US.utf8'
 
 RUN apt-get update && apt-get -y install \
     build-essential \
@@ -26,14 +20,13 @@ RUN apt-get update && apt-get -y install \
     sox \
     wget
 
-RUN locale-gen en_US.UTF-8
-ENV LANG=en_US.utf8
-ENV LC_ALL='en_US.utf8'
+WORKDIR /workspace
 
-RUN git clone https://github.com/huggingface/transformers.git && \
-    cd transformers && \
-    pip3 install -e .
+# Install requirements (do this first for better caching)
+COPY requirements.txt .
+RUN conda install -y pyyaml==5.4.1
+RUN pip install --disable-pip-version-check -U -r requirements.txt
 
-WORKDIR /workspace/wav2vec2
+#WORKDIR /workspace/wav2vec2
 
 CMD ["/bin/bash"]
