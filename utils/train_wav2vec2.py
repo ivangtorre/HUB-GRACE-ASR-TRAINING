@@ -388,8 +388,8 @@ def main():
 
 
     ## PREPARE TRAINING ##---------------------------------------
-    if model_args.freeze_feature_extractor:
-        model.freeze_feature_extractor()
+#    if model_args.freeze_feature_extractor:
+#        model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
     trainer = CTCTrainer(
