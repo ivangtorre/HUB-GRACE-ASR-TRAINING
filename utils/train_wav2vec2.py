@@ -220,7 +220,11 @@ def main():
     #args = parser.parse_args()
 
     #local_rank = args.local_rank
+    import os
+    local_rank = int(os.environ["LOCAL_RANK"])
+    print(local_rank)
     print("################################")
+
     #print(local_rank)
 
     #if args.local_rank is not None:
