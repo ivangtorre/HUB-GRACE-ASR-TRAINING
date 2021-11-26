@@ -16,6 +16,7 @@ import torch
 from packaging import version
 from torch import nn
 from datasets import load_dataset, Dataset, load_from_disk
+from apex import amp
 
 import transformers
 from transformers import (
@@ -206,30 +207,15 @@ def extract_all_chars(batch):
 
 
 def main():
-    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
-    if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
-        # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
-        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
-    else:
-        model_args, data_args, training_args = parser.parse_args_into_dataclasses()
-    print("################################")
+    assert(torch.cuda.is_available())
+    torch.backends.cudnn.benchmark = True
 
-    #import argparse
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument("--local_rank", type=int)
-    #args = parser.parse_args()
-
-    #local_rank = args.local_rank
     import os
     local_rank = int(os.environ["LOCAL_RANK"])
     print(local_rank)
     print("################################")
 
-    #print(local_rank)
-
-    #if args.local_rank is not None:
-    #    torch.cuda.set_device(args.local_rank)
-    #torch.distributed.init_process_group(backend='nccl', init_method='env://')
+    # set up distributed training
     if local_rank is not None:
         torch.cuda.set_device(local_rank)
         torch.distributed.init_process_group(backend='nccl', init_method='env://')
@@ -238,18 +224,25 @@ def main():
     if multi_gpu:
         print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
 
-    assert (torch.cuda.is_available())
-
-    if is_apex_available():
-        from apex import amp
-
-    torch.backends.cudnn.benchmark = True
-
-    multi_gpu = torch.distributed.is_initialized()
-    print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
-
-
     # define amp optimiation level
+    optim_level = 1# if args.amp else 0
+
+
+
+    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
+    if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
+        # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
+        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
+    else:
+        model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+    print("################################")
+    #import argparse
+    #parser = argparse.ArgumentParser()
+    #parser.add_argument("--local_rank", type=int)
+    #args = parser.parse_args()
+
+    #local_rank = args.local_rank
+
 
     # Detecting last checkpoint.
     last_checkpoint = None
