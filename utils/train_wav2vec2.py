@@ -37,6 +37,16 @@ transformers.logging.set_verbosity_info()
 if is_apex_available():
     from apex import amp
 
+
+assert(torch.cuda.is_available())
+torch.backends.cudnn.benchmark = True
+
+multi_gpu = torch.distributed.is_initialized()
+print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
+
+# define amp optimiation level
+optim_level = 1
+
 #if version.parse(torch.__version__) >= version.parse("1.6"):
 #    _is_native_amp_available = True
 #    from torch.cuda.amp import autocast
