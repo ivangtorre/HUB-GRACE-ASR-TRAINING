@@ -37,9 +37,9 @@ transformers.logging.set_verbosity_info()
 if is_apex_available():
     from apex import amp
 
-if version.parse(torch.__version__) >= version.parse("1.6"):
-    _is_native_amp_available = True
-    from torch.cuda.amp import autocast
+#if version.parse(torch.__version__) >= version.parse("1.6"):
+#    _is_native_amp_available = True
+#    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
