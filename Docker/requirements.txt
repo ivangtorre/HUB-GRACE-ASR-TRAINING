@@ -6,7 +6,7 @@ pycuda
 pyyaml
 soundfile
 sox
-tqdm=
+tqdm
 wrapt
 datasets
 jiwer
