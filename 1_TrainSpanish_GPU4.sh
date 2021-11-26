@@ -31,7 +31,7 @@ nvidia-docker run -it -d --rm --network=host --name ${CONTAINER} --runtime=nvidi
 -v /DATA/GRACE/IVANbackup/GRACE_train/TMP_IVAN:/DATA/TMP_IVAN \
 -v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/ \
 -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ \
--v /DATA/GRACE/IVANbackup/GRACE_train/datasets/ALBAYZIN2020/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/ \
+-v /DATA/GRACE/IVANbackup/GRACE_train/datasets/ALBAYZIN2020/trainspeedall/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/trainspeedall/ \
 -v /home:/home \
 -v $PWD:/workspace/wav2vec2 \
 -w $PWD ${NAME}
