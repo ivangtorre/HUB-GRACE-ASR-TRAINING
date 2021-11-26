@@ -5,8 +5,8 @@
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"spanish"}} # Language
 #DATASET=${2:-${DATASET:-"datasets/spanish/train_Albayzyn_NoSpeed.csv"}}  # Train Dataset Location
-DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
-DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
+DATASET=${2:-${DATASET:-"/DATA/TMP_IVAN/jasper/datasets/spanish/train_with_speed_augment.csv"}}
+DATASET_EVAL=${2:-${DATASET_EVAL:-"/DATA/TMP_IVAN/jasper/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
