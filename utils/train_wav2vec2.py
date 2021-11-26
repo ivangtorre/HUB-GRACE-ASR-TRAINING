@@ -219,6 +219,7 @@ def main():
     args = parser.parse_args()
 
     local_rank = args.local_rank
+    print("################################")
     print(local_rank)
 
     #if args.local_rank is not None:
