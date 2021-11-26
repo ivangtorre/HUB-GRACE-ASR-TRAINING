@@ -1,5 +1,7 @@
 ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:21.03-py3
 FROM ${FROM_IMAGE_NAME}
+ARG DEBIAN_FRONTEND=noninteractive
+
 
 RUN apt-get update && apt-get -y install \
     build-essential \
