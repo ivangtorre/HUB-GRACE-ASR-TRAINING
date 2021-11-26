@@ -22,7 +22,7 @@ LOG_STATES=${16:-${LOG_STATES:-1000}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-2}}
 FEAT_PROJ_DROPOUT=${18:-${FEAT_PROJ_DROPOUT:-0.05}}
 LAYER_DROPOUT=${19:-${LAYER_DROPOUT:-0.02}}
-ACCUM_STEPS=${20:-${ACCUM_STEPS:-3}}
+ACCUM_STEPS=${20:-${ACCUM_STEPS:-1}}
 MASK_TIME=${21:-${MASK_TIME:-0.057}}
 HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.026}}
@@ -38,8 +38,11 @@ RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
 mkdir -p "$RESULT_DIR"
 
 
-CMD="python3 utils/train_wav2vec2.py"
-#CMD="python3 -m torch.distributed.launch --nproc_per_node $NUM_GPUS utils/train_wav2vec2.py"
+python -m torch.distributed.launch \
+    --nproc_per_node 8 pytorch/text-classification/run_glue.py \
+
+#CMD="python3 utils/train_wav2vec2.py"
+CMD="python3 -m torch.distributed.launch --nproc_per_node 2 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
 CMD+=" --dataset_eval=$DATASET_EVAL"
