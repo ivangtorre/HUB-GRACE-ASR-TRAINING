@@ -214,14 +214,14 @@ def main():
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
     print("################################")
 
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--local_rank", type=int)
-    args = parser.parse_args()
+    #import argparse
+    #parser = argparse.ArgumentParser()
+    #parser.add_argument("--local_rank", type=int)
+    #args = parser.parse_args()
 
-    local_rank = args.local_rank
+    #local_rank = args.local_rank
     print("################################")
-    print(local_rank)
+    #print(local_rank)
 
     #if args.local_rank is not None:
     #    torch.cuda.set_device(args.local_rank)
