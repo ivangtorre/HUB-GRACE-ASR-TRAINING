@@ -13,5 +13,5 @@ jiwer
 kenlm
 lang-trans
 #librosa
-pyctcdecode
+#pyctcdecode
 unidecode
