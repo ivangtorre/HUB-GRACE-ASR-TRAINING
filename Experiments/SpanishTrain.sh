@@ -38,7 +38,8 @@ RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
 mkdir -p "$RESULT_DIR"
 
 
-CMD="python3 utils/train_wav2vec2.py"
+#CMD="python3 utils/train_wav2vec2.py"
+CMD="python -m torch.distributed.launch --nproc_per_node 2 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
 CMD+=" --dataset_eval=$DATASET_EVAL"
