@@ -414,7 +414,6 @@ def main():
 #        model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
-    print(training_args)
     trainer = CTCTrainer(
         model=model,
         data_collator=data_collator,
@@ -435,10 +434,8 @@ def main():
         else:
             checkpoint = None
         logger.info("\ntrain result")
-        train_result = trainer.train(resume_from_checkpoint=None)
+        train_result = trainer.train(resume_from_checkpoint=checkpoint)
         trainer.save_model()
-
-        logger.info("\nsave the feature_extractor and the tokenizer")
 
         # save the feature_extractor and the tokenizer
         if is_main_process(training_args.local_rank):
