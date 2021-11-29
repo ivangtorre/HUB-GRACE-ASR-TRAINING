@@ -162,6 +162,7 @@ class CTCTrainer(Trainer):
         """
 
         model.train()
+        print("train")
         inputs = self._prepare_inputs(inputs)
 
         if self.use_amp:
@@ -177,6 +178,7 @@ class CTCTrainer(Trainer):
 
         if self.args.n_gpu > 1:
             if model.module.config.ctc_loss_reduction == "mean":
+                print("ei")
                 loss = loss.mean()
             elif model.module.config.ctc_loss_reduction == "sum":
                 loss = loss.sum() / (inputs["labels"] >= 0).sum()
