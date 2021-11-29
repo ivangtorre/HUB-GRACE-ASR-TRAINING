@@ -410,8 +410,8 @@ def main():
 
 
     ## PREPARE TRAINING ##---------------------------------------
-#    if model_args.freeze_feature_extractor:
-#        model.freeze_feature_extractor()
+    if model_args.freeze_feature_extractor:
+        model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
     trainer = CTCTrainer(
@@ -425,6 +425,7 @@ def main():
     )
 
     # START TRAINING ##---------------------------------------------
+    logger.info("\nSTART TRAINING")
     if training_args.do_train:
         if last_checkpoint is not None:
             checkpoint = last_checkpoint
@@ -432,6 +433,7 @@ def main():
             checkpoint = model_args.model_name_or_path
         else:
             checkpoint = None
+        logger.info("\ntrain result")
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
         trainer.save_model()
 
