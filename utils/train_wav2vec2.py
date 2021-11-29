@@ -434,7 +434,7 @@ def main():
         else:
             checkpoint = None
         logger.info("\ntrain result")
-        train_result = trainer.train(resume_from_checkpoint=checkpoint)
+        train_result = trainer.train(resume_from_checkpoint=None)
         trainer.save_model()
 
         logger.info("\nsave the feature_extractor and the tokenizer")
