@@ -437,6 +437,8 @@ def main():
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
         trainer.save_model()
 
+        logger.info("\nsave the feature_extractor and the tokenizer")
+
         # save the feature_extractor and the tokenizer
         if is_main_process(training_args.local_rank):
             processor.save_pretrained(training_args.output_dir)
