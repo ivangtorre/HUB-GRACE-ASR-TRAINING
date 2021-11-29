@@ -414,6 +414,7 @@ def main():
 #        model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
+    print(training_args)
     trainer = CTCTrainer(
         model=model,
         data_collator=data_collator,
