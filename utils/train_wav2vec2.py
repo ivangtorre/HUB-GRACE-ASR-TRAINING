@@ -160,7 +160,7 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
-
+        print("##########################3train")
         model.train()
         print("train")
         inputs = self._prepare_inputs(inputs)
