@@ -2,7 +2,7 @@ ascii-graph
 ipdb
 librosa
 pandas
-pycuda
+#pycuda
 pyyaml
 soundfile
 sox
