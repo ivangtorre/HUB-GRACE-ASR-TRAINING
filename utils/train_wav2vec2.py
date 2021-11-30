@@ -35,9 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-#if version.parse(torch.__version__) >= version.parse("1.6"):
-#    _is_native_amp_available = True
-#    from torch.cuda.amp import autocast
+if version.parse(torch.__version__) >= version.parse("1.6"):
+    _is_native_amp_available = True
+    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
