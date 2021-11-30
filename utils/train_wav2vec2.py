@@ -201,8 +201,10 @@ class CTCTrainer(Trainer):
         # else:
         #     loss.backward()
 
-        with amp.scale_loss(loss, self.optimizer) as scaled_loss:
-            scaled_loss.backward()
+        #with amp.scale_loss(loss, self.optimizer) as scaled_loss:
+        #    scaled_loss.backward()
+
+        self.scaler.scale(loss).backward()
 
         #loss.backward()
         return loss.detach()
