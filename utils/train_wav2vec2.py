@@ -278,6 +278,10 @@ def main():
     df_train = df_train[df_train["duration"] < 20]
     df_test = df_test[df_test["duration"] < 20]
 
+    df_train = df_train[df_train["duration"] > 2]
+    df_test = df_test[df_test["duration"] > 2]
+
+
     df_train = df_train.reset_index(drop=True)
     df_test = df_test.reset_index(drop=True)
 
