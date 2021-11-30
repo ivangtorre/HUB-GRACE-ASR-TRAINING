@@ -35,9 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-#if version.parse(torch.__version__) >= version.parse("1.6"):
-#    _is_native_amp_available = True
-#    from torch.cuda.amp import autocast
+if version.parse(torch.__version__) >= version.parse("1.6"):
+    _is_native_amp_available = True
+    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
@@ -164,12 +164,12 @@ class CTCTrainer(Trainer):
         model.train()
         inputs = self._prepare_inputs(inputs)
 
-        #if self.use_amp:
-        #    with autocast():
-        #        loss = self.compute_loss(model, inputs)
+        if self.use_amp:
+            with autocast():
+                loss = self.compute_loss(model, inputs)
 
         #else:
-        loss = self.compute_loss(model, inputs)
+        #loss = self.compute_loss(model, inputs)
 
         #loss = model(**inputs).loss
         #if not loss < 100: # Check exploding loss
@@ -188,17 +188,17 @@ class CTCTrainer(Trainer):
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
 
-        # if self.use_amp:
-        #     self.scaler.scale(loss).backward()
+        if self.use_amp:
+            self.scaler.scale(loss).backward()
         # elif self.use_apex:
         #     with amp.scale_loss(loss, self.optimizer) as scaled_loss:
         #         scaled_loss.backward()
         # elif self.deepspeed:
         #     self.deepspeed.backward(loss)
-        # else:
-        #     loss.backward()
+        else:
+            loss.backward()
 
-        loss.backward()
+        #loss.backward()
         return loss.detach()
 
 
@@ -210,6 +210,10 @@ def extract_all_chars(batch):
 
 
 def main():
+    random.seed(42)
+    np.random.seed(42)
+    torch.manual_seed(42)
+
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
