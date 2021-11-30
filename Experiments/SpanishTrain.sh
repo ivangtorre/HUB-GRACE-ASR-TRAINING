@@ -10,7 +10,7 @@ RESULT_DIR=${3:-${RESULT_DIR:-"results"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
-EPOCHS=${9:-${EPOCHS:-1}}
+EPOCHS=${9:-${EPOCHS:-5}}
 SEED=${10:-${SEED:-6}}
 BATCH_SIZE=${11:-${BATCH_SIZE:-2}} # original 16
 LEARNING_RATE=${12:-${LEARNING_RATE:-"0.0003"}}
@@ -21,14 +21,14 @@ LOG_STATES=${16:-${LOG_STATES:-1}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-2}}
 FEAT_PROJ_DROPOUT=${18:-${FEAT_PROJ_DROPOUT:-0.05}}
 LAYER_DROPOUT=${19:-${LAYER_DROPOUT:-0.05}}
-ACCUM_STEPS=${20:-${ACCUM_STEPS:-20}}
+ACCUM_STEPS=${20:-${ACCUM_STEPS:-64}}
 MASK_TIME=${21:-${MASK_TIME:-0.3}}
 HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.01}}
 ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.036}}
 LR_TYPE=${25:-${LR_TYPE:-"linear"}}
-MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-10000}}  # Set to 0 for using all dataset
-MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-1000}}  # Set to 0 for using all dataset
+MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-100000}}  # Set to 0 for using all dataset
+MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
 ######################################################
 
 
