@@ -1,6 +1,6 @@
 ARG FROM_IMAGE_NAME=huggingface/transformers-pytorch-gpu
 FROM ${FROM_IMAGE_NAME}
-
+RUN pip3 install datasets
 
 #ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:20.03-py3
 #FROM ${FROM_IMAGE_NAME}
