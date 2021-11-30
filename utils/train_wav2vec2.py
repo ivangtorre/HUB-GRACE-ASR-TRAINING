@@ -16,7 +16,6 @@ import torch
 from packaging import version
 from torch import nn
 from datasets import load_dataset, Dataset, load_from_disk
-from apex import amp
 import time
 
 import transformers
@@ -85,6 +84,7 @@ class DataTrainingArguments:
     preprocessing_num_workers: Optional[int] = field(default=None,metadata={"help": "The number of processes to use for the preprocessing."},)
     max_train_samples: Optional[int] = field(default=None, metadata={"help": "For debugging purposes"},)
     max_val_samples: Optional[int] = field(default=None,metadata=dict(help="For debugging purposes"),)
+    fp16 : Optional[str] = field(default=None)
     chars_to_ignore: List[str] = list_field(default=[",", "?", ".", "!", "-", ";", ":", '""', "%", "'", '"', "�", "^", "/", "$"],
         metadata={"help": "A list of characters to remove from the transcripts."},)
 
