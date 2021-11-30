@@ -24,6 +24,8 @@ ENV LC_ALL='en_US.utf8'
 
 WORKDIR /workspace
 
+RUN git clone https://github.com/huggingface/transformers.git && cd transformers && pip install -e .
+
 # Install requirements (do this first for better caching)
 COPY requirements.txt .
 #RUN conda install -y pyyaml==5.4.1

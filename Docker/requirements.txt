@@ -14,5 +14,5 @@ jiwer
 #lang-trans
 #librosa
 #pyctcdecode
-transformers
+#transformers
 #unidecode
