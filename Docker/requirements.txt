@@ -1,12 +1,12 @@
 #ascii-graph
 #ipdb
 #librosa
-pandas
+#pandas
 #pycuda
-pyyaml
-soundfile
-sox
-tqdm
+#pyyaml
+#soundfile
+#sox
+#tqdm
 #wrapt
 datasets
 jiwer
@@ -15,4 +15,4 @@ jiwer
 #librosa
 #pyctcdecode
 transformers
-unidecode
+#unidecode
