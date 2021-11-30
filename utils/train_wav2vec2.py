@@ -35,9 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-#if version.parse(torch.__version__) >= version.parse("1.6"):
-#    _is_native_amp_available = True
-#    from torch.cuda.amp import autocast
+if version.parse(torch.__version__) >= version.parse("1.6"):
+    _is_native_amp_available = True
+    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
@@ -223,15 +223,9 @@ def main():
 
 
     assert(torch.cuda.is_available())
-    torch.backends.cudnn.benchmark = True
+    #torch.backends.cudnn.benchmark = True
 
-    import os
-    #local_rank = int(os.environ["LOCAL_RANK"])
-    #print(local_rank)
-    print("################################")
 
-    print(torch.distributed.is_initialized())
-    print("#####################")
     # set up distributed training
     #if local_rank is not None:
     #    torch.cuda.set_device(local_rank)
@@ -346,7 +340,7 @@ def main():
         hidden_dropout=model_args.hidden_dropout,
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
-#        gradient_checkpointing=model_args.gradient_checkpointing,
+        gradient_checkpointing=model_args.gradient_checkpointing,
         gradient_checkpointing=False,
         layerdrop=model_args.layerdrop,
         ctc_loss_reduction="mean",
