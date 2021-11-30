@@ -223,8 +223,8 @@ def main():
     torch.backends.cudnn.benchmark = True
 
     import os
-    local_rank = int(os.environ["LOCAL_RANK"])
-    print(local_rank)
+    #local_rank = int(os.environ["LOCAL_RANK"])
+    #print(local_rank)
     print("################################")
 
     print(torch.distributed.is_initialized())
