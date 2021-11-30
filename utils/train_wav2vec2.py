@@ -165,13 +165,12 @@ class CTCTrainer(Trainer):
         print("train")
         inputs = self._prepare_inputs(inputs)
 
-        #if self.use_amp:
-            #with autocast():
-            #    loss = self.compute_loss(model, inputs)
+        if self.use_amp:
+            with autocast():
+                loss = self.compute_loss(model, inputs)
 
-        #else:
-            #loss = self.compute_loss(model, inputs)
-        loss = self.compute_loss(model, inputs)
+        else:
+            loss = self.compute_loss(model, inputs)
 
         #if not loss < 100: # Check exploding loss
         #    print(loss)
@@ -179,7 +178,7 @@ class CTCTrainer(Trainer):
 
         if self.args.n_gpu > 1:
             if model.module.config.ctc_loss_reduction == "mean":
-                logger.info("ei")
+                logger.info("ei#################################################################")
                 loss = loss.mean()
             elif model.module.config.ctc_loss_reduction == "sum":
                 loss = loss.sum() / (inputs["labels"] >= 0).sum()
@@ -189,17 +188,17 @@ class CTCTrainer(Trainer):
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
 
-        # if self.use_amp:
-        #     self.scaler.scale(loss).backward()
-        # elif self.use_apex:
-        #     with amp.scale_loss(loss, self.optimizer) as scaled_loss:
-        #         scaled_loss.backward()
-        # elif self.deepspeed:
-        #     self.deepspeed.backward(loss)
-        # else:
-        #     loss.backward()
+         if self.use_amp:
+            self.scaler.scale(loss).backward()
+        elif self.use_apex:
+            with amp.scale_loss(loss, self.optimizer) as scaled_loss:
+                scaled_loss.backward()
+        elif self.deepspeed:
+            self.deepspeed.backward(loss)
+        else:
+            loss.backward()
 
-        loss.backward()
+        #loss.backward()
         return loss.detach()
 
 
