@@ -223,7 +223,7 @@ def main():
 
 
     assert(torch.cuda.is_available())
-    #torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.benchmark = True
 
 
     # set up distributed training
@@ -341,9 +341,9 @@ def main():
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
 #        gradient_checkpointing=model_args.gradient_checkpointing,
-        gradient_checkpointing=False,
+        gradient_checkpointing=True,
         layerdrop=model_args.layerdrop,
-        ctc_loss_reduction="mean",
+        ctc_loss_reduction="sum",
         pad_token_id=processor.tokenizer.pad_token_id,
         vocab_size=len(processor.tokenizer),
         ctc_zero_infinity=True
