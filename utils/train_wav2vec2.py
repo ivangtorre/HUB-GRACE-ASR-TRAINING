@@ -39,6 +39,9 @@ if version.parse(torch.__version__) >= version.parse("1.6"):
     _is_native_amp_available = True
     from torch.cuda.amp import autocast
 
+if is_apex_available():
+    from apex import amp
+
 logger = logging.getLogger(__name__)
 
 def list_field(default=None, metadata=None):
