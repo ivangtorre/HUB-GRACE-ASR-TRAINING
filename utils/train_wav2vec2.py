@@ -161,11 +161,11 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
-        logger.info("##########################3train")
+        #logger.info("##########################3train")
         model.train()
-        logger.info("train")
+        #logger.info("train")
         inputs = self._prepare_inputs(inputs)
-        logger.info("inputs = self._prepare_inputs(inputs)")
+        #logger.info("inputs = self._prepare_inputs(inputs)")
 
         if self.use_amp:
             with autocast():
