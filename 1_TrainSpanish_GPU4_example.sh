@@ -42,7 +42,7 @@ set +x
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
 nvidia-docker exec -it ${CONTAINER} python3 -m torch.distributed.launch \
-	--nproc_per_node 2 utils/example8gpu.py \
+	--nproc_per_node 2 /home/igonzalez/HUB-GRACE-ASR-TRAINING/utils/example8gpu.py \
   --dataset_name="common_voice" \
 	--model_name_or_path="facebook/wav2vec2-large-xlsr-53" \
 	--dataset_config_name="tr" \
