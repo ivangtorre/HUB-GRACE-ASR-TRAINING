@@ -17,6 +17,7 @@ from packaging import version
 from torch import nn
 from datasets import load_dataset, Dataset, load_from_disk
 from apex import amp
+import time
 
 import transformers
 from transformers import (
@@ -172,15 +173,17 @@ class CTCTrainer(Trainer):
 
         #else:
         #loss = self.compute_loss(model, inputs)
+        a = time.time()
         loss = model(**inputs).loss
-        logger.info("compute_loss")
+        print("TIME TO CALCULATE LOSS:")
+        print(time.time() - a)
+        print()
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
 
         if self.args.n_gpu > 1:
             if model.module.config.ctc_loss_reduction == "mean":
-                logger.info("ei#################################################################")
                 loss = loss.mean()
             elif model.module.config.ctc_loss_reduction == "sum":
                 loss = loss.sum() / (inputs["labels"] >= 0).sum()
