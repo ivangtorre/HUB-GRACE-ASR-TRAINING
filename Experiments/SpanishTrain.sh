@@ -37,8 +37,8 @@ DATESTAMP=`date +'%y-%m-%d.%H.%M.%S'`
 RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
 mkdir -p "$RESULT_DIR"
 
-#CMD="python3 utils/train_wav2vec2.py"
-CMD="python3 -m torch.distributed.launch --nproc_per_node 2 --use_env utils/train_wav2vec2.py"
+CMD="python3 utils/train_wav2vec2.py"
+#CMD="python3 -m torch.distributed.launch --nproc_per_node 2 --use_env utils/train_wav2vec2.py"
 #CMD="python3 -m torch.distributed.launch --nproc_per_node 2 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
