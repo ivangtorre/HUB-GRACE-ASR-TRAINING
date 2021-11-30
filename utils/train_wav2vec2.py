@@ -161,7 +161,6 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
-        a = time.time()
         model.train()
         inputs = self._prepare_inputs(inputs)
 
@@ -184,9 +183,6 @@ class CTCTrainer(Trainer):
             else:
                 raise ValueError(f"{model.config.ctc_loss_reduction} is not valid. Choose one of ['mean', 'sum']")
 
-        print("TIME TO CALCULATE LOSS:")
-        print(time.time() - a)
-        print()
 
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
@@ -222,25 +218,6 @@ def main():
 
 
     assert(torch.cuda.is_available())
-    #torch.backends.cudnn.benchmark = True
-
-
-    # set up distributed training
-    #if local_rank is not None:
-    #    torch.cuda.set_device(local_rank)
-    #    torch.distributed.init_process_group(backend='nccl', init_method='env://')
-
-    #multi_gpu = torch.distributed.is_initialized()
-    #if multi_gpu:
-    #    print("DISTRIBUTED TRAINING with {} gpus".format(torch.distributed.get_world_size()))
-
-    # define amp optimiation level
-    optim_level = 1# if args.amp else 0
-
-    print("################################")
-    print("################################")
-
-
 
 
     # Detecting last checkpoint.
