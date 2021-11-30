@@ -9,7 +9,7 @@ DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
-MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN"}}
+MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-2}}
 EPOCHS=${9:-${EPOCHS:-3}}
 SEED=${10:-${SEED:-6}}
@@ -59,7 +59,7 @@ CMD+=" --freeze_feature_extractor"
 CMD+=" --feat_proj_dropout=$FEAT_PROJ_DROPOUT"
 CMD+=" --layerdrop=$LAYER_DROPOUT"
 #CMD+=" --gradient_checkpointing"
-CMD+=" --fp16"
+#CMD+=" --fp16"
 CMD+=" --do_train --do_eval"
 CMD+=" --cache_dir=$DATA_DIR"
 CMD+=" --model_cache_dir=$MODEL_DIR"

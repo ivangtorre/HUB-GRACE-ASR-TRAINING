@@ -2,7 +2,7 @@
 import json
 import logging
 import os
-#os.environ['TRANSFORMERS_CACHE'] = "/DATA/TMP_IVAN/GRACE/cache"
+os.environ['TRANSFORMERS_CACHE'] = "/DATA/TMP_IVAN/GRACE/cache"
 
 import pandas as pd
 import sys
@@ -35,9 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-if version.parse(torch.__version__) >= version.parse("1.6"):
-    _is_native_amp_available = True
-    from torch.cuda.amp import autocast
+#if version.parse(torch.__version__) >= version.parse("1.6"):
+#    _is_native_amp_available = True
+#    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
@@ -161,17 +161,21 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
+        logger.info("##########################3train")
         model.train()
+        logger.info("train")
         inputs = self._prepare_inputs(inputs)
+        logger.info("inputs = self._prepare_inputs(inputs)")
 
-        if self.use_amp:
-            with autocast():
-                loss = self.compute_loss(model, inputs)
+        #if self.use_amp:
+        #    with autocast():
+        #        loss = self.compute_loss(model, inputs)
 
         #else:
         #loss = self.compute_loss(model, inputs)
 
-        #loss = model(**inputs).loss
+        loss = model(**inputs).loss
+        logger.info("compute_loss")
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
@@ -184,17 +188,18 @@ class CTCTrainer(Trainer):
             else:
                 raise ValueError(f"{model.config.ctc_loss_reduction} is not valid. Choose one of ['mean', 'sum']")
 
+        logger.info("elf.args.n_gpu")
 
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
 
         if self.use_amp:
             self.scaler.scale(loss).backward()
-        # elif self.use_apex:
-        #     with amp.scale_loss(loss, self.optimizer) as scaled_loss:
-        #         scaled_loss.backward()
-        # elif self.deepspeed:
-        #     self.deepspeed.backward(loss)
+        elif self.use_apex:
+            with amp.scale_loss(loss, self.optimizer) as scaled_loss:
+                scaled_loss.backward()
+        elif self.deepspeed:
+            self.deepspeed.backward(loss)
         else:
             loss.backward()
 
@@ -210,10 +215,6 @@ def extract_all_chars(batch):
 
 
 def main():
-    random.seed(42)
-    np.random.seed(42)
-    torch.manual_seed(42)
-
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
@@ -370,9 +371,9 @@ def main():
     # PREPARE AUDIOS ##
     logger.info("LOADING AUDIOS")
     train_dataset = train_dataset.map(speech_file_to_array_fn, remove_columns=train_dataset.column_names,
-                                      keep_in_memory=False, load_from_cache_file=False, num_proc=20)
+                                      keep_in_memory=False, load_from_cache_file=True, num_proc=20)
     eval_dataset = eval_dataset.map(speech_file_to_array_fn, remove_columns=eval_dataset.column_names,
-                                    keep_in_memory=False, load_from_cache_file=False, num_proc=20)
+                                    keep_in_memory=False, load_from_cache_file=True, num_proc=20)
 
     def prepare_dataset(batch):
         # check that all files have the correct sampling rate
@@ -389,10 +390,10 @@ def main():
     logger.info("\nJUST BEFORE TRAINING")
     train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names,
                                       batch_size=training_args.per_device_train_batch_size, batched=True,
-                                      keep_in_memory=False, load_from_cache_file=False, num_proc=20)
+                                      keep_in_memory=False, load_from_cache_file=True, num_proc=20)
     eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names,
                                     batch_size=training_args.per_device_train_batch_size, batched=True,
-                                    keep_in_memory=False, load_from_cache_file=False, num_proc=20)
+                                    keep_in_memory=False, load_from_cache_file=True, num_proc=20)
 
     def compute_metrics(pred):
         wer_metric = datasets.load_metric("wer")
