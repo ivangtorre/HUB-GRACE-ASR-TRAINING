@@ -3,7 +3,6 @@ import json
 import logging
 import os
 os.environ['TRANSFORMERS_CACHE'] = "/DATA/TMP_IVAN/GRACE/cache"
-
 import pandas as pd
 import sys
 from dataclasses import dataclass, field
@@ -17,7 +16,6 @@ from packaging import version
 from torch import nn
 from datasets import load_dataset, Dataset, load_from_disk
 from apex import amp
-import time
 
 import transformers
 from transformers import (
@@ -28,7 +26,6 @@ from transformers import (
     Wav2Vec2FeatureExtractor,
     Wav2Vec2ForCTC,
     Wav2Vec2Processor,
-    is_apex_available,
     set_seed,
 )
 
