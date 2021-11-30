@@ -35,9 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-if version.parse(torch.__version__) >= version.parse("1.6"):
-    _is_native_amp_available = True
-    from torch.cuda.amp import autocast
+#if version.parse(torch.__version__) >= version.parse("1.6"):
+#    _is_native_amp_available = True
+#    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
@@ -161,21 +161,21 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
-        #logger.info("##########################3train")
+        logger.info("##########################3train")
         model.train()
-        #logger.info("train")
+        logger.info("train")
         inputs = self._prepare_inputs(inputs)
-        #logger.info("inputs = self._prepare_inputs(inputs)")
+        logger.info("inputs = self._prepare_inputs(inputs)")
 
-        if self.use_amp:
-            with autocast():
-                loss = self.compute_loss(model, inputs)
+        #if self.use_amp:
+        #    with autocast():
+        #        loss = self.compute_loss(model, inputs)
 
-        else:
-            loss = self.compute_loss(model, inputs)
+        #else:
+        #loss = self.compute_loss(model, inputs)
 
-        #loss = model(**inputs).loss
-        #logger.info("compute_loss")
+        loss = model(**inputs).loss
+        logger.info("compute_loss")
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
@@ -188,7 +188,7 @@ class CTCTrainer(Trainer):
             else:
                 raise ValueError(f"{model.config.ctc_loss_reduction} is not valid. Choose one of ['mean', 'sum']")
 
-        #logger.info("elf.args.n_gpu")
+        logger.info("elf.args.n_gpu")
 
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
@@ -224,7 +224,15 @@ def main():
 
 
     assert(torch.cuda.is_available())
+    torch.backends.cudnn.benchmark = True
 
+    import os
+    #local_rank = int(os.environ["LOCAL_RANK"])
+    #print(local_rank)
+    print("################################")
+
+    print(torch.distributed.is_initialized())
+    print("#####################")
     # set up distributed training
     #if local_rank is not None:
     #    torch.cuda.set_device(local_rank)
@@ -340,7 +348,7 @@ def main():
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
 #        gradient_checkpointing=model_args.gradient_checkpointing,
-        gradient_checkpointing=True,
+        gradient_checkpointing=False,
         layerdrop=model_args.layerdrop,
         ctc_loss_reduction="mean",
         pad_token_id=processor.tokenizer.pad_token_id,
