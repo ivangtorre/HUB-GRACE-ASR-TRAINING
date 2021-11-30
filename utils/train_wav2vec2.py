@@ -56,7 +56,7 @@ class ModelArguments:
     activation_dropout: Optional[float] = field(default=0.1, metadata={"help": "The dropout ratio for activations inside the fully connected layer."})
     hidden_dropout: Optional[float] = field(default=0.1,metadata={"help": "The dropout probabilitiy for all fully connected layers in the embeddings, encoder, and pooler."},)
     feat_proj_dropout: Optional[float] = field(default=0.1, metadata={"help": "The dropout probabilitiy for all 1D convolutional layers in feature extractor."},)
-    mask_time_prob: Optional[float] = field(default=0.05,metadata={
+    mask_time_prob: Optional[float] = field(default=0.35,metadata={
             "help": "Approximately ``mask_time_prob * sequence_length // mask_time_length`` feature"
                     "vectors will be masked along the time axis. This is only relevant if ``apply_spec_augment is True``."},)
 #    gradient_checkpointing: Optional[bool] = field(default=False,metadata={"help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."},)
