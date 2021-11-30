@@ -15,4 +15,4 @@ jiwer
 #librosa
 #pyctcdecode
 #transformers
-#unidecode
+unidecode
