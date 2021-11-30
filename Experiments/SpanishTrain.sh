@@ -4,7 +4,6 @@
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"spanish"}} # Language
-#DATASET=${2:-${DATASET:-"datasets/spanish/train_Albayzyn_NoSpeed.csv"}}  # Train Dataset Location
 DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results"}}
@@ -13,7 +12,7 @@ MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-2}}
 EPOCHS=${9:-${EPOCHS:-3}}
 SEED=${10:-${SEED:-6}}
-BATCH_SIZE=${11:-${BATCH_SIZE:-2}} # original 16
+BATCH_SIZE=${11:-${BATCH_SIZE:-16}} # original 16
 LEARNING_RATE=${12:-${LEARNING_RATE:-"0.0002"}}
 WARMUP_RATIO=${13:-${WARMUP_RATIO:-"0.1"}}
 SAVE_STATES=${14:-${SAVE_STATES:-5000}}
