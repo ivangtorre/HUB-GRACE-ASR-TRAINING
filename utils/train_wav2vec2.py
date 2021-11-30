@@ -169,8 +169,8 @@ class CTCTrainer(Trainer):
                 loss = self.compute_loss(model, inputs)
 
         else:
-            #loss = self.compute_loss(model, inputs)
-            loss = model(**inputs).loss
+            loss = self.compute_loss(model, inputs)
+            #loss = model(**inputs).loss
 
         #loss = model(**inputs).loss
         #if not loss < 100: # Check exploding loss
