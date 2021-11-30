@@ -166,12 +166,12 @@ class CTCTrainer(Trainer):
         inputs = self._prepare_inputs(inputs)
 
 
-        #if self.use_amp:
-        #    with autocast():
-        loss = self.compute_loss(model, inputs)
+        if self.use_amp:
+            with autocast():
+                loss = self.compute_loss(model, inputs)
 
-        #else:
-        #    loss = self.compute_loss(model, inputs)
+        else:
+            loss = self.compute_loss(model, inputs)
 
         #if not loss < 100: # Check exploding loss
         #    print(loss)
@@ -189,7 +189,7 @@ class CTCTrainer(Trainer):
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
 
-         if self.use_amp:
+        if self.use_amp:
             self.scaler.scale(loss).backward()
         elif self.use_apex:
             with amp.scale_loss(loss, self.optimizer) as scaled_loss:
