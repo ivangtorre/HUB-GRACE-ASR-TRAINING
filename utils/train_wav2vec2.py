@@ -35,9 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-#if version.parse(torch.__version__) >= version.parse("1.6"):
-#    _is_native_amp_available = True
-#    from torch.cuda.amp import autocast
+if version.parse(torch.__version__) >= version.parse("1.6"):
+    _is_native_amp_available = True
+    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
@@ -164,14 +164,14 @@ class CTCTrainer(Trainer):
         model.train()
         inputs = self._prepare_inputs(inputs)
 
-        #if self.use_amp:
-        #    with autocast():
-        #        loss = self.compute_loss(model, inputs)
+        if self.use_amp:
+            with autocast():
+                loss = self.compute_loss(model, inputs)
 
-        #else:
-        #loss = self.compute_loss(model, inputs)
+        else:
+            loss = self.compute_loss(model, inputs)
 
-        loss = model(**inputs).loss
+        #loss = model(**inputs).loss
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
