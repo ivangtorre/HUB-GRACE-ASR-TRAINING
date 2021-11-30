@@ -6,7 +6,7 @@
 # VARIABLES ####################
 NAME=${NAME:-"wav2vec2"}
 CONTAINER=${CONTAINER:-"wav2vec2train"}
-export NV_GPU="0,1"
+export NV_GPU="2,3"
 
 ################################
 ################################
@@ -27,7 +27,7 @@ fi
 
 # Run the container
 set -x
-nvidia-docker run -it -d --rm --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=4g --ulimit memlock=-1 --ulimit stack=67108864 \
+nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=4g --ulimit memlock=-1 --ulimit stack=67108864 \
 -v /DATA/GRACE/IVANbackup/GRACE_train/TMP_IVAN:/DATA/TMP_IVAN \
 -v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/ \
 -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ \
