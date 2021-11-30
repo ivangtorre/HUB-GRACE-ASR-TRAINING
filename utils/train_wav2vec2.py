@@ -167,14 +167,14 @@ class CTCTrainer(Trainer):
         inputs = self._prepare_inputs(inputs)
         #logger.info("inputs = self._prepare_inputs(inputs)")
 
-        if self.use_amp:
-            with autocast():
-                loss = self.compute_loss(model, inputs)
+        #if self.use_amp:
+        #    with autocast():
+        #        loss = self.compute_loss(model, inputs)
 
-        else:
-            loss = self.compute_loss(model, inputs)
+        #else:
+        #    loss = self.compute_loss(model, inputs)
 
-        #loss = model(**inputs).loss
+        loss = model(**inputs).loss
         #logger.info("compute_loss")
         #if not loss < 100: # Check exploding loss
         #    print(loss)
