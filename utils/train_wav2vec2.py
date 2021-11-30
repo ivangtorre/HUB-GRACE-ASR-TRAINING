@@ -161,21 +161,17 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
-        logger.info("##########################3train")
         model.train()
-        logger.info("train")
         inputs = self._prepare_inputs(inputs)
-        logger.info("inputs = self._prepare_inputs(inputs)")
 
-        #if self.use_amp:
-        #    with autocast():
-        #        loss = self.compute_loss(model, inputs)
+        if self.use_amp:
+            with autocast():
+               loss = self.compute_loss(model, inputs)
 
-        #else:
-        #loss = self.compute_loss(model, inputs)
+        else:
+            loss = self.compute_loss(model, inputs)
 
-        loss = model(**inputs).loss
-        logger.info("compute_loss")
+        # loss = model(**inputs).loss
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
@@ -188,7 +184,6 @@ class CTCTrainer(Trainer):
             else:
                 raise ValueError(f"{model.config.ctc_loss_reduction} is not valid. Choose one of ['mean', 'sum']")
 
-        logger.info("elf.args.n_gpu")
 
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
