@@ -165,13 +165,12 @@ class CTCTrainer(Trainer):
         model.train()
         inputs = self._prepare_inputs(inputs)
 
-        # if self.use_amp:
-        #     with autocast():
-        #         loss = self.compute_loss(model, inputs)
-        #
-        # else:
-        #     loss = self.compute_loss(model, inputs)
-        loss = model(**inputs).loss
+        if self.use_amp:
+            with autocast():
+                loss = self.compute_loss(model, inputs)
+        else:
+            loss = self.compute_loss(model, inputs)
+        #loss = model(**inputs).loss
 
         #if not loss < 100: # Check exploding loss
         #    print(loss)
@@ -341,7 +340,7 @@ def main():
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
 #        gradient_checkpointing=model_args.gradient_checkpointing,
-        gradient_checkpointing=True,
+        gradient_checkpointing=False,
         layerdrop=model_args.layerdrop,
         ctc_loss_reduction="mean",
         pad_token_id=processor.tokenizer.pad_token_id,
