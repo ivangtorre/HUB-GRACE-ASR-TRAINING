@@ -26,8 +26,11 @@ WORKDIR /workspace
 
 # Install requirements (do this first for better caching)
 COPY requirements.txt .
-RUN conda install -y pyyaml==5.4.1
-RUN pip install --disable-pip-version-check -U -r requirements.txt
+#RUN conda install -y pyyaml==5.4.1
+#RUN conda install -y pyyaml==5.4.1
+
+#RUN pip install --disable-pip-version-check -U -r requirements.txt
+RUN pip install -U -r requirements.txt
 
 #WORKDIR /workspace/wav2vec2
 
