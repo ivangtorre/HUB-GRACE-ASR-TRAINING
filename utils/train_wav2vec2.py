@@ -310,11 +310,11 @@ def main():
     print(training_args.local_rank)
     print("##########################3")
 
-    train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset" + training_args.local_rank)
-    eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset" + training_args.local_rank)
+    train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset" + str(training_args.local_rank))
+    eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset" + str(training_args.local_rank))
 
-    train_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/trainset"+ training_args.local_rank)
-    eval_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/evalset"+ training_args.local_rank)
+    train_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/trainset"+ str(training_args.local_rank))
+    eval_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/evalset"+ str(training_args.local_rank))
 
 
     #################################################################################################################
