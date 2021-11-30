@@ -165,7 +165,6 @@ class CTCTrainer(Trainer):
         inputs = self._prepare_inputs(inputs)
 
         if self.use_amp:
-            print("USING AMP")
             with autocast():
                 loss = self.compute_loss(model, inputs)
 

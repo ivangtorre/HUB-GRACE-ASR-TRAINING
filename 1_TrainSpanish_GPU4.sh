@@ -6,7 +6,7 @@
 # VARIABLES ####################
 NAME=${NAME:-"wav2vec2"}
 CONTAINER=${CONTAINER:-"wav2vec2train"}
-export NV_GPU="2,3"
+export NV_GPU="0,1,2,3"
 
 ################################
 ################################
