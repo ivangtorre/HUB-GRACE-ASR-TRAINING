@@ -188,8 +188,8 @@ class CTCTrainer(Trainer):
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
 
-        # if self.use_amp:
-        #     self.scaler.scale(loss).backward()
+        if self.use_amp:
+            self.scaler.scale(loss).backward()
         # elif self.use_apex:
         #     with amp.scale_loss(loss, self.optimizer) as scaled_loss:
         #         scaled_loss.backward()
@@ -198,7 +198,7 @@ class CTCTrainer(Trainer):
         # else:
         #     loss.backward()
 
-        loss.backward()
+        #loss.backward()
         return loss.detach()
 
 
