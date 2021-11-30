@@ -162,9 +162,9 @@ class CTCTrainer(Trainer):
         """
         logger.info("##########################3train")
         model.train()
-        print("train")
+        logger.info("train")
         inputs = self._prepare_inputs(inputs)
-
+        logger.info("inputs = self._prepare_inputs(inputs)")
 
         if self.use_amp:
             with autocast():
