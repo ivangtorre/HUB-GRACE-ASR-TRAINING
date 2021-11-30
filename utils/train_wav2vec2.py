@@ -166,13 +166,13 @@ class CTCTrainer(Trainer):
         inputs = self._prepare_inputs(inputs)
         logger.info("inputs = self._prepare_inputs(inputs)")
 
-        if self.use_amp:
-            with autocast():
-                loss = self.compute_loss(model, inputs)
+        #if self.use_amp:
+        #    with autocast():
+        #        loss = self.compute_loss(model, inputs)
 
-        else:
+        #else:
             loss = self.compute_loss(model, inputs)
-        logger.info("elf.use_amp")
+        logger.info("compute_loss")
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
@@ -348,7 +348,7 @@ def main():
 #        gradient_checkpointing=model_args.gradient_checkpointing,
         gradient_checkpointing=False,
         layerdrop=model_args.layerdrop,
-        ctc_loss_reduction="mean",
+        ctc_loss_reduction="sum",
         pad_token_id=processor.tokenizer.pad_token_id,
         vocab_size=len(processor.tokenizer),
         ctc_zero_infinity=True
