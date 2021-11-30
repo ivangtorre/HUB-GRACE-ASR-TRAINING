@@ -436,7 +436,7 @@ def main():
     config = AutoConfig.from_pretrained(
         model_args.model_name_or_path, cache_dir=model_args.cache_dir, use_auth_token=data_args.use_auth_token
     )
-
+    print("EI-----------------------------------------------------------------------------")
     # tokenizer is defined by `tokenizer_class` if present in config else by `model_type`
     config_for_tokenizer = config if config.tokenizer_class is not None else None
     tokenizer_type = config.model_type if config.tokenizer_class is None else None
@@ -455,6 +455,7 @@ def main():
         model_args.model_name_or_path, cache_dir=model_args.cache_dir, use_auth_token=data_args.use_auth_token
     )
     processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
+    print("EI2222-----------------------------------------------------------------------------")
 
     # adapt config
     config.update(
