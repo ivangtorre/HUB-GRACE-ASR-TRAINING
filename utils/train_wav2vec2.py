@@ -348,7 +348,7 @@ def main():
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
 #        gradient_checkpointing=model_args.gradient_checkpointing,
-        gradient_checkpointing=False,
+        gradient_checkpointing=True,
         layerdrop=model_args.layerdrop,
         ctc_loss_reduction="mean",
         pad_token_id=processor.tokenizer.pad_token_id,
