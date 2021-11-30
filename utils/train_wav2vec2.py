@@ -210,9 +210,10 @@ def extract_all_chars(batch):
 
 
 def main():
-    random.seed(42)
-    np.random.seed(42)
-    torch.manual_seed(42)
+    seed = 30
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
 
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
