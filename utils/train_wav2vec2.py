@@ -175,7 +175,7 @@ class CTCTrainer(Trainer):
             loss = self.compute_loss(model, inputs)
 
         #loss = model(**inputs).loss
-        logger.info("compute_loss")
+        #logger.info("compute_loss")
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
@@ -188,7 +188,7 @@ class CTCTrainer(Trainer):
             else:
                 raise ValueError(f"{model.config.ctc_loss_reduction} is not valid. Choose one of ['mean', 'sum']")
 
-        logger.info("elf.args.n_gpu")
+        #logger.info("elf.args.n_gpu")
 
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
