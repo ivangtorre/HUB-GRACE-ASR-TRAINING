@@ -306,11 +306,11 @@ def main():
 
     del df_train, df_test
 
-    train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset")
-    eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset")
+    #train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset")
+    #eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset")
 
-    train_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/trainset")
-    eval_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/evalset")
+    #train_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/trainset")
+    #eval_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/evalset")
 
 
     #################################################################################################################
