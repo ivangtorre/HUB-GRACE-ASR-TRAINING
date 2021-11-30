@@ -210,7 +210,7 @@ def extract_all_chars(batch):
 
 
 def main():
-    seed = 30
+    seed = 11
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
