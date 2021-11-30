@@ -195,8 +195,8 @@ class CTCTrainer(Trainer):
         #         scaled_loss.backward()
         # elif self.deepspeed:
         #     self.deepspeed.backward(loss)
-        # else:
-        #     loss.backward()
+        else:
+            loss.backward()
 
         #loss.backward()
         return loss.detach()
@@ -210,6 +210,10 @@ def extract_all_chars(batch):
 
 
 def main():
+    random.seed(42)
+    np.random.seed(42)
+    torch.manual_seed(42)
+
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script and it's the path to a json file,  let's parse it to get our arguments.
