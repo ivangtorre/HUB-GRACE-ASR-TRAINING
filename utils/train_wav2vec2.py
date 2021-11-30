@@ -364,9 +364,9 @@ def main():
     # PREPARE AUDIOS ##
     logger.info("LOADING AUDIOS")
     train_dataset = train_dataset.map(speech_file_to_array_fn, remove_columns=train_dataset.column_names,
-                                      keep_in_memory=False, load_from_cache_file=True, num_proc=20)
+                                      keep_in_memory=False, load_from_cache_file=True, num_proc=10)
     eval_dataset = eval_dataset.map(speech_file_to_array_fn, remove_columns=eval_dataset.column_names,
-                                    keep_in_memory=False, load_from_cache_file=True, num_proc=20)
+                                    keep_in_memory=False, load_from_cache_file=True, num_proc=10)
 
     def prepare_dataset(batch):
         # check that all files have the correct sampling rate
@@ -383,10 +383,10 @@ def main():
     logger.info("\nJUST BEFORE TRAINING")
     train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names,
                                       batch_size=training_args.per_device_train_batch_size, batched=True,
-                                      keep_in_memory=False, load_from_cache_file=True, num_proc=20)
+                                      keep_in_memory=False, load_from_cache_file=True, num_proc=10)
     eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names,
                                     batch_size=training_args.per_device_train_batch_size, batched=True,
-                                    keep_in_memory=False, load_from_cache_file=True, num_proc=20)
+                                    keep_in_memory=False, load_from_cache_file=True, num_proc=10)
 
     def compute_metrics(pred):
         wer_metric = datasets.load_metric("wer")
