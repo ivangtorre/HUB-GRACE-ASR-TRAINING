@@ -222,10 +222,7 @@ def main():
     import os
     #local_rank = int(os.environ["LOCAL_RANK"])
     #print(local_rank)
-    print("################################")
 
-    print(torch.distributed.is_initialized())
-    print("#####################")
     # set up distributed training
     #if local_rank is not None:
     #    torch.cuda.set_device(local_rank)
@@ -237,10 +234,6 @@ def main():
 
     # define amp optimiation level
     optim_level = 1# if args.amp else 0
-
-    print("################################")
-    print("################################")
-
 
 
 
