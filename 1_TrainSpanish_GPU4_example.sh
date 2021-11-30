@@ -41,7 +41,7 @@ set +x
 
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} python -m3 torch.distributed.launch \
+nvidia-docker exec -it ${CONTAINER} python -m torch.distributed.launch \
 	--nproc_per_node 2 run_speech_recognition_ctc.py \
 	--dataset_name="librispeech_asr" \
 	--model_name_or_path="facebook/wav2vec2-large-lv60" \
