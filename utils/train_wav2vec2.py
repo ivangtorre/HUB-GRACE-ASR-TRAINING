@@ -16,6 +16,7 @@ import torch
 from packaging import version
 from torch import nn
 from datasets import load_dataset, Dataset, load_from_disk
+from apex import amp
 import time
 
 import transformers
@@ -34,12 +35,9 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-if version.parse(torch.__version__) >= version.parse("1.6"):
-    _is_native_amp_available = True
-    from torch.cuda.amp import autocast
-
-if is_apex_available():
-    from apex import amp
+#if version.parse(torch.__version__) >= version.parse("1.6"):
+#    _is_native_amp_available = True
+#    from torch.cuda.amp import autocast
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +82,6 @@ class DataTrainingArguments:
     preprocessing_num_workers: Optional[int] = field(default=None,metadata={"help": "The number of processes to use for the preprocessing."},)
     max_train_samples: Optional[int] = field(default=None, metadata={"help": "For debugging purposes"},)
     max_val_samples: Optional[int] = field(default=None,metadata=dict(help="For debugging purposes"),)
-    fp16 : Optional[str] = field(default=None)
     chars_to_ignore: List[str] = list_field(default=[",", "?", ".", "!", "-", ";", ":", '""', "%", "'", '"', "�", "^", "/", "$"],
         metadata={"help": "A list of characters to remove from the transcripts."},)
 
@@ -167,14 +164,14 @@ class CTCTrainer(Trainer):
         model.train()
         inputs = self._prepare_inputs(inputs)
 
-        if self.use_amp:
-            with autocast():
-               loss = self.compute_loss(model, inputs)
+        #if self.use_amp:
+        #    with autocast():
+        #        loss = self.compute_loss(model, inputs)
 
-        else:
-            loss = self.compute_loss(model, inputs)
+        #else:
+        loss = self.compute_loss(model, inputs)
 
-        # loss = model(**inputs).loss
+        #loss = model(**inputs).loss
         #if not loss < 100: # Check exploding loss
         #    print(loss)
         #    print(inputs)
@@ -191,20 +188,15 @@ class CTCTrainer(Trainer):
         if self.args.gradient_accumulation_steps > 1:
             loss = loss / self.args.gradient_accumulation_steps
 
-        # if self.use_amp:
-        #     self.scaler.scale(loss).backward()
-        # elif self.use_apex:
-        #     with amp.scale_loss(loss, self.optimizer) as scaled_loss:
-        #         scaled_loss.backward()
-        # elif self.deepspeed:
-        #     self.deepspeed.backward(loss)
-        # else:
-        #     loss.backward()
-
-        #with amp.scale_loss(loss, self.optimizer) as scaled_loss:
-        #    scaled_loss.backward()
-
-        self.scaler.scale(loss).backward()
+        if self.use_amp:
+            self.scaler.scale(loss).backward()
+        elif self.use_apex:
+            with amp.scale_loss(loss, self.optimizer) as scaled_loss:
+                scaled_loss.backward()
+        elif self.deepspeed:
+            self.deepspeed.backward(loss)
+        else:
+            loss.backward()
 
         #loss.backward()
         return loss.detach()
