@@ -162,7 +162,7 @@ class CTCTrainer(Trainer):
         # UNFREEZE FEATURE UPDATES (HARDCODED)
         global updates
         updates += 1
-        if updates == 128000:
+        if updates == 128*1700:
             model.wav2vec2.feature_extractor.trainable = True
 
         model.train()
