@@ -159,16 +159,11 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
+        # UNFREEZE FEATURE UPDATES (HARDCODED)
         global updates
         updates += 1
-        logger.info(updates)
-
-        if updates == 10000:
-            logger.info("############3Unfreezing feature extractor################3")
+        if updates == 128000:
             model.wav2vec2.feature_extractor.trainable = True
-            #print(model.wav2vec2)
-            #print(model.wav2vec2.feature_extractor)
-            logger.info(model.wav2vec2.feature_extractor.trainable)
 
         model.train()
         inputs = self._prepare_inputs(inputs)
