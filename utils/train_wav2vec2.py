@@ -144,6 +144,7 @@ class DataCollatorCTCWithPadding:
 
 
 class CTCTrainer(Trainer):
+    udpates = 0
     def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
         """
         Perform a training step on a batch of inputs.
@@ -158,6 +159,11 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
+        self.updates += 1
+        if self.updates == 10:
+            print("Unfreezing feature extractor")
+            model.wav2vec2.feature_extractor.trainable = True
+
         model.train()
         inputs = self._prepare_inputs(inputs)
 
@@ -412,6 +418,7 @@ def main():
 
     ## PREPARE TRAINING ##---------------------------------------
 #    if model_args.freeze_feature_extractor:
+    model.wav2vec2.feature_extractor.trainable = False
 #        model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
@@ -434,9 +441,7 @@ def main():
             checkpoint = model_args.model_name_or_path
         else:
             checkpoint = None
-        logger.info("\ntrain result")
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
-        logger.info("\ntrained?")
         trainer.save_model()
 
         # save the feature_extractor and the tokenizer
