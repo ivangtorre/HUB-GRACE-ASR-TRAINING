@@ -282,8 +282,8 @@ def main():
     df_train = df_train[~df_train["transcription"].isnull()]
     df_test = df_test[~df_test["transcription"].isnull()]
 
-    df_train = df_train[df_train["duration"] < 16]
-    df_test = df_test[df_test["duration"] < 16]
+    df_train = df_train[df_train["duration"] < 18]
+    df_test = df_test[df_test["duration"] < 18]
 
     df_train = df_train[df_train["duration"] > 1]
     df_test = df_test[df_test["duration"] > 1]
