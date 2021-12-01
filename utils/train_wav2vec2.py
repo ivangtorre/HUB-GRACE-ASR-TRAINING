@@ -285,8 +285,8 @@ def main():
     df_train = df_train[df_train["duration"] < 12]
     df_test = df_test[df_test["duration"] < 12]
 
-    df_train = df_train[df_train["duration"] > 1]
-    df_test = df_test[df_test["duration"] > 1]
+    df_train = df_train[df_train["duration"] > 0.5]
+    df_test = df_test[df_test["duration"] > 0.5]
 
 
     df_train = df_train.reset_index(drop=True)
