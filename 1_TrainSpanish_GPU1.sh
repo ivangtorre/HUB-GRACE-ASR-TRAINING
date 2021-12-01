@@ -5,7 +5,7 @@
 
 # VARIABLES ####################
 NAME=${NAME:-"wav2vec2"}
-CONTAINER=${CONTAINER:-"wav2vec2train"}
+CONTAINER=${CONTAINER:-"wav2vec2train_1"}
 export NV_GPU="1"
 
 ################################
@@ -41,4 +41,4 @@ set +x
 
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishTrain_GPU3.sh
+nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishTrain_GPU1.sh

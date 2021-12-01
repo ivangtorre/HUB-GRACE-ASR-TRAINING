@@ -6,8 +6,8 @@ DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios ar
 LANGUAGE=${2:-${LANGUAGE:-"spanish"}} # Language
 DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
-RESULT_DIR=${3:-${RESULT_DIR:-"results"}}
-MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
+RESULT_DIR=${3:-${RESULT_DIR:-"results/wav2vec2-xls-r-1b"}}
+MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-1b"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-5}}
@@ -27,7 +27,7 @@ HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.01}}
 ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.036}}
 LR_TYPE=${25:-${LR_TYPE:-"linear"}}
-MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-0}}  # Set to 0 for using all dataset
+MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-10000}}  # Set to 0 for using all dataset
 MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
 ######################################################
 
