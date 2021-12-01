@@ -142,6 +142,8 @@ class DataCollatorCTCWithPadding:
         batch["labels"] = labels
         return batch
 
+global updates
+updates = 0
 
 class CTCTrainer(Trainer):
     def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
@@ -158,14 +160,10 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
-        try:
-            self.updates += 1
-            print(self.updates)
+        updates += 1
+        print(updates)
 
-        except:
-            self.updates = 0
-
-        if self.updates == 10:
+        if updates == 10:
             print("############3Unfreezing feature extractor################3")
             model.wav2vec2.feature_extractor.trainable = True
             #print(model.wav2vec2)
