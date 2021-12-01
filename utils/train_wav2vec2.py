@@ -285,8 +285,8 @@ def main():
     df_train = df_train[df_train["duration"] < 20]
     df_test = df_test[df_test["duration"] < 20]
 
-    df_train = df_train[df_train["duration"] > 2]
-    df_test = df_test[df_test["duration"] > 2]
+    df_train = df_train[df_train["duration"] > 1]
+    df_test = df_test[df_test["duration"] > 1]
 
 
     df_train = df_train.reset_index(drop=True)
@@ -307,10 +307,6 @@ def main():
     eval_dataset = Dataset.from_pandas(df_test)
 
     del df_train, df_test
-
-    print("##########################3")
-    print(training_args.local_rank)
-    print("##########################3")
 
     train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset" + str(training_args.local_rank))
     eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset" + str(training_args.local_rank))
