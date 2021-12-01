@@ -160,15 +160,16 @@ class CTCTrainer(Trainer):
         """
         try:
             self.updates += 1
+            print(self.updates)
 
         except:
             self.updates = 0
 
         if self.updates == 10:
-            print("Unfreezing feature extractor")
+            print("############3Unfreezing feature extractor################3")
             model.wav2vec2.feature_extractor.trainable = True
-            print(model.wav2vec2)
-            print(model.wav2vec2.feature_extractor)
+            #print(model.wav2vec2)
+            #print(model.wav2vec2.feature_extractor)
             print(model.wav2vec2.feature_extractor.trainable)
 
         model.train()
