@@ -142,7 +142,6 @@ class DataCollatorCTCWithPadding:
         batch["labels"] = labels
         return batch
 
-global updates
 updates = 0
 
 class CTCTrainer(Trainer):
@@ -160,6 +159,7 @@ class CTCTrainer(Trainer):
         Return:
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
+        global updates
         updates += 1
         print(updates)
 
