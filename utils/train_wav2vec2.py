@@ -144,7 +144,9 @@ class DataCollatorCTCWithPadding:
 
 
 class CTCTrainer(Trainer):
-    udpates = 0
+    def __init__(self):
+        self.udpates = 0
+
     def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
         """
         Perform a training step on a batch of inputs.
@@ -163,6 +165,9 @@ class CTCTrainer(Trainer):
         if self.updates == 10:
             print("Unfreezing feature extractor")
             model.wav2vec2.feature_extractor.trainable = True
+            print(model.wav2vec2)
+            print(model.wav2vec2.feature_extractor)
+            print(model.wav2vec2.feature_extractor.trainable)
 
         model.train()
         inputs = self._prepare_inputs(inputs)
@@ -419,6 +424,10 @@ def main():
     ## PREPARE TRAINING ##---------------------------------------
 #    if model_args.freeze_feature_extractor:
     model.wav2vec2.feature_extractor.trainable = False
+    print(model.wav2vec2)
+    print(model.wav2vec2.feature_extractor)
+    print(model.wav2vec2.feature_extractor.trainable)
+
 #        model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
