@@ -425,9 +425,6 @@ def main():
     ## PREPARE TRAINING ##---------------------------------------
 #    if model_args.freeze_feature_extractor:
     model.wav2vec2.feature_extractor.trainable = False
-    print(model.wav2vec2)
-    print(model.wav2vec2.feature_extractor)
-    print(model.wav2vec2.feature_extractor.trainable)
 
 #        model.freeze_feature_extractor()
 
