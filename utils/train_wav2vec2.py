@@ -144,8 +144,6 @@ class DataCollatorCTCWithPadding:
 
 
 class CTCTrainer(Trainer):
-        self.udpates = 0
-
     def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
         """
         Perform a training step on a batch of inputs.
