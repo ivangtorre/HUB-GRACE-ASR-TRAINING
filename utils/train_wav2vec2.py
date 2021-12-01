@@ -163,7 +163,7 @@ class CTCTrainer(Trainer):
         updates += 1
         logger.info(updates)
 
-        if updates == 10:
+        if updates == 10000:
             logger.info("############3Unfreezing feature extractor################3")
             model.wav2vec2.feature_extractor.trainable = True
             #print(model.wav2vec2)
