@@ -161,14 +161,14 @@ class CTCTrainer(Trainer):
         """
         global updates
         updates += 1
-        print(updates)
+        logger.info(updates)
 
         if updates == 10:
-            print("############3Unfreezing feature extractor################3")
+            logger.info("############3Unfreezing feature extractor################3")
             model.wav2vec2.feature_extractor.trainable = True
             #print(model.wav2vec2)
             #print(model.wav2vec2.feature_extractor)
-            print(model.wav2vec2.feature_extractor.trainable)
+            logger.info(model.wav2vec2.feature_extractor.trainable)
 
         model.train()
         inputs = self._prepare_inputs(inputs)
