@@ -32,6 +32,8 @@ RUN apt-get update && apt-get -y install python-dev
 #RUN pip install --disable-pip-version-check -U -r requirements.txt
 RUN pip install -U -r requirements.txt
 
+RUN pip install https://github.com/kpu/kenlm/archive/master.zip
+
 #WORKDIR /workspace/wav2vec2
 
 CMD ["/bin/bash"]
