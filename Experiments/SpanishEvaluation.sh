@@ -5,19 +5,19 @@ MODEL_PATH=${1:-${MODEL_PATH:-"results/checkpoint-7000/"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-20.-21-09-15.22.11.49/"}}
 
 DATA_DIR=${2:-${DATA_DIR:-""}}
-TEST_1=${3:-${TEST_1:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_MEDIA.csv"}}
-TEST_2=${3:-${TEST_2:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_RTVE.csv"}}
-TEST_3=${4:-${TEST_3:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_MOZILLA.csv"}}
-TEST_4=${4:-${TEST_4:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_EITBKULTURA.csv"}}
-TEST_5=${4:-${TEST_5:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_360.csv"}}
-TEST_6=${4:-${TEST_6:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_YOSEMASQUETU.csv"}}
-TEST_7=${4:-${TEST_7:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_TEKNOPOLIS.csv"}}
-TEST_8=${4:-${TEST_8:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_VASCOSPORELMUNDO.csv"}}
-TEST_9=${4:-${TEST_9:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_JUEGODECARTAS.csv"}}
-TEST_10=${4:-${TEST_10:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_LANOCHEDE.csv"}}
-TEST_11=${4:-${TEST_11:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_ATRAPAMESIPUEDES.csv"}}
-TEST_12=${4:-${TEST_12:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_ABOCADOS.csv"}}
-TEST_13=${4:-${TEST_13:-"/DATA/TMP_IVAN/GRACE/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
+TEST_1=${3:-${TEST_1:-"/datasets/spanish/tests/test_ES_MEDIA.csv"}}
+TEST_2=${3:-${TEST_2:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}
+TEST_3=${4:-${TEST_3:-"/datasets/spanish/tests/test_ES_MOZILLA.csv"}}
+TEST_4=${4:-${TEST_4:-"/datasets/spanish/tests/test_ES_PISA_EITBKULTURA.csv"}}
+TEST_5=${4:-${TEST_5:-"/datasets/spanish/tests/test_ES_PISA_360.csv"}}
+TEST_6=${4:-${TEST_6:-"/datasets/spanish/tests/test_ES_PISA_YOSEMASQUETU.csv"}}
+TEST_7=${4:-${TEST_7:-"/datasets/spanish/tests/test_ES_PISA_TEKNOPOLIS.csv"}}
+TEST_8=${4:-${TEST_8:-"/datasets/spanish/tests/test_ES_PISA_VASCOSPORELMUNDO.csv"}}
+TEST_9=${4:-${TEST_9:-"/datasets/spanish/tests/test_ES_PISA_JUEGODECARTAS.csv"}}
+TEST_10=${4:-${TEST_10:-"/datasets/spanish/tests/test_ES_PISA_LANOCHEDE.csv"}}
+TEST_11=${4:-${TEST_11:-"/datasets/spanish/tests/test_ES_PISA_ATRAPAMESIPUEDES.csv"}}
+TEST_12=${4:-${TEST_12:-"/datasets/spanish/tests/test_ES_PISA_ABOCADOS.csv"}}
+TEST_13=${4:-${TEST_13:-"/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
 
 ######################################################
 
