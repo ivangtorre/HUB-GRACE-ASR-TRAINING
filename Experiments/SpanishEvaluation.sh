@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##### PARAMETERS ##################################
-MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-10.-21-09-17.15.35.43/"}}
+MODEL_PATH=${1:-${MODEL_PATH:-"results/checkpoint-7000/"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-20.-21-09-15.22.11.49/"}}
 
 DATA_DIR=${2:-${DATA_DIR:-""}}
