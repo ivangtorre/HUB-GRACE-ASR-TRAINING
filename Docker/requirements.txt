@@ -1,7 +1,6 @@
-#ascii-graph
 #ipdb
 #librosa
-#pandas
+pandas
 #pycuda
 #pyyaml
 #soundfile
