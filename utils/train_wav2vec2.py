@@ -162,8 +162,8 @@ class CTCTrainer(Trainer):
         # UNFREEZE FEATURE UPDATES (HARDCODED)
         global updates
         updates += 1
-        if updates == 128*2000: # TODO Cambiar esto para que sean variables
-            model.wav2vec2.feature_extractor.trainable = True
+        #if updates == 128*2000: # TODO Cambiar esto para que sean variables
+        #    model.wav2vec2.feature_extractor.trainable = True
 
         model.train()
         inputs = self._prepare_inputs(inputs)
@@ -417,7 +417,7 @@ def main():
 
     ## PREPARE TRAINING ##---------------------------------------
 #    if model_args.freeze_feature_extractor:
-    model.wav2vec2.feature_extractor.trainable = False
+#    model.wav2vec2.feature_extractor.trainable = False
 
 #        model.freeze_feature_extractor()
 
