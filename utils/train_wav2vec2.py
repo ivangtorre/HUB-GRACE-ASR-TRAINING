@@ -162,8 +162,8 @@ class CTCTrainer(Trainer):
         # UNFREEZE FEATURE UPDATES (HARDCODED)
         global updates
         updates += 1
-        #if updates == 128*2000: # TODO Cambiar esto para que sean variables
-        #    model.wav2vec2.feature_extractor.trainable = True
+        if updates == 128*2000: # TODO Cambiar esto para que sean variables
+            model.wav2vec2.feature_extractor.trainable = True
 
         model.train()
         inputs = self._prepare_inputs(inputs)
@@ -334,9 +334,7 @@ def main():
 
     # Load pretrained model and tokenizer
     tokenizer = Wav2Vec2CTCTokenizer(training_args.output_dir + "/vocab.json", unk_token="[UNK]", pad_token="[PAD]", word_delimiter_token="|")
-
-    feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_args.model_name_or_path)
-    #feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16_000, padding_value=0.0, do_normalize=True, return_attention_mask=True)
+    feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16_000, padding_value=0.0, do_normalize=True, return_attention_mask=True)
     processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
     model = Wav2Vec2ForCTC.from_pretrained(
         model_args.model_name_or_path,
@@ -417,7 +415,7 @@ def main():
 
     ## PREPARE TRAINING ##---------------------------------------
 #    if model_args.freeze_feature_extractor:
-#    model.wav2vec2.feature_extractor.trainable = False
+    model.wav2vec2.feature_extractor.trainable = False
 
 #        model.freeze_feature_extractor()
 
