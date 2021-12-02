@@ -65,10 +65,10 @@ def transcribe(model_path, data_file, processor, model, args):
     line = np.asarray(logits.cpu())
     beams = decoder.decode_beams(line, args.beam_width)
     lista_nbeams = [item[0] for item in beams]
-    textfile = open(args.savename, "w")
-    for element in lista_nbeams:
-        textfile.write(element + "\n")
-    textfile.close()
+ #   textfile = open(args.savename, "w")
+ #   for element in lista_nbeams:
+ #       textfile.write(element + "\n")
+ #   textfile.close()
 
     top_beam = beams[0]
     trans, _, indices, _, _ = top_beam
