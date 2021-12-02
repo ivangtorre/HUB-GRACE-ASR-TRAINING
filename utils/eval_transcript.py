@@ -11,6 +11,7 @@ def load_test(path, args):
     df = pd.read_csv(path, delimiter=',')
 #    df = df[~df["transcription"].isnull()]
     df = df.reset_index(drop=True)
+    print(df)
     df = df[["transcription", "path"]]
     df.columns = ["sentence", "path"]
     df["path"] = df["path"]
