@@ -84,8 +84,7 @@ def main(args):
                 list_references.append(reference)
                 list_predictions.append(prediction)
 
-                #my_dict = pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references})
-                #result = Dataset.from_dict(my_dict)
+                result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 
                 print("************************************************\n\n")
                 print("predictions:")
@@ -95,9 +94,9 @@ def main(args):
                 print(reference)
                 #print(result["target_text"][0:10])
 
-                #print("TRANSCRIPTION: " + data_path)
-                #print("WER: {:2f} ------------".format(
-                #    100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
+                print("TRANSCRIPTION: " + data_path)
+                print("WER: {:2f} ------------".format(
+                    100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
                 print("************************************************\n\n")
 
             with open("file_prediction.txt", 'w') as fp:
