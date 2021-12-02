@@ -11,7 +11,6 @@ def load_test(path, args):
     df = pd.read_csv(path, delimiter=',')
 #    df = df[~df["transcription"].isnull()]
     df = df.reset_index(drop=True)
-    print(df)
     df = df[["transcription", "file_path"]]
     df.columns = ["sentence", "path"]
     df["path"] = df["path"]
@@ -84,7 +83,6 @@ def main(args):
                 prediction = " ".join(transcript_df["words"].tolist())
                 list_references.append(reference)
                 list_predictions.append(prediction)
-
 
                 #my_dict = pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references})
                 #result = Dataset.from_dict(my_dict)
