@@ -27,7 +27,14 @@ fi
 
 # Run the container
 set -x
-nvidia-docker run --network=host -it -d --rm --name ${CONTAINER} --runtime=nvidia --shm-size=4g --ulimit memlock=-1 --ulimit stack=67108864 -v /DATA/GRACE/IVANbackup/node2/DATA/TMP_IVAN:/DATA/TMP_IVAN  -v /DATA/GRACE/IVANbackup/node2/DATA/:/DATA/:ro -w $PWD -v /home:/home -v $PWD:/workspace/wav2vec2/ ${NAME}
+nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=16g --ulimit memlock=-1 --ulimit stack=67108864 \
+-v C:/DATA/TMP_IVAN \
+-v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/ \
+-v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ \
+-v /DATA/GRACE/IVANbackup/GRACE_train/datasets/ALBAYZIN2020/trainspeedall/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/trainspeedall/ \
+-v /home:/home \
+-v $PWD:/workspace/wav2vec2 \
+-w $PWD ${NAME}
 set +x
 
 # Execute
