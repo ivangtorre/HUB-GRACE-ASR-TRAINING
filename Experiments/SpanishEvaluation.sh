@@ -40,7 +40,7 @@ CMD+=" --test_paths="
 #CMD+=",$TEST_9"
 #CMD+=",$TEST_10"
 #CMD+=",$TEST_11"
-CMD+=",$TEST_12"
+CMD+="$TEST_12"
 CMD+=",$TEST_13"
 
 set -x
