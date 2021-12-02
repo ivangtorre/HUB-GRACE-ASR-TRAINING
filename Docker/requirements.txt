@@ -9,9 +9,9 @@ pandas
 #wrapt
 datasets
 jiwer
-#kenlm
+kenlm
 #lang-trans
 #librosa
-#pyctcdecode
+pyctcdecode
 #transformers
 unidecode
