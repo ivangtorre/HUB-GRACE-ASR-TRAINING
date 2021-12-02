@@ -9,7 +9,7 @@ tqdm
 wrapt
 datasets
 jiwer
-kenlm
+#kenlm
 lang-trans
 librosa
 pyctcdecode
