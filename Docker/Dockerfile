@@ -28,6 +28,7 @@ RUN git clone https://github.com/huggingface/transformers.git && cd transformers
 # Install requirements (do this first for better caching)
 COPY requirements.txt .
 
+RUN apt-get update && apt-get -y install python-dev
 #RUN pip install --disable-pip-version-check -U -r requirements.txt
 RUN pip install -U -r requirements.txt
 
