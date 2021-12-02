@@ -12,7 +12,7 @@ def load_test(path, args):
 #    df = df[~df["transcription"].isnull()]
     df = df.reset_index(drop=True)
     print(df)
-    df = df[["transcription", "path"]]
+    df = df[["transcription", "file_path"]]
     df.columns = ["sentence", "path"]
     df["path"] = df["path"]
     return Dataset.from_pandas(df)
