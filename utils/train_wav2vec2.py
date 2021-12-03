@@ -320,7 +320,6 @@ def main():
                                     remove_columns=train_dataset.column_names)
     vocab_test = eval_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
                                   remove_columns=eval_dataset.column_names)
-    print(vocab_test)
 
     #vocab_list = list(set(vocab_train["vocab"][0]) | set(vocab_test["vocab"][0]))
     vocab_list = list(set(vocab_train["vocab"][0]))
