@@ -322,7 +322,8 @@ def main():
                                   remove_columns=eval_dataset.column_names)
     print(vocab_test)
 
-    vocab_list = list(set(vocab_train["vocab"][0]) | set(vocab_test["vocab"][0]))
+    #vocab_list = list(set(vocab_train["vocab"][0]) | set(vocab_test["vocab"][0]))
+    vocab_list = list(set(vocab_train["vocab"][0]))
     vocab_list.insert(0, "[UNK]")
     vocab_list.insert(0, "[PAD]")
     vocab_dict = {v: k for k, v in enumerate(vocab_list)}
