@@ -70,21 +70,21 @@ def main(args):
                 dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
                 result = dataset.map(evaluate, batched=True, batch_size=8)
 
-            #else:
-            list_references = []
-            list_predictions = []
-            for item in dataset:
-                print(item["path"])
+            else:
+                list_references = []
+                list_predictions = []
+                for item in dataset:
+                    print(item["path"])
 
-                filename = os.path.basename(item["path"])[0:-4]
-                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
-                transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
-                reference = item["sentence"]
-                prediction = " ".join(transcript_df["words"].tolist())
-                list_references.append(reference)
-                list_predictions.append(prediction)
+                    filename = os.path.basename(item["path"])[0:-4]
+                    args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                    transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
+                    reference = item["sentence"]
+                    prediction = " ".join(transcript_df["words"].tolist())
+                    list_references.append(reference)
+                    list_predictions.append(prediction)
 
-                result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
+                    result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 
                 print("************************************************\n\n")
                 print("predictions:")
