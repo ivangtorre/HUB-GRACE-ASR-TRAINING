@@ -88,19 +88,19 @@ def main(args):
 
                 print("************************************************\n\n")
                 print("predictions:")
-                print(prediction)
-                #print(result["pred_strings"][0:10])
-                print("\nreference:")
-                print(reference)
-                #print(result["target_text"][0:10])
+                #print(prediction)
+                print(result["pred_strings"][0:5])
+                #print("\nreference:")
+                #print(reference)
+                print(result["target_text"][0:5])
 
                 print("TRANSCRIPTION: " + data_path)
                 print("WER: {:2f} ------------".format(
                     100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
                 print("************************************************\n\n")
 
-            with open("file_prediction.txt", 'w') as fp:
-                fp.write('\n'.join(list_predictions))
+            #with open("file_prediction.txt", 'w') as fp:
+            #    fp.write('\n'.join(list_predictions))
 
     # TRANSCRIPTION ------------------------------------------------------------------------------------------
     elif args.test_paths.split(",")[0].split(".")[-1] == "wav":
