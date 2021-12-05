@@ -345,7 +345,7 @@ def main():
         hidden_dropout=model_args.hidden_dropout,
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
-        mask_feature_prob=model_args.mask_time_prob,
+#        mask_feature_prob=model_args.mask_time_prob,
 #        gradient_checkpointing=model_args.gradient_checkpointing,
         gradient_checkpointing=False,
         layerdrop=model_args.layerdrop,
