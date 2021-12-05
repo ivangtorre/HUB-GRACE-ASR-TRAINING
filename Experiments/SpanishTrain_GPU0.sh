@@ -4,7 +4,8 @@
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"spanish"}} # Language
-DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
+DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
+#DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
@@ -12,8 +13,8 @@ MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-5}}
 SEED=${10:-${SEED:-6}}
-BATCH_SIZE=${11:-${BATCH_SIZE:-2}} # original 16
-LEARNING_RATE=${12:-${LEARNING_RATE:-"0.0003"}}
+BATCH_SIZE=${11:-${BATCH_SIZE:-1}} # original 16
+LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00015"}}
 WARMUP_RATIO=${13:-${WARMUP_RATIO:-"0.1"}}
 SAVE_STATES=${14:-${SAVE_STATES:-500}}
 EVAL_STATES=${15:-${EVAL_STATES:-500}}
@@ -21,14 +22,14 @@ LOG_STATES=${16:-${LOG_STATES:-100}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-5}}
 FEAT_PROJ_DROPOUT=${18:-${FEAT_PROJ_DROPOUT:-0.05}}
 LAYER_DROPOUT=${19:-${LAYER_DROPOUT:-0.05}}
-ACCUM_STEPS=${20:-${ACCUM_STEPS:-64}}
-MASK_TIME=${21:-${MASK_TIME:-0.5}}
+ACCUM_STEPS=${20:-${ACCUM_STEPS:-256}}
+MASK_TIME=${21:-${MASK_TIME:-0.065}}
 HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.01}}
 ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.036}}
 LR_TYPE=${25:-${LR_TYPE:-"linear"}}
 MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-0}}  # Set to 0 for using all dataset
-MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-10}}  # Set to 0 for using all dataset
+MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
 ######################################################
 
 
