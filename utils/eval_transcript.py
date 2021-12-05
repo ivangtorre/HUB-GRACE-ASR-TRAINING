@@ -68,7 +68,7 @@ def main(args):
             print(dataset)
             if len(dataset) > 1:
                 dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
-                result = dataset.map(evaluate, batched=True, batch_size=8)
+                result = dataset.map(evaluate, batched=True, batch_size=16)
 
             else:
                 list_references = []
