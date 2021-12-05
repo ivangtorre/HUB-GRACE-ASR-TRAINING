@@ -86,18 +86,18 @@ def main(args):
 
                     result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 
-                print("************************************************\n\n")
-                print("predictions:")
+            print("************************************************\n\n")
+            print("predictions:")
                 #print(prediction)
-                print(result["pred_strings"][0:5])
+            print(result["pred_strings"][0:5])
                 #print("\nreference:")
                 #print(reference)
-                print(result["target_text"][0:5])
+            print(result["target_text"][0:5])
 
-                print("TRANSCRIPTION: " + data_path)
-                print("WER: {:2f} ------------".format(
-                    100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
-                print("************************************************\n\n")
+            print("TRANSCRIPTION: " + data_path)
+            print("WER: {:2f} ------------".format(
+                100 * wer.compute(predictions=result["pred_strings"], references=result["target_text"])))
+            print("************************************************\n\n")
 
             #with open("file_prediction.txt", 'w') as fp:
             #    fp.write('\n'.join(list_predictions))
