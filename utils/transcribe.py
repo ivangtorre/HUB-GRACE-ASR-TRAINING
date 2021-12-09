@@ -32,6 +32,7 @@ def decode2logits(data_file, processor, model):
     logits = None
     n = 3000000
     for speech_array in [speech_arrayfull[x:x + n] for x in range(0, len(speech_arrayfull), n)]:
+        print("CUUUUT")
         inputs = processor(speech_array, sampling_rate=16_000, return_tensors="pt", padding=True)
         with torch.no_grad():
             partial_logits = model(inputs.input_values.to("cuda"),
