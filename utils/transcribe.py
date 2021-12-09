@@ -66,10 +66,10 @@ def transcribe(line, decoder, args):
     #     if value == "|":
     #         contents[key] = " "
 
-    beams = decoder.decode_beams(line, args.beam_width,
-                                 prune_history=True,
-                                 beam_prune_logp=-1,  # DEFAULT -10
-                                 token_min_logp=-1)  # DEFAULT -5
+    beams = decoder.decode_beams(line, args.beam_width)
+                                 #prune_history=False,
+                                 #beam_prune_logp=-1,  # DEFAULT -10
+                                 #token_min_logp=-1)  # DEFAULT -5
 
 
     if args.save:
