@@ -86,14 +86,11 @@ def main(args):
             print(args.beta)
             print(args.alpha)
             for item in tqdm(dataset):
-                for a in args.alpha.split(", "):
-                    for b in args.beta.split(", "):
-                        decoder.reset_params(alpha=a, beta=b)
-                        filename = os.path.basename(item["path"])[0:-4]
-                        args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
-                        transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
-                        list_references.append(item["sentence"])
-                        list_predictions.append(" ".join(transcript_df["words"].tolist()))
+                filename = os.path.basename(item["path"])[0:-4]
+                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
+                list_references.append(item["sentence"])
+                list_predictions.append(" ".join(transcript_df["words"].tolist()))
 
             result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 
