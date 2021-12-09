@@ -77,8 +77,8 @@ def main(args):
             list_references = []
             list_predictions = []
 
-            print(args.beta)
             print(args.alpha)
+            print(args.beta)
             for item in tqdm(dataset):
                 logits = decode2logits(item["path"], processor, model)
 
