@@ -66,6 +66,9 @@ def transcribe(line, decoder, args):
     #     if value == "|":
     #         contents[key] = " "
 
+    print("LINE..........................")
+    print(len(line))
+    print("..............................")
     beams = decoder.decode_beams(line, args.beam_width,
                                  prune_history=True,
                                  beam_prune_logp=-20,  # DEFAULT -10
