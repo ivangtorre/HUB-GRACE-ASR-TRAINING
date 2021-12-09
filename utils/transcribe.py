@@ -71,7 +71,7 @@ def transcribe(line, decoder, args):
     if args.save is not None:
         lista_nbeams = [item[0] for item in beams]
         textfile = open(args.savename, "w")
-        for element in lista_nbeams:
+        for element in lista_nbeams[0]: ########################################<------------- change for nbeams
             textfile.write(element + "\n")
         textfile.close()
 
