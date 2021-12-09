@@ -70,7 +70,7 @@ def transcribe(line, decoder, args):
     print(len(line))
     print("..............................")
 
-    if len(line) < 190000:
+    if len(line) < 250000:
         beams = decoder.decode_beams(line, args.beam_width)
     else:
         print("pruning")
