@@ -29,7 +29,7 @@ def get_time_stamps(trans, offsets, window_size):
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
 
 
-def transcribe(model_path, data_file, processor, model, args):
+def transcribe(model_path, data_file, processor, model, decoder, args):
     """
     Transcribe an audio wav file
     """
@@ -38,8 +38,8 @@ def transcribe(model_path, data_file, processor, model, args):
     with open(label_path, 'r') as j:
         contents = json.loads(j.read())
 
-    vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
-    decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
+    # vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
+    # decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
                                 #"/home/jetsontx2/models/asr_decode_LM_spanish/LM_SPANISH.bin",
 
     #decoder = CTCBeamDecoder(vocab, model_path=None, alpha=0, beta=0, cutoff_top_n=10, cutoff_prob=1,

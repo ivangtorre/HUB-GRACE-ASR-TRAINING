@@ -6,6 +6,9 @@ from datasets import Dataset, load_metric
 import argparse
 from transcribe import transcribe
 import os
+import json
+from pyctcdecode import build_ctcdecoder
+
 
 def load_test(path, args):
     df = pd.read_csv(path, delimiter=',')
@@ -47,13 +50,13 @@ def main(args):
     model = Wav2Vec2ForCTC.from_pretrained(args.model_path)
     model.to("cuda")
 
-    def evaluate(batch):
-        inputs = processor(batch["speech"], sampling_rate=16_000, return_tensors="pt", padding=True)
-        with torch.no_grad():
-            logits = model(inputs.input_values.to("cuda"), attention_mask=inputs.attention_mask.to("cuda")).logits
-            pred_ids = torch.argmax(logits, dim=-1)  # GREEDY
-        batch["pred_strings"] = processor.batch_decode(pred_ids)
-        return batch
+    # def evaluate(batch):
+    #     inputs = processor(batch["speech"], sampling_rate=16_000, return_tensors="pt", padding=True)
+    #     with torch.no_grad():
+    #         logits = model(inputs.input_values.to("cuda"), attention_mask=inputs.attention_mask.to("cuda")).logits
+    #         pred_ids = torch.argmax(logits, dim=-1)  # GREEDY
+    #     batch["pred_strings"] = processor.batch_decode(pred_ids)
+    #     return batch
 
     # EVALUATION ---------------------------------------------------------------------------
     if args.test_paths.split(",")[0].split(".")[-1] == "csv":
@@ -61,37 +64,34 @@ def main(args):
         processor = Wav2Vec2Processor.from_pretrained(args.model_path)
         model = Wav2Vec2ForCTC.from_pretrained(args.model_path)
         model.to("cuda")
-
-        print("Csv file")
         for data_path in args.test_paths.split(","):
             dataset = load_test(data_path, args)
-            print(dataset)
-            if len(dataset) > 1:
-                dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
-                result = dataset.map(evaluate, batched=True, batch_size=16)
+            #if len(dataset) > 1:
+            #    dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
+            #    result = dataset.map(evaluate, batched=True, batch_size=16)
+            #else:
 
-            else:
-                list_references = []
-                list_predictions = []
-                for item in dataset:
-                    print(item["path"])
+            with open(args.model_path + "/vocab.json", 'r') as j:
+                contents = json.loads(j.read())
 
-                    filename = os.path.basename(item["path"])[0:-4]
-                    args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
-                    transcript_df = transcribe(args.model_path, item["path"], processor, model, args)
-                    reference = item["sentence"]
-                    prediction = " ".join(transcript_df["words"].tolist())
-                    list_references.append(reference)
-                    list_predictions.append(prediction)
+            vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
+            list_references = []
+            list_predictions = []
+            decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
+            for item in dataset:
+                print(item["path"])
 
-                    result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
+                filename = os.path.basename(item["path"])[0:-4]
+                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
+                list_references.append(item["sentence"])
+                list_predictions.append(" ".join(transcript_df["words"].tolist()))
+
+            result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 
             print("************************************************\n\n")
             print("predictions:")
-                #print(prediction)
             print(result["pred_strings"][0:5])
-                #print("\nreference:")
-                #print(reference)
             print(result["target_text"][0:5])
 
             print("TRANSCRIPTION: " + data_path)
