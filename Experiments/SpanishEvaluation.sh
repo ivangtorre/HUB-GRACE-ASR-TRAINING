@@ -1,9 +1,8 @@
 #!/bin/bash
 
 ##### PARAMETERS ##################################
-MODEL_PATH=${1:-${MODEL_PATH:-"results/checkpoint-12500"}}
+MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.18.23.54"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-20.-21-09-15.22.11.49/"}}
-
 DATA_DIR=${2:-${DATA_DIR:-""}}
 TEST_1=${3:-${TEST_1:-"/datasets/spanish/tests/test_ES_MEDIA.csv"}}
 TEST_2=${3:-${TEST_2:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}
