@@ -70,36 +70,42 @@ def transcribe(line, decoder, args):
     print(len(line))
     print("..............................")
     n = 20000
+    lista_nbeams = None
     for partial_line in [line[x:x + n] for x in range(0, len(line), n)]:
         #print(partial_line)
-        beams = decoder.decode_beams(partial_line, args.beam_width)
+        beamspartial = decoder.decode_beams(partial_line, args.beam_width)
                                  #prune_history=True,
                                  #beam_prune_logp=-20,  # DEFAULT -10
                                  #token_min_logp=-5)  # DEFAULT -5
-        print(beams[0])
+        #if lista_nbeams = None:
+        #    lista_nbeams = [item[0] for item in beamspartial]
+        #else:
+        #    for item in lista_nbeams
+
+        print(len(beamspartial))
         print("..............................")
         print("..............................")
 
 
     if args.save:
-        lista_nbeams = [item[0] for item in beams]
+        #lista_nbeams = [item[0] for item in beams]
         textfile = open(args.savename, "w")
         for element in lista_nbeams[0:1]: ####################<---------------------------- change for nbeams
             textfile.write(element + "\n")
         textfile.close()
 
     top_beam = beams[0]
-    trans, _, indices, _, _ = top_beam
+    #trans, _, indices, _, _ = top_beam
 
     # ITERATE OVERALL TO DECODE TIMESTAMPS
-    w = 0.02  # 0.02
-    begin = []
-    end = []
-    wd = []
-    ones = []
-    for item in indices:
-        wd.append(item[0])
-        begin.append(item[1][0] * w)
-        end.append(item[1][1] * w)
-        ones.append(1)
+    #w = 0.02  # 0.02
+    #begin = []
+    #end = []
+    #wd = []
+    #ones = []
+    #for item in indices:
+    #    wd.append(item[0])
+    #    begin.append(item[1][0] * w)
+    #    end.append(item[1][1] * w)
+    #    ones.append(1)
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
