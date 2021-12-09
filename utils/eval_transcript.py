@@ -82,8 +82,8 @@ def main(args):
             for item in tqdm(dataset):
                 logits = decode2logits(item["path"], processor, model)
 
-                for a in args.alpha.split(", "):
-                    for b in args.beta.split(", "):
+                for a in args.alpha.split(","):
+                    for b in args.beta.split(","):
                         decoder.reset_params(alpha=float(a), beta=float(b))
                         filename = os.path.basename(item["path"])[0:-4]
                         args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
