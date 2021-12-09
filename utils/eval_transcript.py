@@ -8,6 +8,7 @@ from transcribe import transcribe
 import os
 import json
 from pyctcdecode import build_ctcdecoder
+from tqdm import tqdm
 
 
 def load_test(path, args):
@@ -80,7 +81,7 @@ def main(args):
             list_references = []
             list_predictions = []
 
-            for item in dataset:
+            for item in tqdm(dataset):
                 filename = os.path.basename(item["path"])[0:-4]
                 args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
                 transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
