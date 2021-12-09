@@ -37,6 +37,7 @@ def decode2logits(data_file, processor, model):
             partial_logits = model(inputs.input_values.to("cuda"),
                                    attention_mask=inputs.attention_mask.to("cuda")).logits
             if logits == None:
+                print("CUUUUT")
                 logits = partial_logits[0]
             else:
                 logits = torch.cat((logits, partial_logits[0]))
