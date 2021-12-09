@@ -84,7 +84,7 @@ def main(args):
 
                 for a in args.alpha.split(", "):
                     for b in args.beta.split(", "):
-                        decoder.reset_params(alpha=a, beta=b)
+                        decoder.reset_params(alpha=float(a), beta=float(b))
                         filename = os.path.basename(item["path"])[0:-4]
                         args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
                         transcript_df = transcribe(logits, decoder, args)
