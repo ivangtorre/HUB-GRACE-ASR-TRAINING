@@ -29,7 +29,7 @@ fi
 # Run the container
 set -x
 nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=16g --ulimit memlock=-1 --ulimit stack=67108864 \
--v /DATA:/DATA/ \
+-v /DATA/GRACE/IVAN_VICOM/MODELS_W2V2/:/MODELS_W2V2/ \
 -v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/ \
 -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ \
 -v /home:/home \
@@ -39,7 +39,7 @@ set +x
 
 # Execute
 nvidia-docker exec -it wav2vec2_0 python3 utils/eval_transcript.py \
---model_path=/DATA/GRACE/IVAN_VICOM/MODELS_W2V2/SPANISH/epoch_5_lr_15/spanish.-EPOCH-5.-21-12-05.18.23.54/ \
+--model_path=/MODELS_W2V2/SPANISH/epoch_5_lr_15/spanish.-EPOCH-5.-21-12-05.18.23.54/ \
 --test_paths=test_challenge.csv
 --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa \
 --alpha=0.4 \
