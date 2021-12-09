@@ -73,20 +73,14 @@ def main(args):
 
         for data_path in args.test_paths.split(","):
             dataset = load_test(data_path, args)
-            #if len(dataset) > 1:
-            #    dataset = dataset.map(speech_file_to_array_fn, remove_columns=dataset.column_names, num_proc=args.num_proc)
-            #    result = dataset.map(evaluate, batched=True, batch_size=16)
-            #else:
 
             list_references = []
             list_predictions = []
 
-
-
             print(args.beta)
             print(args.alpha)
             for item in tqdm(dataset):
-                logits = decode2logits(item["path"], processor, model, decoder)
+                logits = decode2logits(item["path"], processor, model)
 
                 for a in args.alpha.split(", "):
                     for b in args.beta.split(", "):
