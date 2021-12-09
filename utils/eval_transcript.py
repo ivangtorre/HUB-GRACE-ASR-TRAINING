@@ -90,7 +90,8 @@ def main(args):
                         args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
                         tiempo = time.time()
                         transcript_df = transcribe(logits, decoder, args)
-                        print("TIEMPO:" + str(time.time()-tiempo))
+                        if len(dataset)==1:
+                            print("TIEMPO:" + str(time.time()-tiempo))
                         list_references.append(item["sentence"])
                         list_predictions.append(" ".join(transcript_df["words"].tolist()))
 
