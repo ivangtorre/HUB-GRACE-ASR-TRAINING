@@ -66,18 +66,18 @@ def transcribe(line, decoder, args):
     #     if value == "|":
     #         contents[key] = " "
 
-    print("LINE..........................")
-    print(len(line))
-    print("..............................")
-
-    if len(line) < 190000:
-        beams = decoder.decode_beams(line, args.beam_width)
-    else:
-        print("pruning")
-        beams = decoder.decode_beams(line, args.beam_width,
-                                     prune_history=False,
-                                     beam_prune_logp=-6,
-                                     token_min_logp=-5)  # DEFAULT -5
+    #print("LINE..........................")
+    #print(len(line))
+    #print("..............................")
+    beams = decoder.decode_beams(line, args.beam_width)
+    # if len(line) < 190000:
+    #     beams = decoder.decode_beams(line, args.beam_width)
+    # else:
+    #     print("pruning")
+    #     beams = decoder.decode_beams(line, args.beam_width,
+    #                                  prune_history=False,
+    #                                  beam_prune_logp=-6,
+    #                                  token_min_logp=-5)  # DEFAULT -5
 
 
     if args.save:
