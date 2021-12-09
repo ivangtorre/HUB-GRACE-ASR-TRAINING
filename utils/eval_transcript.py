@@ -87,6 +87,8 @@ def main(args):
             for item in tqdm(dataset):
                 for a in args.alpha:
                     for b in args.beta:
+                        print(a)
+                        print(b)
                         decoder.reset_params(alpha=a, beta=b)
                         filename = os.path.basename(item["path"])[0:-4]
                         args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
