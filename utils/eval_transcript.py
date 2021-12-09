@@ -83,7 +83,8 @@ def main(args):
 
 
 
-
+            print(args.beta)
+            print(args.alpha)
             for item in tqdm(dataset):
                 for a in list(args.alpha):
                     for b in list(args.beta):
