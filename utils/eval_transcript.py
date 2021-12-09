@@ -9,6 +9,7 @@ import os
 import json
 from pyctcdecode import build_ctcdecoder
 from tqdm import tqdm
+import time
 
 
 def load_test(path, args):
@@ -87,7 +88,9 @@ def main(args):
                             decoder.reset_params(alpha=float(a), beta=float(b))
                         filename = os.path.basename(item["path"])[0:-4]
                         args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                        tiempo = time.time()
                         transcript_df = transcribe(logits, decoder, args)
+                        print("TIEMPO:" + str(time.time()-tiempo))
                         list_references.append(item["sentence"])
                         list_predictions.append(" ".join(transcript_df["words"].tolist()))
 
