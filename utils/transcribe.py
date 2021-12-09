@@ -68,7 +68,7 @@ def transcribe(model_path, data_file, processor, model, decoder, args):
         for b in args.beta.split(", "):
             print(a)
             print(b)
-            decoder.reset_params(alpha=a, beta=b)
+            decoder.reset_params(alpha=float(a), beta=float(b))
             beams = decoder.decode_beams(line, args.beam_width)
             lista_nbeams = [item[0] for item in beams]
  #   textfile = open(args.savename, "w")
