@@ -38,8 +38,8 @@ def parse_args():
 
     parser.add_argument('--lm_path', default=None, type=str,
                         help='Path to kenlm language model for use with beam search (req\'d with trie)')
-    parser.add_argument('--alpha', default=0, type=float, help='Language model weight')
-    parser.add_argument('--beta', default=0, type=float, help='Language model word bonus (all words)')
+    parser.add_argument('--alpha', default=[0], type=list, help='Language model weight')
+    parser.add_argument('--beta', default=[0], type=list, help='Language model word bonus (all words)')
     parser.add_argument('--beam_width', default=1, type=int, help='Beam width to use')
 
 
@@ -69,7 +69,7 @@ def main(args):
         with open(args.model_path + "/vocab.json", 'r') as j:
             contents = json.loads(j.read())
         vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
-        decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
+        decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha[0], beta=args.beta[0])
 
         for data_path in args.test_paths.split(","):
             dataset = load_test(data_path, args)
@@ -81,12 +81,18 @@ def main(args):
             list_references = []
             list_predictions = []
 
+
+
+
             for item in tqdm(dataset):
-                filename = os.path.basename(item["path"])[0:-4]
-                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
-                transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
-                list_references.append(item["sentence"])
-                list_predictions.append(" ".join(transcript_df["words"].tolist()))
+                for a in args.alpha:
+                    for b in args.beta:
+                        decoder.reset_params(alpha=a, beta=b)
+                        filename = os.path.basename(item["path"])[0:-4]
+                        args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                        transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
+                        list_references.append(item["sentence"])
+                        list_predictions.append(" ".join(transcript_df["words"].tolist()))
 
             result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 

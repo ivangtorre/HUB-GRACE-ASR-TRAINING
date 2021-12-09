@@ -3,7 +3,7 @@ import librosa
 import pandas as pd
 import numpy as np
 import json
-from pyctcdecode import build_ctcdecoder
+import multiprocessing
 
 def get_time_stamps(trans, offsets, window_size):
     """
@@ -63,7 +63,11 @@ def transcribe(model_path, data_file, processor, model, decoder, args):
                 logits = torch.cat((logits, partial_logits[0]))
 
     line = np.asarray(logits.cpu())
-    beams = decoder.decode_beams(line, args.beam_width)
+
+    with multiprocessing.Pool(15) as pool:
+        beams = decoder.decode_batch(pool, line, beam_width=args.beam_width)
+
+    #beams = decoder.decode_beams(line, args.beam_width)
     lista_nbeams = [item[0] for item in beams]
  #   textfile = open(args.savename, "w")
  #   for element in lista_nbeams:
