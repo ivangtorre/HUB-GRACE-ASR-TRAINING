@@ -85,8 +85,8 @@ def main(args):
 
 
             for item in tqdm(dataset):
-                for a in args.alpha:
-                    for b in args.beta:
+                for a in list(args.alpha):
+                    for b in list(args.beta):
                         print(a)
                         print(b)
                         decoder.reset_params(alpha=a, beta=b)
