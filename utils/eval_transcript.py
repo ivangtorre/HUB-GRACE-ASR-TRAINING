@@ -41,6 +41,7 @@ def parse_args():
     parser.add_argument('--alpha', default='0', type=str, help='Language model weight')
     parser.add_argument('--beta', default='0', type=str, help='Language model word bonus (all words)')
     parser.add_argument('--beam_width', default=1, type=int, help='Beam width to use')
+    parser.add_argument('--save', default=False, required=False, type=bool, help= 'if true,save to outputs...')
 
 
     return parser.parse_args()

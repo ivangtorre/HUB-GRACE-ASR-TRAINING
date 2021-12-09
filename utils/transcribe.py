@@ -2,8 +2,6 @@ import torch
 import librosa
 import pandas as pd
 import numpy as np
-import json
-import multiprocessing
 
 def get_time_stamps(trans, offsets, window_size):
     """
@@ -69,11 +67,13 @@ def transcribe(line, decoder, args):
     #         contents[key] = " "
 
     beams = decoder.decode_beams(line, args.beam_width)
-    lista_nbeams = [item[0] for item in beams]
- #   textfile = open(args.savename, "w")
- #   for element in lista_nbeams:
- #       textfile.write(element + "\n")
- #   textfile.close()
+
+    if args.save is not None:
+        lista_nbeams = [item[0] for item in beams]
+        textfile = open(args.savename, "w")
+        for element in lista_nbeams:
+            textfile.write(element + "\n")
+        textfile.close()
 
     top_beam = beams[0]
     trans, _, indices, _, _ = top_beam
