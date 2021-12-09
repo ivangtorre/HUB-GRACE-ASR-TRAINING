@@ -64,10 +64,8 @@ def transcribe(model_path, data_file, processor, model, decoder, args):
 
     line = np.asarray(logits.cpu())
 
-    with multiprocessing.Pool(15) as pool:
-        beams = decoder.decode_batch(pool, line, beam_width=args.beam_width)
 
-    #beams = decoder.decode_beams(line, args.beam_width)
+    beams = decoder.decode_beams(line, args.beam_width)
     lista_nbeams = [item[0] for item in beams]
  #   textfile = open(args.savename, "w")
  #   for element in lista_nbeams:
