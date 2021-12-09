@@ -32,13 +32,11 @@ def decode2logits(data_file, processor, model):
     logits = None
     n = 3000000
     for speech_array in [speech_arrayfull[x:x + n] for x in range(0, len(speech_arrayfull), n)]:
-        print("CUUUUT")
         inputs = processor(speech_array, sampling_rate=16_000, return_tensors="pt", padding=True)
         with torch.no_grad():
             partial_logits = model(inputs.input_values.to("cuda"),
                                    attention_mask=inputs.attention_mask.to("cuda")).logits
             if logits == None:
-                print("CUUUUT")
                 logits = partial_logits[0]
             else:
                 logits = torch.cat((logits, partial_logits[0]))
@@ -71,12 +69,14 @@ def transcribe(line, decoder, args):
     print("LINE..........................")
     print(len(line))
     print("..............................")
-    print(line)
-    beams = decoder.decode_beams(line, args.beam_width)
+    n = 20000
+    for partial_line in [line[x:x + n] for x in range(0, len(line), n)]:
+        #print(partial_line)
+        beams = decoder.decode_beams(partial_line, args.beam_width)
                                  #prune_history=True,
                                  #beam_prune_logp=-20,  # DEFAULT -10
                                  #token_min_logp=-5)  # DEFAULT -5
-    print(beams)
+        print(beams)
 
 
     if args.save:
