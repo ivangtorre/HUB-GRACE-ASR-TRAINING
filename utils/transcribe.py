@@ -69,7 +69,7 @@ def transcribe(line, decoder, args):
     beams = decoder.decode_beams(line, args.beam_width,
                                  prune_history=True,
                                  beam_prune_logp=-20,  # DEFAULT -10
-                                 token_min_logp=-10)  # DEFAULT -5
+                                 token_min_logp=-5)  # DEFAULT -5
 
 
     if args.save:
