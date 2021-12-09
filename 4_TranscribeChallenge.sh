@@ -40,7 +40,7 @@ set +x
 # Execute
 nvidia-docker exec -it ${CONTAINER} python3 utils/eval_transcript.py \
 --model_path=/MODELS_W2V2/SPANISH/epoch_5_lr_15/spanish.-EPOCH-5.-21-12-05.18.23.54 \
---test_paths=test_challenge.csv
+--test_paths=test_challenge.csv \
 --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa.bin \
 --alpha=0.4 \
 --beta=2 \
