@@ -29,14 +29,32 @@ def get_time_stamps(trans, offsets, window_size):
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
 
 
-def transcribe(model_path, data_file, processor, model, decoder, args):
+def decode2logits(data_file, processor, model):
+    speech_arrayfull, sampling_rate = librosa.load(data_file, sr=None, mono=False)
+    logits = None
+    n = 3000000
+    for speech_array in [speech_arrayfull[x:x + n] for x in range(0, len(speech_arrayfull), n)]:
+        inputs = processor(speech_array, sampling_rate=16_000, return_tensors="pt", padding=True)
+        with torch.no_grad():
+            partial_logits = model(inputs.input_values.to("cuda"),
+                                   attention_mask=inputs.attention_mask.to("cuda")).logits
+            if logits == None:
+                logits = partial_logits[0]
+            else:
+                logits = torch.cat((logits, partial_logits[0]))
+
+    line = np.asarray(logits.cpu())
+    return(line)
+
+
+def transcribe(line, decoder, args):
     """
     Transcribe an audio wav file
     """
-    label_path = model_path + "/vocab.json"
-
-    with open(label_path, 'r') as j:
-        contents = json.loads(j.read())
+    # label_path = model_path + "/vocab.json"
+    #
+    # with open(label_path, 'r') as j:
+    #     contents = json.loads(j.read())
 
     # vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
     # decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
@@ -45,39 +63,20 @@ def transcribe(model_path, data_file, processor, model, decoder, args):
     #decoder = CTCBeamDecoder(vocab, model_path=None, alpha=0, beta=0, cutoff_top_n=10, cutoff_prob=1,
     #                         beam_width=1, num_processes=30, blank_id=0, log_probs_input=True)
 
-    contents = {v: k for k, v in contents.items()}
-    for key, value in contents.items():
-        if value == "|":
-            contents[key] = " "
+    # contents = {v: k for k, v in contents.items()}
+    # for key, value in contents.items():
+    #     if value == "|":
+    #         contents[key] = " "
 
-    speech_arrayfull, sampling_rate = librosa.load(data_file, sr=None, mono=False)
-    logits = None
-    n = 3000000
-    for speech_array in [speech_arrayfull[x:x + n] for x in range(0, len(speech_arrayfull), n)]:
-        inputs = processor(speech_array, sampling_rate=16_000, return_tensors="pt", padding=True)
-        with torch.no_grad():
-            partial_logits = model(inputs.input_values.to("cuda"), attention_mask=inputs.attention_mask.to("cuda")).logits
-            if logits == None:
-                logits = partial_logits[0]
-            else:
-                logits = torch.cat((logits, partial_logits[0]))
-
-    line = np.asarray(logits.cpu())
-
-    for a in args.alpha.split(", "):
-        for b in args.beta.split(", "):
-            print(a)
-            print(b)
-            decoder.reset_params(alpha=float(a), beta=float(b))
-            beams = decoder.decode_beams(line, args.beam_width)
-            lista_nbeams = [item[0] for item in beams]
+    beams = decoder.decode_beams(line, args.beam_width)
+    lista_nbeams = [item[0] for item in beams]
  #   textfile = open(args.savename, "w")
  #   for element in lista_nbeams:
  #       textfile.write(element + "\n")
  #   textfile.close()
 
-            top_beam = beams[0]
-            trans, _, indices, _, _ = top_beam
+    top_beam = beams[0]
+    trans, _, indices, _, _ = top_beam
 
     # ITERATE OVERALL TO DECODE TIMESTAMPS
     w = 0.02  # 0.02
@@ -91,4 +90,3 @@ def transcribe(model_path, data_file, processor, model, decoder, args):
         end.append(item[1][1] * w)
         ones.append(1)
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
-

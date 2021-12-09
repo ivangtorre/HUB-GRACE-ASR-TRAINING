@@ -4,7 +4,7 @@ import pandas as pd
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 from datasets import Dataset, load_metric
 import argparse
-from transcribe import transcribe
+from transcribe import transcribe, decode2logits
 import os
 import json
 from pyctcdecode import build_ctcdecoder
@@ -86,11 +86,25 @@ def main(args):
             print(args.beta)
             print(args.alpha)
             for item in tqdm(dataset):
-                filename = os.path.basename(item["path"])[0:-4]
-                args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
-                transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
-                list_references.append(item["sentence"])
-                list_predictions.append(" ".join(transcript_df["words"].tolist()))
+                logits = decode2logits(item["path"], processor, model, decoder)
+
+                for a in args.alpha.split(", "):
+                    for b in args.beta.split(", "):
+                        decoder.reset_params(alpha=a, beta=b)
+                        filename = os.path.basename(item["path"])[0:-4]
+                        args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                        transcript_df = transcribe(logits, decoder, args)
+                        list_references.append(item["sentence"])
+                        list_predictions.append(" ".join(transcript_df["words"].tolist()))
+
+                        if len(dataset) == 1:
+                            result = Dataset.from_dict(pd.DataFrame({"pred_strings": [" ".join(transcript_df["words"].tolist())],
+                                                                     "target_text": [item["sentence"]]}))
+                            print("\nALPHA: " + str(a) + "     BETA: " + str(b))
+                            print("WER: {:2f} ------------".format(
+                                100 * wer.compute(predictions=result["pred_strings"],
+                                                  references=result["target_text"])))
+
 
             result = Dataset.from_dict(pd.DataFrame({"pred_strings": list_predictions, "target_text": list_references}))
 
