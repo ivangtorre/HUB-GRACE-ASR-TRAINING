@@ -76,7 +76,9 @@ def transcribe(line, decoder, args):
                                  #prune_history=True,
                                  #beam_prune_logp=-20,  # DEFAULT -10
                                  #token_min_logp=-5)  # DEFAULT -5
-        print(beams)
+        print(beams[0])
+        print("..............................")
+        print("..............................")
 
 
     if args.save:
