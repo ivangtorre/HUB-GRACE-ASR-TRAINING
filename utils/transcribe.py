@@ -66,9 +66,13 @@ def transcribe(line, decoder, args):
     #     if value == "|":
     #         contents[key] = " "
 
-    beams = decoder.decode_beams(line, args.beam_width)
+    beams = decoder.decode_beams(line, args.beam_width,
+                                 prune_history=True,
+                                 beam_prune_logp=-10,
+                                 token_min_logp=-5)
 
-    if args.save is not None:
+
+    if args.save:
         lista_nbeams = [item[0] for item in beams]
         textfile = open(args.savename, "w")
         for element in lista_nbeams[0:1]: ####################<---------------------------- change for nbeams
