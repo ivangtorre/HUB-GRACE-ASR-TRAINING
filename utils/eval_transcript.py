@@ -64,6 +64,12 @@ def main(args):
         processor = Wav2Vec2Processor.from_pretrained(args.model_path)
         model = Wav2Vec2ForCTC.from_pretrained(args.model_path)
         model.to("cuda")
+
+        with open(args.model_path + "/vocab.json", 'r') as j:
+            contents = json.loads(j.read())
+        vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
+        decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
+
         for data_path in args.test_paths.split(","):
             dataset = load_test(data_path, args)
             #if len(dataset) > 1:
@@ -71,16 +77,10 @@ def main(args):
             #    result = dataset.map(evaluate, batched=True, batch_size=16)
             #else:
 
-            with open(args.model_path + "/vocab.json", 'r') as j:
-                contents = json.loads(j.read())
-
-            vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
             list_references = []
             list_predictions = []
-            decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
-            for item in dataset:
-                print(item["path"])
 
+            for item in dataset:
                 filename = os.path.basename(item["path"])[0:-4]
                 args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
                 transcript_df = transcribe(args.model_path, item["path"], processor, model, decoder, args)
