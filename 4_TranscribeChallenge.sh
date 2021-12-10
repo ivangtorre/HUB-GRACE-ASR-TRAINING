@@ -44,7 +44,8 @@ nvidia-docker exec -it ${CONTAINER} python3 utils/eval_transcript.py \
 --alpha=0.4 \
 --beta=2 \
 --beam_width=256 \
---test_paths=test_challenge.csv
+--test_paths=test_challenge.csv \
+--save=True
 
 
 END=$(date +%s.%N)
