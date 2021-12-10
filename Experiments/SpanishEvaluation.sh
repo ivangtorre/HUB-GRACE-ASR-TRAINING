@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ##### PARAMETERS ##################################
-MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.18.23.54"}}
+#MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.18.23.54"}}
+MODEL_PATH=${1:-${MODEL_PATH:-"results/checkpoint-17000"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-20.-21-09-15.22.11.49/"}}
 DATA_DIR=${2:-${DATA_DIR:-""}}
 TEST_1=${3:-${TEST_1:-"/datasets/spanish/tests/test_ES_MEDIA.csv"}}
@@ -23,10 +24,10 @@ TEST_13=${4:-${TEST_13:-"/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
 CMD="python3 utils/eval_transcript.py"
 CMD+=" --model_path=$MODEL_PATH"
 #CMD+=" --cache_dir=$DATA_DIR"
-CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa"
-CMD+=" --alpha=0.4"
-CMD+=" --beta=2"
-CMD+=" --beam_width=512"
+#CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa"
+#CMD+=" --alpha=0.4"
+#CMD+=" --beta=2"
+#CMD+=" --beam_width=256"
 CMD+=" --test_paths="
 CMD+="$TEST_1"
 CMD+=",$TEST_2"
