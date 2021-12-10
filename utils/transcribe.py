@@ -46,45 +46,25 @@ def decode2logits(data_file, processor, model):
 
 
 def transcribe(line, decoder, args):
-    """
-    Transcribe an audio wav file
-    """
-    # label_path = model_path + "/vocab.json"
-    #
-    # with open(label_path, 'r') as j:
-    #     contents = json.loads(j.read())
+    #if len(line) > 10000:
+        #print("LINE..........................")
+        #print(len(line))
+        #print("..............................")
 
-    # vocab = list(dict(sorted(contents.items(), key=lambda item: item[1])).keys())
-    # decoder = build_ctcdecoder(vocab, args.lm_path, alpha=args.alpha, beta=args.beta)
-                                #"/home/jetsontx2/models/asr_decode_LM_spanish/LM_SPANISH.bin",
-
-    #decoder = CTCBeamDecoder(vocab, model_path=None, alpha=0, beta=0, cutoff_top_n=10, cutoff_prob=1,
-    #                         beam_width=1, num_processes=30, blank_id=0, log_probs_input=True)
-
-    # contents = {v: k for k, v in contents.items()}
-    # for key, value in contents.items():
-    #     if value == "|":
-    #         contents[key] = " "
-
-    if len(line) > 10000:
-        print("LINE..........................")
-        print(len(line))
-        print("..............................")
-
-    if len(line) < 120000:
+    if len(line) < 150000:
         beams = decoder.decode_beams(line, args.beam_width)
+
+    elif 150000 <= len(line) < 250000:
+        beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
+
     else:
-        print("pruning")
-        beams = decoder.decode_beams(line, args.beam_width,
-                                     prune_history=False,
-                                     beam_prune_logp=-6,
-                                     token_min_logp=-5)  # DEFAULT -5
+        beams = decoder.decode_beams(line, 128)
 
 
     if args.save:
         lista_nbeams = [item[0] for item in beams]
         textfile = open(args.savename, "w")
-        for element in lista_nbeams[0:1]: ####################<---------------------------- change for nbeams
+        for element in lista_nbeams: ####################<---------------------------- change for nbeams
             textfile.write(element + "\n")
         textfile.close()
 
