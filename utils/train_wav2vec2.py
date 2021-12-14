@@ -320,21 +320,20 @@ def main():
 
 
     #################################################################################################################
-    vocab_train = train_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
-                                    remove_columns=train_dataset.column_names)
-    vocab_test = eval_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
-                                  remove_columns=eval_dataset.column_names)
+    #vocab_train = train_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
+    #                                remove_columns=train_dataset.column_names)
+    #vocab_test = eval_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
+    #                              remove_columns=eval_dataset.column_names)
 
-    #vocab_list = list(set(vocab_train["vocab"][0]) | set(vocab_test["vocab"][0]))
-    vocab_list = list(set(vocab_train["vocab"][0]))
-    vocab_list.insert(0, "[UNK]")
-    vocab_list.insert(0, "[PAD]")
-    vocab_dict = {v: k for k, v in enumerate(vocab_list)}
-    vocab_dict["|"] = vocab_dict[" "]
-    del vocab_dict[" "]
-    del vocab_test, vocab_train
-    with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
-        json.dump(vocab_dict, vocab_file)
+    #vocab_list = list(set(vocab_train["vocab"][0]))
+    #vocab_list.insert(0, "[UNK]")
+    #vocab_list.insert(0, "[PAD]")
+    #vocab_dict = {v: k for k, v in enumerate(vocab_list)}
+    #vocab_dict["|"] = vocab_dict[" "]
+    #del vocab_dict[" "]
+    #del vocab_test, vocab_train
+    #with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
+    #    json.dump(vocab_dict, vocab_file)
 
 
     # Load pretrained model and tokenizer
