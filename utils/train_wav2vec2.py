@@ -245,6 +245,7 @@ def main():
 
 
     # Detecting last checkpoint.
+    generate_vocab = False
     last_checkpoint = None
     if os.path.isdir(training_args.output_dir) and training_args.do_train and not training_args.overwrite_output_dir:
         last_checkpoint = get_last_checkpoint(training_args.output_dir)
@@ -256,6 +257,10 @@ def main():
             logger.info(
                 f"Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change "
                 "the `--output_dir` or add `--overwrite_output_dir` to train from scratch.")
+    else:
+        # GENERATE VOCAB
+        generate_vocab = True
+
 
     logging.basicConfig(format="%(message)s", handlers=[logging.StreamHandler(sys.stdout)],)
     logger.setLevel(logging.INFO if is_main_process(training_args.local_rank) else logging.WARN)
@@ -320,20 +325,19 @@ def main():
 
 
     #################################################################################################################
-    #vocab_train = train_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
-    #                                remove_columns=train_dataset.column_names)
-    #vocab_test = eval_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
-    #                              remove_columns=eval_dataset.column_names)
 
-    #vocab_list = list(set(vocab_train["vocab"][0]))
-    #vocab_list.insert(0, "[UNK]")
-    #vocab_list.insert(0, "[PAD]")
-    #vocab_dict = {v: k for k, v in enumerate(vocab_list)}
-    #vocab_dict["|"] = vocab_dict[" "]
-    #del vocab_dict[" "]
-    #del vocab_test, vocab_train
-    #with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
-    #    json.dump(vocab_dict, vocab_file)
+    if generate_vocab==True:
+        vocab_train = train_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
+                                        remove_columns=train_dataset.column_names)
+
+        vocab_list = list(set(vocab_train["vocab"][0]))
+        vocab_list.insert(0, "[UNK]")
+        vocab_list.insert(0, "[PAD]")
+        vocab_dict = {v: k for k, v in enumerate(vocab_list)}
+        vocab_dict["|"] = vocab_dict[" "]
+        del vocab_dict[" "]
+        with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
+            json.dump(vocab_dict, vocab_file)
 
 
     # Load pretrained model and tokenizer
