@@ -7,9 +7,9 @@ LANGUAGE=${2:-${LANGUAGE:-"spanish"}} # Language
 DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
 #DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
-RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
-#MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
-MODELXLSR=${4:-${MODELXLSR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
+RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
+MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
+#MODELXLSR=${4:-${MODELXLSR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-5}}
@@ -34,9 +34,9 @@ MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
 ######################################################
 
 
-DATESTAMP=`date +'%y-%m-%d.%H.%M.%S'`
-RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
-mkdir -p "$RESULT_DIR"
+#DATESTAMP=`date +'%y-%m-%d.%H.%M.%S'`
+#RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
+#mkdir -p "$RESULT_DIR"
 
 CMD="python3 utils/train_wav2vec2.py"
 #CMD="python3 -m torch.distributed.launch --nproc_per_node 2 --use_env utils/train_wav2vec2.py"
