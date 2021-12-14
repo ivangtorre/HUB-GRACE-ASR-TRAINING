@@ -8,7 +8,8 @@ DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
 #DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
-MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
+#MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
+MODELXLSR=${4:-${MODELXLSR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-5}}
@@ -44,7 +45,6 @@ CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
 CMD+=" --dataset_eval=$DATASET_EVAL"
 CMD+=" --output_dir=$RESULT_DIR"
-CMD+=" --overwrite_output_dir"
 CMD+=" --num_train_epochs=$EPOCHS"
 CMD+=" --per_device_train_batch_size=$BATCH_SIZE"
 CMD+=" --learning_rate=$LEARNING_RATE"
