@@ -3,7 +3,7 @@
 ##### PARAMETERS ##################################
 #MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.18.23.54"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11/checkpoint-30500"}}
-MODEL_PATH=${1:-${MODEL_PATH:-"checkpoint-21000"}}
+MODEL_PATH=${1:-${MODEL_PATH:-"checkpoint-30500"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-20.-21-09-15.22.11.49/"}}
 DATA_DIR=${2:-${DATA_DIR:-""}}
 TEST_1=${3:-${TEST_1:-"/datasets/spanish/tests/test_ES_MEDIA.csv"}}
@@ -24,25 +24,25 @@ TEST_13=${4:-${TEST_13:-"/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
 
 CMD="python3 utils/eval_transcript.py"
 CMD+=" --model_path=$MODEL_PATH"
-#CMD+=" --cache_dir=$DATA_DIR"
-#CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa"
-#CMD+=" --alpha=0.4"
-#CMD+=" --beta=2"
-#CMD+=" --beam_width=256"
+CMD+=" --cache_dir=$DATA_DIR"
+CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa.bin"
+CMD+=" --alpha=0.2,0.4,0.6,0.8,1"
+CMD+=" --beta=0,0.5,1,1.4,1.6,1.8,2,2.2,2.5,3,3.5,4"
+CMD+=" --beam_width=64"
 CMD+=" --test_paths="
-CMD+="$TEST_1"
-CMD+=",$TEST_2"
-CMD+=",$TEST_3"
-CMD+=",$TEST_4"
-CMD+=",$TEST_5"
-CMD+=",$TEST_6"
-CMD+=",$TEST_7"
-CMD+=",$TEST_8"
-CMD+=",$TEST_9"
-CMD+=",$TEST_10"
-CMD+=",$TEST_11"
-CMD+=",$TEST_12"
-CMD+=",$TEST_13"
+#CMD+="$TEST_1"
+#CMD+=",$TEST_2"
+#CMD+=",$TEST_3"
+#CMD+=",$TEST_4"
+#CMD+=",$TEST_5"
+#CMD+=",$TEST_6"
+#CMD+=",$TEST_7"
+#CMD+=",$TEST_8"
+#CMD+=",$TEST_9"
+#CMD+=",$TEST_10"
+#CMD+=",$TEST_11"
+CMD+="$TEST_12"
+#CMD+=",$TEST_13"
 
 set -x
 $CMD
