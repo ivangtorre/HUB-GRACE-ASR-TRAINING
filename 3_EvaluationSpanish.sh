@@ -29,12 +29,11 @@ fi
 set -x
 nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=16g --ulimit memlock=-1 --ulimit stack=67108864 \
 #-v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/ \
--v /DATA/GRACE/IVANbackup/node2/DATA/:/DATA/ \
 -v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ \
 -v /home:/home \
 -v $PWD:/workspace/wav2vec2 \
 -w $PWD ${NAME}
 set +x
-
+# -v /DATA/GRACE/IVANbackup/node2/DATA/:/DATA/ \
 # Execute
 nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishEvaluation.sh
