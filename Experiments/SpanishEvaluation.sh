@@ -2,7 +2,7 @@
 
 ##### PARAMETERS ##################################
 #MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.18.23.54"}}
-MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-15.-21-12-07.20.51.59/checkpoint-25500"}}
+MODEL_PATH=${1:-${MODEL_PATH:-"results/xls-r-300m/spanish.-EPOCH-15.-21-12-07.20.51.59/checkpoint-27500"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"checkpoint-30500"}}
 #MODEL_PATH=${1:-${MODEL_PATH:-"models/spanish.-EPOCH-20.-21-09-15.22.11.49/"}}
 DATA_DIR=${2:-${DATA_DIR:-""}}
