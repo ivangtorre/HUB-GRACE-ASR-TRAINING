@@ -24,7 +24,7 @@ TEST_13=${4:-${TEST_13:-"/datasets/spanish/tests/test_ES_PISA_EGURALDIA.csv"}}
 
 CMD="python3 utils/eval_transcript.py"
 CMD+=" --model_path=$MODEL_PATH"
-CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa"
+#CMD+=" --lm_path=/DATA/TRANSCRIPTIONS+ALACARTA+RTVE24H2017.5gram.arpa"
 #CMD+=" --alpha=0.2,0.4,0.6,0.8,1"
 #CMD+=" --alpha=0.4"
 #CMD+=" --beta=0,0.5,1,1.4,1.6,1.8,2,2.2,2.5,3,3.5,4"
