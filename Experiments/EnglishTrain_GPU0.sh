@@ -36,7 +36,7 @@ MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-1000}}  # Set to 0 for using all datase
 
 DATESTAMP=`date +'%y-%m-%d.%H.%M.%S'`
 RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
-mkdir -p "$RESULT_DIR"
+#mkdir -p "$RESULT_DIR"
 
 CMD="python3 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
