@@ -12,7 +12,7 @@ MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 #MODELXLSR=${4:-${MODELXLSR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
-EPOCHS=${9:-${EPOCHS:-5}}
+EPOCHS=${9:-${EPOCHS:-15}}
 SEED=${10:-${SEED:-6}}
 BATCH_SIZE=${11:-${BATCH_SIZE:-1}} # original 16
 LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00010"}}
@@ -29,8 +29,8 @@ HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.01}}
 ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.036}}
 LR_TYPE=${25:-${LR_TYPE:-"linear"}}
-MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-1000}}  # Set to 0 for using all dataset
-MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-1000}}  # Set to 0 for using all dataset
+MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-0}}  # Set to 0 for using all dataset
+MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
 ######################################################
 
 
