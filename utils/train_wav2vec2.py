@@ -257,6 +257,12 @@ def main():
             logger.info(
                 f"Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change "
                 "the `--output_dir` or add `--overwrite_output_dir` to train from scratch.")
+
+    elif os.path.isdir(model_args.model_name_or_path):
+        generate_vocab=True
+        copystring= "cp " + model_args.model_name_or_path + "/vocab.json " + training_args.output_dir + "/vocab.json"
+        os.system(copystring)
+
     else:
         # GENERATE VOCAB
         generate_vocab = True
