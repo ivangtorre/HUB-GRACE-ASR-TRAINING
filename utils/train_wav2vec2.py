@@ -259,7 +259,7 @@ def main():
                 "the `--output_dir` or add `--overwrite_output_dir` to train from scratch.")
 
     elif os.path.isdir(model_args.model_name_or_path):
-        generate_vocab=True
+        generate_vocab=False
         copystring= "cp " + model_args.model_name_or_path + "/vocab.json " + training_args.output_dir + "/vocab.json"
         os.system(copystring)
 
