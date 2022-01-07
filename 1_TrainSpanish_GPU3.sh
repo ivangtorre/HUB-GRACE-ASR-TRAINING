@@ -40,4 +40,4 @@ set +x
 
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishTrain_GPU3.sh
+nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishReTrain_xls_300.sh
