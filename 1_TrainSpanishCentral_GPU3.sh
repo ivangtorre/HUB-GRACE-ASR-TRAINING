@@ -28,9 +28,11 @@ fi
 # Run the container
 set -x
 nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=16g --ulimit memlock=-1 --ulimit stack=67108864 \
--v /DATA/GRACE/IVANbackup/node2/DATA/:/DATA/ \
--v /DATA/GRACE/IVANbackup/node2/DATA/TMP_IVAN/GRACE/datasets/:/datasets/ \
--v /DATA/GRACE/IVANbackup/node2/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/trainspeedall/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/trainspeedall/ \
+-v /DATA/GRACE/IVAN_VICOM/DATA/:/DATA/ \
+-v /DATA/GRACE/IVAN_VICOM/:/MODELS/:ro \
+-v /DATA/GRACE/IVAN_VICOM/w2v2/:/w2v2/
+-v /DATA/GRACE/IVAN_VICOM/datasets/:/datasets/ \
+-v /DATA/GRACE/IVAN_VICOM/datasets/ALBAYZIN2020/trainspeedall/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/trainspeedall/ \
 -v /home:/home \
 -v $PWD:/workspace/wav2vec2 \
 -w $PWD ${NAME}
@@ -40,4 +42,4 @@ set +x
 
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishTrainCentral_GPU3.sh
+nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishReTrain_xls_300.sh

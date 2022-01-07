@@ -4,19 +4,19 @@
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"spanish"}} # Language
-DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv.csv"}}
+DATASET=${2:-${DATASET:-"/datasets/spanish/train_with_speed_augment.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/spanish/tests/test_ES_RTVE.csv"}}  # Eval Dataset Location
-RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m_retrain"}}
-MODELXLSR=${4:-${MODELXLSR:-"results/checkpoint-7000"}}
-MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
+RESULT_DIR=${3:-${RESULT_DIR:-"/w2v2/xls-r-300m_retrain"}}
+MODELXLSR=${4:-${MODELXLSR:-"/MODELS/SPANISH/spanish.-EPOCH-10.-21-12-07.20.57.47"}}
+MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-5}}
 SEED=${10:-${SEED:-6}}
 BATCH_SIZE=${11:-${BATCH_SIZE:-2}} # original 16
-LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00015"}}
+LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00010"}}
 WARMUP_RATIO=${13:-${WARMUP_RATIO:-"0.1"}}
-SAVE_STATES=${14:-${SAVE_STATES:-500}}
-EVAL_STATES=${15:-${EVAL_STATES:-500}}
+SAVE_STATES=${14:-${SAVE_STATES:-10}}
+EVAL_STATES=${15:-${EVAL_STATES:-10}}
 LOG_STATES=${16:-${LOG_STATES:-1}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-5}}
 FEAT_PROJ_DROPOUT=${18:-${FEAT_PROJ_DROPOUT:-0.05}}
@@ -27,8 +27,8 @@ HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.01}}
 ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.036}}
 LR_TYPE=${25:-${LR_TYPE:-"linear"}}
-MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-0}}  # Set to 0 for using all dataset
-MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
+MAX_TRAIN_SAMPLES=${27:-${MAX_TRAIN_SAMPLES:-1000}}  # Set to 0 for using all dataset
+MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-1000}}  # Set to 0 for using all dataset
 ######################################################
 
 
@@ -37,8 +37,6 @@ RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
 mkdir -p "$RESULT_DIR"
 
 CMD="python3 utils/train_wav2vec2.py"
-#CMD="python3 -m torch.distributed.launch --nproc_per_node 2 --use_env utils/train_wav2vec2.py"
-#CMD="python3 -m torch.distributed.launch --nproc_per_node 2 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
 CMD+=" --dataset_eval=$DATASET_EVAL"

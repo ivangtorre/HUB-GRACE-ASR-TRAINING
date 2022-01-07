@@ -2,7 +2,7 @@
 import json
 import logging
 import os
-os.environ['TRANSFORMERS_CACHE'] = "/DATA/TMP_IVAN/GRACE/cache"
+os.environ['TRANSFORMERS_CACHE'] = "/DATA/cache"
 import pandas as pd
 import sys
 from dataclasses import dataclass, field
