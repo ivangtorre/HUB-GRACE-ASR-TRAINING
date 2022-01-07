@@ -327,6 +327,7 @@ def main():
     #################################################################################################################
 
     if generate_vocab==True:
+        print("GENERATING VOCAB...")
         vocab_train = train_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=False,
                                         remove_columns=train_dataset.column_names)
 
