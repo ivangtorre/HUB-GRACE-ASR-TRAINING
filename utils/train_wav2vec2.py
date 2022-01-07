@@ -422,10 +422,6 @@ def main():
         return {"wer": wer, "cer": cer}
 
 
-    ## PREPARE TRAINING ##---------------------------------------
-#    if model_args.freeze_feature_extractor:
-#    model.wav2vec2.feature_extractor.trainable = False
-
     model.freeze_feature_extractor()
 
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
@@ -449,7 +445,8 @@ def main():
             checkpoint = model_args.model_name_or_path
         else:
             checkpoint = None
-        train_result = trainer.train(resume_from_checkpoint=checkpoint)
+        #train_result = trainer.train(resume_from_checkpoint=checkpoint)
+        train_result = trainer.train(resume_from_checkpoint=None)
         trainer.save_model()
 
         # save the feature_extractor and the tokenizer
