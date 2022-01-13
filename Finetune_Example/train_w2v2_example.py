@@ -341,6 +341,7 @@ def main():
     del vocab_dict[" "]
     vocab_dict["[UNK]"] = len(vocab_dict)
     vocab_dict["[PAD]"] = len(vocab_dict)
+    print(vocab_dict)
 
     with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
         json.dump(vocab_dict, vocab_file)
