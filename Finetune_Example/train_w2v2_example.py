@@ -385,8 +385,7 @@ def main():
     # Preprocessing the datasets.
     # We need to read the aduio files as arrays and tokenize the targets.
     def speech_file_to_array_fn(batch):
-        speech_array, sampling_rate = torchaudio.load(batch["path"])
-        batch["speech"] = resampler(speech_array).squeeze().numpy()
+        batch["speech"], _ = librosa.load(batch["path"], sr=16_000, mono=True)
         batch["sampling_rate"] = 16_000
         batch["target_text"] = batch["text"]
         return batch
