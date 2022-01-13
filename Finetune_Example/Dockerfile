@@ -3,7 +3,7 @@ FROM ${FROM_IMAGE_NAME}
 ARG DEBIAN_FRONTEND=noninteractive
 
 
-RUN pip3 install torchaudio
+RUN pip3 install torch==1.8.1+cu112 torchaudio==0.8.1 torchtext==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
 
 RUN apt-get update && apt-get -y install \
     build-essential \
