@@ -5,6 +5,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass, field
+from datasets import load_dataset, load_metric, Audio
 from typing import Any, Dict, List, Optional, Union
 import torchaudio
 import librosa
@@ -300,28 +301,39 @@ def main():
     train_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split=data_args.train_split_name,)
     eval_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split="test")
 
+    train_dataset = train_dataset.remove_columns(
+        ["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
+    eval_dataset = eval_dataset.remove_columns(
+        ["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])
 
-    #model_args, data_args, training_args
 
     # Create and save tokenizer
-    chars_to_ignore_regex = f'[{"".join(data_args.chars_to_ignore)}]'
+    import re
+    chars_to_remove_regex = '[\,\?\.\!\-\;\:\"\“\%\‘\”\�\']'
 
     def remove_special_characters(batch):
-        batch["text"] = re.sub(chars_to_ignore_regex, "", batch["sentence"]).lower() + " "
+        batch["sentence"] = re.sub(chars_to_remove_regex, '', batch["sentence"]).lower()
         return batch
 
-    train_dataset = train_dataset.map(remove_special_characters, remove_columns=["sentence"])
-    eval_dataset = eval_dataset.map(remove_special_characters, remove_columns=["sentence"])
+    def replace_hatted_characters(batch):
+        batch["sentence"] = re.sub('[â]', 'a', batch["sentence"])
+        batch["sentence"] = re.sub('[î]', 'i', batch["sentence"])
+        batch["sentence"] = re.sub('[ô]', 'o', batch["sentence"])
+        batch["sentence"] = re.sub('[û]', 'u', batch["sentence"])
+        return batch
+
+    train_dataset = train_dataset.map(replace_hatted_characters)
+    eval_dataset = eval_dataset.map(replace_hatted_characters)
 
     def extract_all_chars(batch):
-        all_text = " ".join(batch["text"])
+        all_text = " ".join(batch["sentence"])
         vocab = list(set(all_text))
         return {"vocab": [vocab], "all_text": [all_text]}
 
     vocab_train = train_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=True,
-                                    remove_columns=train_dataset.column_names)
+                                         remove_columns=train_dataset.column_names)
     vocab_test = eval_dataset.map(extract_all_chars, batched=True, batch_size=-1, keep_in_memory=True,
-                                  remove_columns=eval_dataset.column_names)
+                                       remove_columns=eval_dataset.column_names)
 
     vocab_list = list(set(vocab_train["vocab"][0]) | set(vocab_test["vocab"][0]))
     vocab_dict = {v: k for k, v in enumerate(vocab_list)}
@@ -356,35 +368,23 @@ def main():
         vocab_size=len(processor.tokenizer),
     )
 
-    # Preprocessing the datasets.
-    # We need to read the aduio files as arrays and tokenize the targets.
-    resampler = torchaudio.transforms.Resample(48_000, 16_000)
-    def speech_file_to_array_fn(batch):
-        print(batch["audio"])
-        speech_array, sampling_rate = librosa.load(batch["audio"]["path"])
-        batch["speech"] = resampler(speech_array).squeeze().numpy()
-        batch["sampling_rate"] = 16_000
-        batch["target_text"] = batch["text"]
-        return batch
 
-    print(train_dataset[0])
-
-    train_dataset = train_dataset.map(speech_file_to_array_fn, remove_columns=train_dataset.column_names)
-    eval_dataset = eval_dataset.map(speech_file_to_array_fn, remove_columns=eval_dataset.column_names)
+    train_dataset = train_dataset.cast_column("audio", Audio(sampling_rate=16_000))
+    train_dataset = train_dataset.cast_column("audio", Audio(sampling_rate=16_000))
 
     def prepare_dataset(batch):
-        # check that all files have the correct sampling rate
-        assert (
-            len(set(batch["sampling_rate"])) == 1
-        ), f"Make sure all inputs have the same sampling rate of {processor.feature_extractor.sampling_rate}."
-        batch["input_values"] = processor(batch["speech"], sampling_rate=batch["sampling_rate"][0]).input_values
-        # Setup the processor for targets
+        audio = batch["audio"]
+
+        # batched output is "un-batched"
+        batch["input_values"] = processor(audio["array"], sampling_rate=audio["sampling_rate"]).input_values[0]
+        batch["input_length"] = len(batch["input_values"])
+
         with processor.as_target_processor():
-            batch["labels"] = processor(batch["target_text"]).input_ids
+            batch["labels"] = processor(batch["sentence"]).input_ids
         return batch
 
-    train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names, batch_size=training_args.per_device_train_batch_size, batched=True, num_proc=data_args.preprocessing_num_workers)
-    eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names, batch_size=training_args.per_device_train_batch_size, batched=True, num_proc=data_args.preprocessing_num_workers)
+    train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names)
+    eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names)
 
     # Metric
     wer_metric = datasets.load_metric("wer")
