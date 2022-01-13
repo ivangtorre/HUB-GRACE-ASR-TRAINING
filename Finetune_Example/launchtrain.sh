@@ -61,3 +61,5 @@ CMD+=" --mask_time_prob=$MASK_TIME"
 CMD+=" --hidden_dropout=$HIDDEN_DROPOUT"
 CMD+=" --activation_dropout=$ACTIVATION_DROPOUT"
 CMD+=" --attention_dropout=$ATTENTION_DROPOUT"
+
+$CMD
