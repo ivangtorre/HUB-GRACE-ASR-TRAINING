@@ -361,7 +361,7 @@ def main():
     resampler = torchaudio.transforms.Resample(48_000, 16_000)
     def speech_file_to_array_fn(batch):
         print(batch["audio"])
-        speech_array, sampling_rate = torchaudio.load(batch["audio"]["path"])
+        speech_array, sampling_rate = librosa.load(batch["audio"]["path"])
         batch["speech"] = resampler(speech_array).squeeze().numpy()
         batch["sampling_rate"] = 16_000
         batch["target_text"] = batch["text"]
