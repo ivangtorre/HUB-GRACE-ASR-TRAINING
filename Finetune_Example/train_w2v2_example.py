@@ -299,6 +299,8 @@ def main():
     # Get the datasets:
     train_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split=data_args.train_split_name,)
     eval_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split="test")
+
+
     #model_args, data_args, training_args
 
     # Create and save tokenizer
@@ -358,7 +360,7 @@ def main():
     # We need to read the aduio files as arrays and tokenize the targets.
     resampler = torchaudio.transforms.Resample(48_000, 16_000)
     def speech_file_to_array_fn(batch):
-        speech_array, sampling_rate = torchaudio.load(batch["path"])
+        speech_array, sampling_rate = torchaudio.load(batch["audio"]["path"])
         batch["speech"] = resampler(speech_array).squeeze().numpy()
         batch["sampling_rate"] = 16_000
         batch["target_text"] = batch["text"]
