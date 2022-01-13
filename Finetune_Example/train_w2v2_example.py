@@ -360,6 +360,7 @@ def main():
     # We need to read the aduio files as arrays and tokenize the targets.
     resampler = torchaudio.transforms.Resample(48_000, 16_000)
     def speech_file_to_array_fn(batch):
+        print(batch["audio"])
         speech_array, sampling_rate = torchaudio.load(batch["audio"]["path"])
         batch["speech"] = resampler(speech_array).squeeze().numpy()
         batch["sampling_rate"] = 16_000
