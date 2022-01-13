@@ -367,12 +367,6 @@ def main():
         vocab_size=len(processor.tokenizer),
     )
 
-    if data_args.max_train_samples is not None:
-        train_dataset = train_dataset.select(range(data_args.max_train_samples))
-
-    if data_args.max_val_samples is not None:
-        eval_dataset = eval_dataset.select(range(data_args.max_val_samples))
-
     # Preprocessing the datasets.
     # We need to read the aduio files as arrays and tokenize the targets.
     def speech_file_to_array_fn(batch):
@@ -380,6 +374,8 @@ def main():
         batch["sampling_rate"] = 16_000
         batch["target_text"] = batch["text"]
         return batch
+
+    print(train_dataset[0])
 
     train_dataset = train_dataset.map(speech_file_to_array_fn, remove_columns=train_dataset.column_names)
     eval_dataset = eval_dataset.map(speech_file_to_array_fn, remove_columns=eval_dataset.column_names)
