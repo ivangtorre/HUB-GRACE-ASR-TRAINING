@@ -370,7 +370,7 @@ def main():
 
 
     train_dataset = train_dataset.cast_column("audio", Audio(sampling_rate=16_000))
-    train_dataset = train_dataset.cast_column("audio", Audio(sampling_rate=16_000))
+    eval_dataset = eval_dataset.cast_column("audio", Audio(sampling_rate=16_000))
 
     def prepare_dataset(batch):
         audio = batch["audio"]
