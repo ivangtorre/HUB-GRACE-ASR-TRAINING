@@ -30,11 +30,6 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 transformers.logging.set_verbosity_info()
 
-
-if is_apex_available():
-    from apex import amp
-
-
 if version.parse(torch.__version__) >= version.parse("1.6"):
     _is_native_amp_available = True
     from torch.cuda.amp import autocast
@@ -44,17 +39,6 @@ logger = logging.getLogger(__name__)
 
 def list_field(default=None, metadata=None):
     return field(default_factory=lambda: default, metadata=metadata)
-
-
-def speed11(batch):
-    batch["input_values"] = librosa.effects.time_stretch(np.asarray(batch["input_values"]), 1.1)
-    return batch
-
-
-def speed09(batch):
-    batch["input_values"] = librosa.effects.time_stretch(np.asarray(batch["input_values"]), 0.9)
-    return batch
-
 
 @dataclass
 class ModelArguments:
@@ -397,12 +381,6 @@ def main():
     train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names, batch_size=training_args.per_device_train_batch_size, batched=True, num_proc=data_args.preprocessing_num_workers)
     eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names, batch_size=training_args.per_device_train_batch_size, batched=True, num_proc=data_args.preprocessing_num_workers)
 
-    ## Speed Augment
-    train_dataset11 = train_dataset.map(speed11, num_proc=data_args.preprocessing_num_workers)
-    train_dataset09 = train_dataset.map(speed09, num_proc=data_args.preprocessing_num_workers)
-
-    train_dataset_augmented = datasets.concatenate_datasets([train_dataset, train_dataset09, train_dataset11])
-
     # Metric
     wer_metric = datasets.load_metric("wer")
 
@@ -432,8 +410,7 @@ def main():
         data_collator=data_collator,
         args=training_args,
         compute_metrics=compute_metrics,
-        train_dataset=train_dataset_augmented if training_args.do_train else None,
-        #train_dataset=train_dataset if training_args.do_train else None,
+        train_dataset=train_dataset if training_args.do_train else None,
         eval_dataset=eval_dataset if training_args.do_eval else None,
         tokenizer=processor.feature_extractor,
     )
