@@ -11,7 +11,6 @@ import librosa
 import datasets
 import numpy as np
 import torch
-import torchaudio
 from packaging import version
 from torch import nn
 
