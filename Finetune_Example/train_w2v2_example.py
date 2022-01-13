@@ -6,6 +6,7 @@ import re
 import sys
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
+import torchaudio
 import librosa
 
 import datasets
@@ -370,7 +371,7 @@ def main():
     # Preprocessing the datasets.
     # We need to read the aduio files as arrays and tokenize the targets.
     def speech_file_to_array_fn(batch):
-        batch["speech"], _ = librosa.load(batch["path"], sr=16_000, mono=True)
+        batch["speech"], _ = torchaudio.load(batch["path"], sr=16_000, mono=True)
         batch["sampling_rate"] = 16_000
         batch["target_text"] = batch["text"]
         return batch
