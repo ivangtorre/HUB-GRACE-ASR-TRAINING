@@ -5,7 +5,7 @@
 DATA_DIR=${1:-${DATA_DIR:-"/datasets/BASQUE"}}
 DATASET=${2:-${DATASET:-"eu"}}
 RESULT_DIR=${3:-${RESULT_DIR:-"/results"}}
-MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-large-xlsr-53"}}
+MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 CREATE_LOGFILE=${5:-${CREATE_LOGFILE:-"true"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/datasets/modelxlsr"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
