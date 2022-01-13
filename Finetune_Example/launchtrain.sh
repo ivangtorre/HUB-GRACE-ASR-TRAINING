@@ -30,7 +30,7 @@ ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.2}}
 mkdir -p "$RESULT_DIR"
 
 
-CMD="python3 run_common_voice.py"
+CMD="python3 train_w2v2_example.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
 CMD+=" --dataset_config_name=$DATASET"
 CMD+=" --output_dir=$RESULT_DIR"
