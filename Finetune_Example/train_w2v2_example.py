@@ -313,8 +313,8 @@ def main():
     set_seed(training_args.seed)
 
     # Get the datasets:
-    train_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split=data_args.train_split_name, cache_dir=model_args.cache_dir)
-    eval_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split="test", cache_dir=model_args.cache_dir)
+    train_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split=data_args.train_split_name,)
+    eval_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split="test")
     #model_args, data_args, training_args
 
     # Create and save tokenizer
