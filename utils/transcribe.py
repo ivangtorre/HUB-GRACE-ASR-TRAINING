@@ -73,12 +73,12 @@ def transcribe(line, decoder, args):
     else:
         beams = decoder.decode_beams(line, 128)
 
-    lista_nbeams = [item[0] for item in beams]
+    lista_nbeams = [item[0] for item in beams][0]
 
 
     if args.save:
         textfile = open(args.savename, "w")
-        for element in lista_nbeams[0:1]: ####################<---------------------------- change for nbeams
+        for element in [lista_nbeams]: ####################<---------------------------- change for nbeams
             textfile.write(element + "\n")
         textfile.close()
 
