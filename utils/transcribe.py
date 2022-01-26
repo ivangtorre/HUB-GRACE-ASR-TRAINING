@@ -73,8 +73,7 @@ def transcribe(line, decoder, args):
     else:
         beams = decoder.decode_beams(line, 128)
 
-    lista_nbeams = [item[0] for item in beams]
-    print(lista_nbeams)
+    lista_nbeams = [item[0] for item in beams][0]
 
 
     if args.save:
