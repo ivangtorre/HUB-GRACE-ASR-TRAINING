@@ -46,7 +46,7 @@ def decode2logits(data_file, processor, model):
 
 
 def transcribe(line, decoder, args):
-    #print(len(line))
+    print(len(line))
 
     ###INCORPORATE SPLIT
     size2split = 50000
@@ -98,7 +98,7 @@ def transcribe(line, decoder, args):
     #    end.append(item[1][1] * w)
     #    ones.append(1)
     print(lista_nbeams)
-    for i, item in enumerate(lista_nbeams):
+    for i, item in lista_nbeams.split(" "):
         wd.append(item)
         begin.append(i)
         end.append(i)
