@@ -97,8 +97,8 @@ def transcribe(line, decoder, args):
     #    begin.append(item[1][0] * w)
     #    end.append(item[1][1] * w)
     #    ones.append(1)
-    print(lista_nbeams)
-    for i, item in lista_nbeams.split(" "):
+    # print(lista_nbeams)
+    for i, item in enumerate(lista_nbeams.split(" ")):
         wd.append(item)
         begin.append(i)
         end.append(i)
