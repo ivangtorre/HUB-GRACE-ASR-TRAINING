@@ -92,9 +92,15 @@ def transcribe(line, decoder, args):
     end = []
     wd = []
     ones = []
-    for item in indices:
-        wd.append(item[0])
-        begin.append(item[1][0] * w)
-        end.append(item[1][1] * w)
+    #for item in indices:
+    #    wd.append(item[0])
+    #    begin.append(item[1][0] * w)
+    #    end.append(item[1][1] * w)
+    #    ones.append(1)
+    print(lista_nbeams)
+    for i, item in enumerate(lista_nbeams):
+        wd.append(item)
+        begin.append(i)
+        end.append(i)
         ones.append(1)
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
