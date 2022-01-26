@@ -46,6 +46,7 @@ def decode2logits(data_file, processor, model):
 
 
 def transcribe(line, decoder, args):
+    print(len(line))
     #if len(line) > 10000:
         #print("LINE..........................")
         #print(len(line))
