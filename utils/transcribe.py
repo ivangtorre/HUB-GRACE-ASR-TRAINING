@@ -47,11 +47,23 @@ def decode2logits(data_file, processor, model):
 
 def transcribe(line, decoder, args):
     print(len(line))
-    #if len(line) > 10000:
-        #print("LINE..........................")
-        #print(len(line))
-        #print("..............................")
 
+    # INCORPORATE SPLIT
+    # size2split = 100000
+    # if len(line) < size2split:
+    #     beams = decoder.decode_beams(line, args.beam_width)
+    #     lista_nbeams = [item[0] for item in beams]
+    # else:
+    #     total_size =len(line)
+    #     current_size = 0
+    #     lista_nbeams = []
+    #     while current_size<total_size:
+    #         beams = decoder.decode_beams(line[current_size:current_size+size2split], args.beam_width)
+    #         temp_list = [item[0] for item in beams]
+    #         lista_nbeams = lista_nbeams + temp_list
+    #         current_size += size2split
+
+    # WITH NO SPLIT
     if len(line) < 150000:
         beams = decoder.decode_beams(line, args.beam_width)
 
@@ -61,9 +73,10 @@ def transcribe(line, decoder, args):
     else:
         beams = decoder.decode_beams(line, 128)
 
+    lista_nbeams = [item[0] for item in beams]
+
 
     if args.save:
-        lista_nbeams = [item[0] for item in beams]
         textfile = open(args.savename, "w")
         for element in lista_nbeams: ####################<---------------------------- change for nbeams
             textfile.write(element + "\n")
