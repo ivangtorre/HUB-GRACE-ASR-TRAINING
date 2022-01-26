@@ -57,7 +57,7 @@ def transcribe(line, decoder, args):
     else:
         total_size =len(line)
         current_size = 0
-        lista_nbeams = []
+        lista_nbeams = ""
         while current_size<total_size:
             beams = decoder.decode_beams(line[current_size:current_size+size2split], args.beam_width)
             temp_list = [item[0] for item in beams][0]
