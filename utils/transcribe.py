@@ -46,7 +46,7 @@ def decode2logits(data_file, processor, model):
 
 
 def transcribe(line, decoder, args):
-    print(len(line))
+    #print(len(line))
 
     # INCORPORATE SPLIT
     # size2split = 100000
