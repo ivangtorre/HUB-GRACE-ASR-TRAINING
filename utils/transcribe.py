@@ -48,32 +48,33 @@ def decode2logits(data_file, processor, model):
 def transcribe(line, decoder, args):
     #print(len(line))
 
-    # INCORPORATE SPLIT
-    # size2split = 100000
-    # if len(line) < size2split:
-    #     beams = decoder.decode_beams(line, args.beam_width)
-    #     lista_nbeams = [item[0] for item in beams]
-    # else:
-    #     total_size =len(line)
-    #     current_size = 0
-    #     lista_nbeams = []
-    #     while current_size<total_size:
-    #         beams = decoder.decode_beams(line[current_size:current_size+size2split], args.beam_width)
-    #         temp_list = [item[0] for item in beams]
-    #         lista_nbeams = lista_nbeams + temp_list
-    #         current_size += size2split
-
-    # WITH NO SPLIT
-    if len(line) < 150000:
+    ###INCORPORATE SPLIT
+    size2split = 50000
+    if len(line) < size2split:
         beams = decoder.decode_beams(line, args.beam_width)
-
-    elif 150000 <= len(line) < 250000:
-        beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
+        lista_nbeams = [item[0] for item in beams][0]
 
     else:
-        beams = decoder.decode_beams(line, 128)
+        total_size =len(line)
+        current_size = 0
+        lista_nbeams = []
+        while current_size<total_size:
+            beams = decoder.decode_beams(line[current_size:current_size+size2split], args.beam_width)
+            temp_list = [item[0] for item in beams][0]
+            lista_nbeams = lista_nbeams + temp_list
+            current_size += size2split
 
-    lista_nbeams = [item[0] for item in beams][0]
+    # WITH NO SPLIT
+    # if len(line) < 150000:
+    #     beams = decoder.decode_beams(line, args.beam_width)
+    #
+    # elif 150000 <= len(line) < 250000:
+    #     beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
+    #
+    # else:
+    #     beams = decoder.decode_beams(line, 128)
+    #
+    # lista_nbeams = [item[0] for item in beams][0]
 
 
     if args.save:
