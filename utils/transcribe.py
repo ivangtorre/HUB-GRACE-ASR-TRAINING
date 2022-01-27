@@ -51,14 +51,14 @@ def transcribe(line, decoder, args):
         #print(len(line))
         #print("..............................")
 
-    if len(line) < 150000:
+    if len(line) < 250000:
         beams = decoder.decode_beams(line, args.beam_width)
 
-    elif 150000 <= len(line) < 250000:
-        beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
+    #elif 150000 <= len(line) < 250000:
+    #    beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
 
     else:
-        beams = decoder.decode_beams(line, 128)
+        beams = decoder.decode_beams(line, 180)
 
 
     if args.save:
