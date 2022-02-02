@@ -45,7 +45,7 @@ class ModelArguments:
 
     model_name_or_path: str = field(metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"})
     cache_dir: Optional[str] = field(
-        efault=True,
+        default=True,
         metadata={"help": "Where do you want to store the pretrained models downloaded from huggingface.co"},
     )
     model_cache_dir: Optional[str] = field(
