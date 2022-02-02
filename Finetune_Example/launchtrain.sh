@@ -3,7 +3,7 @@
 
 ##################
 DATA_DIR=${1:-${DATA_DIR:-"/datasets/BASQUE"}}
-DATASET=${2:-${DATASET:-"eu"}}
+DATASET=${2:-${DATASET:-"tr"}}
 RESULT_DIR=${3:-${RESULT_DIR:-"/results"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 CREATE_LOGFILE=${5:-${CREATE_LOGFILE:-"true"}}
