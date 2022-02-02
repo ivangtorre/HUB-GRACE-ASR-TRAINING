@@ -382,6 +382,8 @@ def main():
 
     train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names)
     eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names)
+    print(train_dataset)
+    print(eval_dataset)
 
     # Metric
     wer_metric = datasets.load_metric("wer")
