@@ -2,13 +2,10 @@
 import json
 import logging
 import os
-import re
 import sys
 from dataclasses import dataclass, field
-from datasets import load_dataset, load_metric, Audio
+from datasets import Audio
 from typing import Any, Dict, List, Optional, Union
-import torchaudio
-import librosa
 
 import datasets
 import numpy as np
@@ -25,7 +22,6 @@ from transformers import (
     Wav2Vec2FeatureExtractor,
     Wav2Vec2ForCTC,
     Wav2Vec2Processor,
-    is_apex_available,
     set_seed,
 )
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
