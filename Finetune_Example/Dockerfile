@@ -31,6 +31,7 @@ RUN git clone -b v4.13.0 https://github.com/huggingface/transformers && cd trans
 RUN apt-get update && apt-get -y install python-dev
 RUN pip install ipdb librosa pandas pyyaml soundfile sox tqdm wrapt datasets jiwer lang-trans pyctcdecode unidecode
 RUN pip install https://github.com/kpu/kenlm/archive/master.zip
+RUN pip3 install datasets
 
 #WORKDIR /workspace/wav2vec2
 
