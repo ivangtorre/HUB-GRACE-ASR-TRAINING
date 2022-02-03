@@ -2,13 +2,10 @@
 import json
 import logging
 import os
-import re
 import sys
 from dataclasses import dataclass, field
-from datasets import load_dataset, load_metric, Audio
+from datasets import Audio
 from typing import Any, Dict, List, Optional, Union
-import torchaudio
-import librosa
 
 import datasets
 import numpy as np
@@ -25,7 +22,6 @@ from transformers import (
     Wav2Vec2FeatureExtractor,
     Wav2Vec2ForCTC,
     Wav2Vec2Processor,
-    is_apex_available,
     set_seed,
 )
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
@@ -47,9 +43,7 @@ class ModelArguments:
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune from.
     """
 
-    model_name_or_path: str = field(
-        metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"}
-    )
+    model_name_or_path: str = field(metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"})
     cache_dir: Optional[str] = field(
         default=True,
         metadata={"help": "Where do you want to store the pretrained models downloaded from huggingface.co"},
@@ -388,6 +382,8 @@ def main():
 
     train_dataset = train_dataset.map(prepare_dataset, remove_columns=train_dataset.column_names)
     eval_dataset = eval_dataset.map(prepare_dataset, remove_columns=eval_dataset.column_names)
+    print(train_dataset)
+    print(eval_dataset)
 
     # Metric
     wer_metric = datasets.load_metric("wer")

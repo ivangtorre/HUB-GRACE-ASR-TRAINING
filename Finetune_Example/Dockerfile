@@ -4,7 +4,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN pip3 install torch==1.8.1+cu111 torchaudio==0.8.1 torchtext==0.9.1 torchvision==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
 
-
 RUN apt-get update && apt-get -y install \
     build-essential \
     cmake \
@@ -32,6 +31,7 @@ RUN git clone -b v4.13.0 https://github.com/huggingface/transformers && cd trans
 RUN apt-get update && apt-get -y install python-dev
 RUN pip install ipdb librosa pandas pyyaml soundfile sox tqdm wrapt datasets jiwer lang-trans pyctcdecode unidecode
 RUN pip install https://github.com/kpu/kenlm/archive/master.zip
+RUN pip3 install datasets
 
 #WORKDIR /workspace/wav2vec2
 

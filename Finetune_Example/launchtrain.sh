@@ -3,7 +3,7 @@
 
 ##################
 DATA_DIR=${1:-${DATA_DIR:-"/datasets/BASQUE"}}
-DATASET=${2:-${DATASET:-"eu"}}
+DATASET=${2:-${DATASET:-"tr"}}
 RESULT_DIR=${3:-${RESULT_DIR:-"/results"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 CREATE_LOGFILE=${5:-${CREATE_LOGFILE:-"true"}}
@@ -11,12 +11,12 @@ MODEL_DIR=${6:-${MODEL_DIR:-"/datasets/modelxlsr"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
 EPOCHS=${9:-${EPOCHS:-5}} #original 400
 SEED=${10:-${SEED:-6}}
-BATCH_SIZE=${11:-${BATCH_SIZE:-8}} # original 16
-LEARNING_RATE=${12:-${LEARNING_RATE:-"0.0004"}}
+BATCH_SIZE=${11:-${BATCH_SIZE:-32}} # original 16
+LEARNING_RATE=${12:-${LEARNING_RATE:-"0.0001"}}
 WARMUP_RATIO=${13:-${WARMUP_RATIO:-"0.0"}}
 SAVE_STATES=${14:-${SAVE_STATES:-500}}
-EVAL_STATES=${15:-${EVAL_STATES:-500}}
-LOG_STATES=${16:-${LOG_STATES:-500}}
+EVAL_STATES=${15:-${EVAL_STATES:-50}}
+LOG_STATES=${16:-${LOG_STATES:-50}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-2}}
 FEAT_PROJ_DROPOUT=${18:-${FEAT_PROJ_DROPOUT:-0.2}}
 LAYER_DROPOUT=${19:-${LAYER_DROPOUT:-0.05}}
@@ -25,7 +25,6 @@ MASK_TIME=${21:-${MASK_TIME:-0.065}}
 HIDDEN_DROPOUT=${22:-${HIDDEN_DROPOUT:-0.025}}
 ACTIVATION_DROPOUT=${23:-${ACTIVATION_DROPOUT:-0.01}}
 ATTENTION_DROPOUT=${24:-${ATTENTION_DROPOUT:-0.036}}
-LR_TYPE=${25:-${LR_TYPE:-"linear"}}
 
 
 mkdir -p "$RESULT_DIR"
@@ -57,9 +56,9 @@ CMD+=" --do_train --do_eval"
 CMD+=" --logging_dir=$RESULT_DIR"
 CMD+=" --preprocessing_num_workers=20"
 CMD+=" --gradient_accumulation_steps=$ACCUM_STEPS"
-CMD+=" --mask_time_prob=$MASK_TIME"
-CMD+=" --hidden_dropout=$HIDDEN_DROPOUT"
-CMD+=" --activation_dropout=$ACTIVATION_DROPOUT"
-CMD+=" --attention_dropout=$ATTENTION_DROPOUT"
+#CMD+=" --mask_time_prob=$MASK_TIME"
+#CMD+=" --hidden_dropout=$HIDDEN_DROPOUT"
+#CMD+=" --activation_dropout=$ACTIVATION_DROPOUT"
+#CMD+=" --attention_dropout=$ATTENTION_DROPOUT"
 
 $CMD
