@@ -46,25 +46,40 @@ def decode2logits(data_file, processor, model):
 
 
 def transcribe(line, decoder, args):
-    #if len(line) > 10000:
-        #print("LINE..........................")
-        #print(len(line))
-        #print("..............................")
+    # print(len(line))
+    #
+    # ###INCORPORATE SPLIT
+    # size2split = 50000
+    # if len(line) < size2split:
+    #     beams = decoder.decode_beams(line, args.beam_width)
+    #     lista_nbeams = [item[0] for item in beams][0]
+    #
+    # else:
+    #     total_size =len(line)
+    #     current_size = 0
+    #     lista_nbeams = ""
+    #     while current_size<total_size:
+    #         beams = decoder.decode_beams(line[current_size:current_size+size2split], args.beam_width)
+    #         temp_list = [item[0] for item in beams][0]
+    #         lista_nbeams = lista_nbeams + temp_list
+    #         current_size += size2split
 
-    if len(line) < 250000:
+    # WITH NO SPLIT
+    if len(line) < 150000:
         beams = decoder.decode_beams(line, args.beam_width)
 
-    #elif 150000 <= len(line) < 250000:
-    #    beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
+    elif 150000 <= len(line) < 250000:
+        beams = decoder.decode_beams(line, args.beam_width, prune_history=False, beam_prune_logp=-7, token_min_logp=-5)
 
     else:
-        beams = decoder.decode_beams(line, 180)
+        beams = decoder.decode_beams(line, 128)
+
+    lista_nbeams = [item[0] for item in beams][0]
 
 
     if args.save:
-        lista_nbeams = [item[0] for item in beams]
         textfile = open(args.savename, "w")
-        for element in lista_nbeams: ####################<---------------------------- change for nbeams
+        for element in [lista_nbeams]: ####################<---------------------------- change for nbeams
             textfile.write(element + "\n")
         textfile.close()
 
@@ -78,8 +93,14 @@ def transcribe(line, decoder, args):
     wd = []
     ones = []
     for item in indices:
-        wd.append(item[0])
-        begin.append(item[1][0] * w)
-        end.append(item[1][1] * w)
-        ones.append(1)
+       wd.append(item[0])
+       begin.append(item[1][0] * w)
+       end.append(item[1][1] * w)
+       ones.append(1)
+    # print(lista_nbeams)
+    # for i, item in enumerate(lista_nbeams.split(" ")):
+    #     wd.append(item)
+    #     begin.append(i)
+    #     end.append(i)
+    #     ones.append(1)
     return (pd.DataFrame({"start": begin, "end": end, "conf": ones, "words": wd}))
