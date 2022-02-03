@@ -304,11 +304,15 @@ def main():
 
     # Create and save tokenizer
     import re
-    chars_to_remove_regex = '[\,\?\.\!\-\;\:\"\“\%\‘\”\�\']'
+    chars_to_ignore_regex = '[\,\?\.\!\-\;\:\"\“\%\‘\”\�]'
 
     def remove_special_characters(batch):
-        batch["sentence"] = re.sub(chars_to_remove_regex, '', batch["sentence"]).lower()
+        batch["sentence"] = re.sub(chars_to_ignore_regex, '', batch["sentence"]).lower() + " "
         return batch
+
+    train_dataset = train_dataset.map(remove_special_characters)
+    eval_dataset = eval_dataset.map(remove_special_characters)
+
 
     def replace_hatted_characters(batch):
         batch["sentence"] = re.sub('[â]', 'a', batch["sentence"])
@@ -317,8 +321,8 @@ def main():
         batch["sentence"] = re.sub('[û]', 'u', batch["sentence"])
         return batch
 
-    train_dataset = train_dataset.map(replace_hatted_characters)
-    eval_dataset = eval_dataset.map(replace_hatted_characters)
+    #train_dataset = train_dataset.map(replace_hatted_characters)
+    #eval_dataset = eval_dataset.map(replace_hatted_characters)
 
     def extract_all_chars(batch):
         all_text = " ".join(batch["sentence"])
@@ -337,6 +341,7 @@ def main():
     vocab_dict["[UNK]"] = len(vocab_dict)
     vocab_dict["[PAD]"] = len(vocab_dict)
     print(vocab_dict)
+    print(len(vocab_dict))
 
     with open(training_args.output_dir + "/vocab.json", "w") as vocab_file:
         json.dump(vocab_dict, vocab_file)
@@ -346,24 +351,21 @@ def main():
     # Distributed training:
     # The .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
-    tokenizer = Wav2Vec2CTCTokenizer(training_args.output_dir + "/vocab.json",unk_token="[UNK]",pad_token="[PAD]",word_delimiter_token="|")
+    tokenizer = Wav2Vec2CTCTokenizer(training_args.output_dir + "/vocab.json", unk_token="[UNK]",pad_token="[PAD]",word_delimiter_token="|")
     feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16_000, padding_value=0.0, do_normalize=True, return_attention_mask=True)
     processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
     model = Wav2Vec2ForCTC.from_pretrained(
-        model_args.model_name_or_path,
-        cache_dir=model_args.model_cache_dir,
-        activation_dropout=model_args.activation_dropout,
-        attention_dropout=model_args.attention_dropout,
-        hidden_dropout=model_args.hidden_dropout,
-        feat_proj_dropout=model_args.feat_proj_dropout,
-        mask_time_prob=model_args.mask_time_prob,
-        gradient_checkpointing=True,
-        layerdrop=model_args.layerdrop,
+        "facebook/wav2vec2-large-xlsr-53",
+        attention_dropout=0.1,
+        hidden_dropout=0.1,
+        feat_proj_dropout=0.0,
+        mask_time_prob=0.05,
+        layerdrop=0.1,
         ctc_loss_reduction="mean",
         pad_token_id=processor.tokenizer.pad_token_id,
-        vocab_size=len(processor.tokenizer),
+        vocab_size=len(processor.tokenizer)
     )
-
+    model.freeze_feature_extractor()
 
     train_dataset = train_dataset.cast_column("audio", Audio(sampling_rate=16_000))
     eval_dataset = eval_dataset.cast_column("audio", Audio(sampling_rate=16_000))
@@ -384,6 +386,7 @@ def main():
     print(train_dataset)
     print(eval_dataset)
 
+
     # Metric
     wer_metric = datasets.load_metric("wer")
 
@@ -401,8 +404,6 @@ def main():
 
         return {"wer": wer}
 
-    if model_args.freeze_feature_extractor:
-        model.freeze_feature_extractor()
 
     # Data collator
     data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
