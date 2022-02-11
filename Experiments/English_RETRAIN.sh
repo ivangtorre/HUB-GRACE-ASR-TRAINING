@@ -1,25 +1,22 @@
 #!/bin/bash
 
-
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"english"}} # Language
-DATASET=${2:-${DATASET:-"/datasets/english/GRACE_english_train.csv"}}
-#DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
+DATASET=${2:-${DATASET:-"/datasets/english/GRACE_english_train_with_speed_augment.csv"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/english/test_MOZILLA.csv"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
-MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
-#MODELXLSR=${4:-${MODELXLSR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
+MODELXLSR=${4:-${MODELXLSR:-"/MODELS/ENGLISH/spanish.-english.-EPOCH-30.-21-12-22.12.20.11"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
-EPOCHS=${9:-${EPOCHS:-15}}
+EPOCHS=${9:-${EPOCHS:-5}}
 SEED=${10:-${SEED:-6}}
-BATCH_SIZE=${11:-${BATCH_SIZE:-1}} # original 16
-LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00010"}}
+BATCH_SIZE=${11:-${BATCH_SIZE:-2}} # original 16
+LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00005"}}
 WARMUP_RATIO=${13:-${WARMUP_RATIO:-"0.1"}}
-SAVE_STATES=${14:-${SAVE_STATES:-500}}
-EVAL_STATES=${15:-${EVAL_STATES:-500}}
-LOG_STATES=${16:-${LOG_STATES:-100}}
+SAVE_STATES=${14:-${SAVE_STATES:-1000}}
+EVAL_STATES=${15:-${EVAL_STATES:-1000}}
+LOG_STATES=${16:-${LOG_STATES:-500}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-5}}
 FEAT_PROJ_DROPOUT=${18:-${FEAT_PROJ_DROPOUT:-0.05}}
 LAYER_DROPOUT=${19:-${LAYER_DROPOUT:-0.05}}
@@ -71,7 +68,6 @@ CMD+=" --activation_dropout=$ACTIVATION_DROPOUT"
 CMD+=" --attention_dropout=$ATTENTION_DROPOUT"
 CMD+=" --max_train_samples=$MAX_TRAIN_SAMPLES"
 CMD+=" --max_val_samples=$MAX_VAL_SAMPLES"
-
 
 
 export GBS=$(expr $BATCH_SIZE \* $NUM_GPUS)
