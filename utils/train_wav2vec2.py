@@ -290,60 +290,55 @@ def main():
     try:
         df_train = pd.read_csv(data_args.dataset_config_name, delimiter=',')
         df_test = pd.read_csv(data_args.dataset_eval, delimiter=',')
+
+        df_train = df_train[["transcription", "file_path"]]
+        df_train.columns = ["sentence", "path"]
+
+        df_train = df_train[~df_train["transcription"].isnull()]
+        df_test = df_test[~df_test["transcription"].isnull()]
+
+        df_train = df_train[df_train["duration"] < 20]
+        df_test = df_test[df_test["duration"] < 20]
+        df_train = df_train[df_train["duration"] > 0.5]
+        df_test = df_test[df_test["duration"] > 0.5]
+
+        df_train = df_train.reset_index(drop=True)
+        df_test = df_test.reset_index(drop=True)
+
+        df_train = df_train[["transcription", "file_path"]]
+        df_train.columns = ["sentence", "path"]
+
+        df_test = df_test[["transcription", "file_path"]]
+        df_test.columns = ["sentence", "path"]
+
+        train_dataset = Dataset.from_pandas(df_train)
+        eval_dataset = Dataset.from_pandas(df_test)
+
+        del df_train, df_test
     except:
         print("dataset not found in:" + data_args.dataset_config_name + "or " + data_args.dataset_eval)
         print("Trying to download it")
         df_train = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache")
         df_test = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache")
+        print(df_train)
+        timit.remove_columns(["phonetic_detail", "word_detail", "dialect_region", "id", "sentence_type", "speaker_id"])
         df_train=df_train[["text", "file"]]
         df_test = df_test[["text", "file"]]
         df_train.columns = ["transcription", "file_path"]
         df_train.columns = ["transcription", "file_path"]
 
 
-
-
-    df_train = df_train[["transcription", "file_path"]]
-    df_train.columns = ["sentence", "path"]
-
-    df_train = df_train[~df_train["transcription"].isnull()]
-    df_test = df_test[~df_test["transcription"].isnull()]
-
-    #df_train = df_train[df_train["duration"] < 12]
-    #df_test = df_test[df_test["duration"] < 12]
-    #df_train = df_train[df_train["duration"] > 0.5]
-    #df_test = df_test[df_test["duration"] > 0.5]
-
-    df_train = df_train[df_train["duration"] < 20]
-    df_test = df_test[df_test["duration"] < 20]
-    df_train = df_train[df_train["duration"] > 0.5]
-    df_test = df_test[df_test["duration"] > 0.5]
-
-
-    df_train = df_train.reset_index(drop=True)
-    df_test = df_test.reset_index(drop=True)
-
     print("################################################\n")
     print("# TOTAL TRAIN TIME DURATION: " + str(round(df_train.duration.sum()/60/60, 2)) + " HOURS")
     print("# TOTAL TEST TIME DURATION: " + str(round(df_test.duration.sum()/60/60, 2)) + " HOURS")
     print("\n################################################\n")
 
-    df_train = df_train[["transcription", "file_path"]]
-    df_train.columns = ["sentence", "path"]
 
-    df_test = df_test[["transcription", "file_path"]]
-    df_test.columns = ["sentence", "path"]
+    train_dataset.save_to_disk("/DATA/cache/trainset" + str(training_args.local_rank))
+    eval_dataset.save_to_disk("/DATA/cache/evalset" + str(training_args.local_rank))
 
-    train_dataset = Dataset.from_pandas(df_train)
-    eval_dataset = Dataset.from_pandas(df_test)
-
-    del df_train, df_test
-
-    train_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/trainset" + str(training_args.local_rank))
-    eval_dataset.save_to_disk("/DATA/TMP_IVAN/GRACE/cache/evalset" + str(training_args.local_rank))
-
-    train_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/trainset"+ str(training_args.local_rank))
-    eval_dataset=load_from_disk("/DATA/TMP_IVAN/GRACE/cache/evalset"+ str(training_args.local_rank))
+    train_dataset=load_from_disk("/DATA/cache/trainset"+ str(training_args.local_rank))
+    eval_dataset=load_from_disk("/DATA/cache/evalset"+ str(training_args.local_rank))
 
 
     #################################################################################################################
