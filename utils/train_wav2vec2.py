@@ -315,6 +315,11 @@ def main():
         eval_dataset = Dataset.from_pandas(df_test)
 
         del df_train, df_test
+        print("################################################\n")
+        print("# TOTAL TRAIN TIME DURATION: " + str(round(df_train.duration.sum() / 60 / 60, 2)) + " HOURS")
+        print("# TOTAL TEST TIME DURATION: " + str(round(df_test.duration.sum() / 60 / 60, 2)) + " HOURS")
+        print("\n################################################\n")
+
     except:
         print("dataset not found in:" + data_args.dataset_config_name + "or " + data_args.dataset_eval)
         print("Trying to download it")
@@ -327,10 +332,7 @@ def main():
 
 
 
-    print("################################################\n")
-    print("# TOTAL TRAIN TIME DURATION: " + str(round(df_train.duration.sum()/60/60, 2)) + " HOURS")
-    print("# TOTAL TEST TIME DURATION: " + str(round(df_test.duration.sum()/60/60, 2)) + " HOURS")
-    print("\n################################################\n")
+
 
 
     train_dataset.save_to_disk("/DATA/cache/trainset" + str(training_args.local_rank))
