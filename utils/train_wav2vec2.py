@@ -295,7 +295,6 @@ def main():
         print("Trying to download it")
         df_train = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache")
         df_test = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache")
-        print(df_train.head())
         df_train=df_train[["text", "file"]]
         df_test = df_test[["text", "file"]]
         df_train.columns = ["transcription", "file_path"]
