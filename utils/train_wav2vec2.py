@@ -293,8 +293,8 @@ def main():
     except:
         print("dataset not found in:" + data_args.dataset_config_name + "or " + data_args.dataset_eval)
         print("Trying to download it")
-        df_train = datasets.load_dataset("mls", data_args.lang, split="train.9h")
-        df_test = datasets.load_dataset("mls", data_args.lang, split="test")
+        df_train = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train.9h")
+        df_test = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test")
 
 
 
