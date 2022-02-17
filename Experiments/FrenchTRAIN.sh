@@ -4,8 +4,8 @@
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"fr"}} # Language
-DATASET=${2:-${DATASET:-"mls"}}
-DATASET_EVAL=${2:-${DATASET_EVAL:-"mls"}}  # Eval Dataset Location
+DATASET=${2:-${DATASET:-"multilingual_librispeech"}}
+DATASET_EVAL=${2:-${DATASET_EVAL:-"multilingual_librispeech"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
