@@ -323,15 +323,12 @@ def main():
     except:
         print("dataset not found in:" + data_args.dataset_config_name + "or " + data_args.dataset_eval)
         print("Trying to download it")
-        df_train = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache")
-        df_test = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache")
-        df_train = df_train.rename_column("text", "transcription")
-        df_train = df_train.rename_column("audio", "file_path")
-        df_test = df_test.rename_column("text", "transcription")
-        df_test = df_test.rename_column("audio", "file_path")
-
-
-
+        train_dataset = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache")
+        eval_dataset = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache")
+        train_dataset = train_dataset.rename_column("text", "transcription")
+        train_dataset = train_dataset.rename_column("audio", "file_path")
+        eval_dataset = eval_dataset.rename_column("text", "transcription")
+        eval_dataset = eval_dataset.rename_column("audio", "file_path")
 
 
 
