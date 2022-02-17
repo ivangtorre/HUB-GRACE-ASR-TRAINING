@@ -293,8 +293,8 @@ def main():
     set_seed(training_args.seed)
 
     # Get the datasets:
-    train_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split=data_args.train_split_name,)
-    eval_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split="test")
+    train_dataset = datasets.load_dataset("common_voice", data_args.LANGUAGE, split=data_args.train_split_name,)
+    eval_dataset = datasets.load_dataset("common_voice", data_args.LANGUAGE, split="test")
 
     train_dataset = train_dataset.remove_columns(
         ["accent", "age", "client_id", "down_votes", "gender", "locale", "segment", "up_votes"])

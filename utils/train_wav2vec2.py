@@ -142,7 +142,7 @@ class DataCollatorCTCWithPadding:
         batch["labels"] = labels
         return batch
 
-updates = 0
+#updates = 0
 
 class CTCTrainer(Trainer):
     def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
@@ -160,8 +160,8 @@ class CTCTrainer(Trainer):
             :obj:`torch.Tensor`: The tensor with training loss on this batch.
         """
         # UNFREEZE FEATURE UPDATES (HARDCODED)
-        global updates
-        updates += 1
+        #global updates
+        #updates += 1
         #if updates == 128*2000: # TODO Cambiar esto para que sean variables
         #    model.wav2vec2.feature_extractor.trainable = True
 
@@ -287,8 +287,16 @@ def main():
 
 #################################################################################################################
     # Get the datasets:
-    df_train = pd.read_csv(data_args.dataset_config_name, delimiter=',')
-    df_test = pd.read_csv(data_args.dataset_eval, delimiter=',')
+    try:
+        df_train = pd.read_csv(data_args.dataset_config_name, delimiter=',')
+        df_test = pd.read_csv(data_args.dataset_eval, delimiter=',')
+    except:
+        print("dataset not found in:" + data_args.dataset_config_name + "or " + data_args.dataset_eval)
+        print("Trying to download it")
+        df_train = datasets.load_dataset("mls", data_args.lang, split="train.9h")
+        df_test = datasets.load_dataset("mls", data_args.lang, split="test")
+
+
 
     df_train = df_train[~df_train["transcription"].isnull()]
     df_test = df_test[~df_test["transcription"].isnull()]

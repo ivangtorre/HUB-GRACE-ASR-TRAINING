@@ -3,16 +3,14 @@
 
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
-LANGUAGE=${2:-${LANGUAGE:-"en"}} # Language
-DATASET=${2:-${DATASET:-"/datasets/english/GRACE_english_train.csv"}}
-#DATASET=${2:-${DATASET:-"/datasets/spanish/train_Albayzyn_NoSpeed.csv"}}
-DATASET_EVAL=${2:-${DATASET_EVAL:-"/datasets/english/test_MOZILLA.csv"}}  # Eval Dataset Location
+LANGUAGE=${2:-${LANGUAGE:-"fr"}} # Language
+DATASET=${2:-${DATASET:-"mls"}}
+DATASET_EVAL=${2:-${DATASET_EVAL:-"mls"}}  # Eval Dataset Location
 RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
-#MODELXLSR=${4:-${MODELXLSR:-"results/xls-r-300m/spanish.-EPOCH-5.-21-12-05.19.45.11"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
-EPOCHS=${9:-${EPOCHS:-30}}
+EPOCHS=${9:-${EPOCHS:-5}}
 SEED=${10:-${SEED:-6}}
 BATCH_SIZE=${11:-${BATCH_SIZE:-1}} # original 16
 LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00010"}}

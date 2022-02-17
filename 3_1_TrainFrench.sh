@@ -5,7 +5,7 @@
 
 # VARIABLES ####################
 NAME=${NAME:-"wav2vec2"}
-CONTAINER=${CONTAINER:-"wav2vec2train_1"}
+CONTAINER=${CONTAINER:-"wav2vec2t1"}
 export NV_GPU="1"
 
 ################################
@@ -28,17 +28,13 @@ fi
 # Run the container
 set -x
 nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=16g --ulimit memlock=-1 --ulimit stack=67108864 \
--v C:/DATA/TMP_IVAN \
 -v /DATA/GRACE/IVANbackup/GRACE_train/DATA/:/DATA/ \
--v /DATA/GRACE/IVANbackup/GRACE_train/datasets/:/datasets/ \
--v /DATA/GRACE/IVANbackup/GRACE_train/datasets/ALBAYZIN2020/trainspeedall/:/DATA/TMP_IVAN/jasper/datasets/ALBAYZIN2020/trainspeedall/ \
 -v /home:/home \
 -v $PWD:/workspace/wav2vec2 \
 -w $PWD ${NAME}
 set +x
 
 
-
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} bash Experiments/SpanishTrain_GPU1.sh
+nvidia-docker exec -it ${CONTAINER} bash Experiments/FrenchTRAIN.sh
