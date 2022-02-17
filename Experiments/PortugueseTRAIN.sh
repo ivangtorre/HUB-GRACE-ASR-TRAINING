@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 ##### PARAMETERS ##################################
 DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios are stored
 LANGUAGE=${2:-${LANGUAGE:-"portuguese"}} # Language
@@ -15,7 +13,7 @@ SEED=${10:-${SEED:-6}}
 BATCH_SIZE=${11:-${BATCH_SIZE:-1}} # original 16
 LEARNING_RATE=${12:-${LEARNING_RATE:-"0.00012"}}
 WARMUP_RATIO=${13:-${WARMUP_RATIO:-"0.1"}}
-SAVE_STATES=${14:-${SAVE_STATES:-2000}}
+SAVE_STATES=${14:-${SAVE_STATES:-1000}}
 EVAL_STATES=${15:-${EVAL_STATES:-2000}}
 LOG_STATES=${16:-${LOG_STATES:-1000}}
 SAVE_LIMIT=${17:-${SAVE_LIMIT:-5}}
