@@ -71,7 +71,7 @@ class DataTrainingArguments:
     into argparse arguments to be able to specify them on
     the command line.
     """
-
+    lang: Optional[str] = field(default=None, metadata={"help": "The language in case of use hugging face or similar"})
     dataset_config_name: Optional[str] = field(default=None, metadata={"help": "The configuration name of the dataset to use (via the datasets library)."})
     dataset_eval: Optional[str] = field(default=None, metadata={"help": "Eval dataset."})
     train_split_name: Optional[str] = field(default="train+validation", metadata={ "help": "training data set split to use (via the datasets library). Defaults to 'train'"},)
