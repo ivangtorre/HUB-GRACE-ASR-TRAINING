@@ -325,9 +325,9 @@ def main():
         print("Trying to download it")
         train_dataset = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache")
         eval_dataset = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache")
-        train_dataset = train_dataset.rename_column("text", "transcription")
+        train_dataset = train_dataset.rename_column("text", "sentence")
         train_dataset = train_dataset.rename_column("audio", "file_path")
-        eval_dataset = eval_dataset.rename_column("text", "transcription")
+        eval_dataset = eval_dataset.rename_column("text", "sentence")
         eval_dataset = eval_dataset.rename_column("audio", "file_path")
 
 
