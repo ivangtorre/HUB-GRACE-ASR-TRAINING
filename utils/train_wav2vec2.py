@@ -295,8 +295,17 @@ def main():
         print("Trying to download it")
         df_train = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train")
         df_test = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test")
+        print(df_train.head())
+        df_train=df_train[["text", "file"]]
+        df_test = df_test[["text", "file"]]
+        df_train.columns = ["transcription", "file_path"]
+        df_train.columns = ["transcription", "file_path"]
 
 
+
+
+    df_train = df_train[["transcription", "file_path"]]
+    df_train.columns = ["sentence", "path"]
 
     df_train = df_train[~df_train["transcription"].isnull()]
     df_test = df_test[~df_test["transcription"].isnull()]
