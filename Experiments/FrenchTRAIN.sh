@@ -4,7 +4,7 @@ DATA_DIR=${1:-${DATA_DIR:-"/DATA/TMP_IVAN/cache"}}  # The folder where audios ar
 LANGUAGE=${2:-${LANGUAGE:-"french"}} # Language
 DATASET=${2:-${DATASET:-"multilingual_librispeech"}}
 DATASET_EVAL=${2:-${DATASET_EVAL:-"multilingual_librispeech"}}  # Eval Dataset Location
-RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m"}}
+RESULT_DIR=${3:-${RESULT_DIR:-"results/xls-r-300m/french.-EPOCH-10.-22-02-18.07.06.59"}}
 MODELXLSR=${4:-${MODELXLSR:-"facebook/wav2vec2-xls-r-300m"}}
 MODEL_DIR=${6:-${MODEL_DIR:-"/DATA/TMP_IVAN/cache"}}
 NUM_GPUS=${7:-${NUM_GPUS:-1}}
@@ -30,9 +30,9 @@ MAX_VAL_SAMPLES=${28:-${MAX_VAL_SAMPLES:-0}}  # Set to 0 for using all dataset
 ######################################################
 
 
-DATESTAMP=`date +'%y-%m-%d.%H.%M.%S'`
-RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
-mkdir -p "$RESULT_DIR"
+#DATESTAMP=`date +'%y-%m-%d.%H.%M.%S'`
+#RESULT_DIR=$RESULT_DIR/$LANGUAGE.-EPOCH-$EPOCHS.-$DATESTAMP
+#mkdir -p "$RESULT_DIR"
 
 CMD="python3 utils/train_wav2vec2.py"
 CMD+=" --model_name_or_path=$MODELXLSR"
