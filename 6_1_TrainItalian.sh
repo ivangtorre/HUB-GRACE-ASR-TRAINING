@@ -29,6 +29,7 @@ fi
 set -x
 nvidia-docker run -it -d --rm --ipc=host --network=host --name ${CONTAINER} --runtime=nvidia --shm-size=16g --ulimit memlock=-1 --ulimit stack=67108864 \
 -v /DATA/GRACE/IVAN_VICOM/DATA/:/DATA/ \
+-v /DATA/GRACE/IVAN_VICOM/DATA/cache:/DATA/cache \
 -v /home:/home \
 -v $PWD:/workspace/wav2vec2 \
 -w $PWD ${NAME}
