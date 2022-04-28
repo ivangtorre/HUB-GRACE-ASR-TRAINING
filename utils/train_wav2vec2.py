@@ -2,7 +2,7 @@
 import json
 import logging
 import os
-os.environ['TRANSFORMERS_CACHE'] = "/DATA/cache"
+os.environ['TRANSFORMERS_CACHE'] = "/DATA/cache2"
 import pandas as pd
 import sys
 from dataclasses import dataclass, field
@@ -323,8 +323,8 @@ def main():
     except:
         print("dataset not found in:" + data_args.dataset_config_name + "or " + data_args.dataset_eval)
         print("Trying to download it")
-        train_dataset = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache")
-        eval_dataset = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache")
+        train_dataset = datasets.load_dataset(data_args.dataset_config_name, data_args.lang, split="train", cache_dir="/DATA/cache2")
+        eval_dataset = datasets.load_dataset(data_args.dataset_eval, data_args.lang, split="test", cache_dir="/DATA/cache2")
         train_dataset = train_dataset.rename_column("text", "sentence")
         train_dataset = train_dataset.rename_column("file", "path")
         eval_dataset = eval_dataset.rename_column("text", "sentence")
@@ -332,11 +332,11 @@ def main():
 
 
 
-    train_dataset.save_to_disk("/DATA/cache/trainset" + str(training_args.local_rank))
-    eval_dataset.save_to_disk("/DATA/cache/evalset" + str(training_args.local_rank))
+    train_dataset.save_to_disk("/DATA/cache2/trainset" + str(training_args.local_rank))
+    eval_dataset.save_to_disk("/DATA/cache2/evalset" + str(training_args.local_rank))
 
-    train_dataset=load_from_disk("/DATA/cache/trainset"+ str(training_args.local_rank))
-    eval_dataset=load_from_disk("/DATA/cache/evalset"+ str(training_args.local_rank))
+    train_dataset=load_from_disk("/DATA/cache2/trainset"+ str(training_args.local_rank))
+    eval_dataset=load_from_disk("/DATA/cache2/evalset"+ str(training_args.local_rank))
 
 
     #################################################################################################################
