@@ -37,4 +37,4 @@ set +x
 
 #nvidia-docker exec -it JasperTRT3 bash scripts/CHALLENGE_DECODING/Experiments/inference2logits.sh
 # Execute
-nvidia-docker exec -it ${CONTAINER} bash Experiments/ItalianTRAIN.sh
+nvidia-docker exec --network=host -it ${CONTAINER} bash Experiments/ItalianTRAIN.sh
