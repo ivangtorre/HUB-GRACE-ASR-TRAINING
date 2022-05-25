@@ -1,0 +1,6 @@
+FROM ubuntu:focal-20220113
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y python3 python3-pip
+# TODO: provide version numbers for every python package
+RUN python3 -m pip install nvflare==2.0.16
+CMD [python3]

@@ -1,0 +1,39 @@
+version: '2.3'
+services:
+  wp4-vicom-asr-kws-tool:
+    container_name: wp4-vicom-asr-kws-tool
+    image: grace-gitlab.grace-fct.eu/grace/wp4-vicom-asr-kws-tool:orchest
+#    build:
+#      context: .
+#      dockerfile: DockerfileASR
+#      network: host
+    volumes:
+      - /DATA:/DATA
+    ports:
+      - "${ASR_PORT}:${ASR_PORT}"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=${GPU_ASR}
+    restart: on-failure
+    working_dir: /workspace/wav2vec2
+    command: python3 APIinference/server.py
+    networks:
+      - gracenetwork
+
+  wp4-vicom-asr-kws-frontend:
+    container_name: wp4-vicom-asr-kws-frontend
+    image: grace-gitlab.grace-fct.eu/grace/wp4-vicom-asr-kws-tool:frontend
+#    build:
+#      context: .
+#      dockerfile: Dockerfilefrontend
+    ports:
+      - "5050:801"
+    networks:
+      - gracenetwork
+
+networks:
+  gracenetwork:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${GRACE_HANDLING_SUBNET}

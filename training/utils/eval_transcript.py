@@ -87,7 +87,7 @@ def main(args):
                         if not (float(a)==0 and float(b)==0):
                             decoder.reset_params(alpha=float(a), beta=float(b))
                         filename = os.path.basename(item["path"])[0:-4]
-                        args.savename = "/home/igonzalez/HUB-GRACE-ASR-TRAINING/outputs/nbeams/" + filename + ".txt"
+                        args.savename = "/home/igonzalez/training/outputs/nbeams/" + filename + ".txt"
                         tiempo = time.time()
                         transcript_df = transcribe(logits, decoder, args)
                         if len(dataset)==1:

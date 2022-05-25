@@ -1,0 +1,95 @@
+version: '3.8'
+services:
+  kafka:
+    image: confluentinc/cp-kafka:5.5.7
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_LOG4J_LOGGERS: "org.apache.zookeeper=ERROR,org.apache.kafka=ERROR,kafka=ERROR,kafka.cluster=ERROR,kafka.controller=ERROR,kafka.coordinator=ERROR,kafka.log=ER>
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'"
+    networks:
+      gracenet:
+        aliases:
+          - kafka-server
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.7
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - gracenet
+
+  wp4-vicom-asr-kws-tool:
+    image: grace-gitlab.grace-fct.eu/grace/wp4-vicom-asr-kws-tool:orchest
+    volumes:
+      - /DATA:/DATA
+      - /home:/home
+      - /home/svicari/testfiles:/home/svicari/testfiles
+    ports:
+      - 8421:8421
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=2
+    command: nvidia-smi
+    restart: on-failure
+    working_dir: /home/igonzalez/wp4-vicom-asr-kws-tool
+    command: python3 APIinference/server.py
+    networks:
+      - gracenet
+
+  mongo:
+    image: mongo:4.4.6
+    #build:
+    #   context: ../mongo
+    restart: always
+    networks:
+      - gracenet
+    ports:
+      - "9091:27017"
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: root
+    #  MONGO_INITDB_ROOT_PASSWORD: root
+
+  app:
+    image: grace-gitlab.grace-fct.eu/grace/wp4-vicom-app
+    restart: always
+    networks:
+      - gracenet
+    depends_on:
+      - mongo
+    ports:
+      - "9090:9090"
+    environment:
+      KAFKA_SERVER: kafka-server:29092
+      #KAFKA_SERVER: grace-node-1.grace-fct.eu:9093
+      REST_API_PORT: 9090
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      TOPIC_NAME_OBJ_DETECT: ${TOPIC_NAME_OBJ_DETECT}
+      TOPIC_NAME_CONTEXT_CLASS: ${TOPIC_NAME_CONTEXT_CLASS}
+      TOPIC_NAME_SCENE_TEXT_RECOG: ${TOPIC_NAME_SCENE_TEXT_RECOG}
+      TOPIC_NAME_LICENSE_PLATE_RECOG: ${TOPIC_NAME_LICENSE_PLATE_RECOG}
+      TOPIC_NAME_FACE_DETECT_RECOG: ${TOPIC_NAME_FACE_DETECT_RECOG}
+      TOPIC_NAME_IMG_VID_CAPT: ${TOPIC_NAME_IMG_VID_CAPT}
+      TOPIC_NAME_IMG_VID_DESCRIPT: ${TOPIC_NAME_IMG_VID_DESCRIPT}
+      TOPIC_NAME_RESULTS: ${TOPIC_NAME_RESULTS}
+      TOPIC_NAME_BODY_PART_SEGMENT: ${TOPIC_NAME_BODY_PART_SEGMENT}
+      TOPIC_NAME_PERSON_DETECT_RECOG: ${TOPIC_NAME_PERSON_DETECT_RECOG}
+      DATA_STORAGE_PATH: ${DATA_STORAGE_PATH}
+    volumes:
+   #   - grace-data:${DATA_STORAGE_PATH}
+      - /home/svicari/testfiles:/home/svicari/testfiles
+
+networks:
+  gracenet:
+    driver: bridge

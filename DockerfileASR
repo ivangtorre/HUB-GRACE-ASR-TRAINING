@@ -1,0 +1,62 @@
+FROM pytorch/pytorch:1.8.1-cuda11.1-cudnn8-runtime
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install --no-install-recommends --yes \
+    gcc \
+    g++ \
+    ffmpeg  \
+    language-pack-en \
+    unzip \
+    wget \
+    && locale-gen en_US.UTF-8
+ENV LANG=en_US.utf8
+ENV LC_ALL='en_US.utf8'
+
+RUN pip3 install \
+    confluent_kafka \
+    flask \
+    jiwer \
+    jsonschema \
+    librosa \
+    pandas \
+    pydantic \
+    pyctcdecode \
+    transformers==4.18.0
+
+RUN pip3 install pip install https://github.com/kpu/kenlm/archive/master.zip
+
+WORKDIR /workspace/models
+# DOWNLOAD MODELS ############################
+## INFO ABOUT THE MODELS #####################
+# The models are downloaded from a shared box container.
+# During the development process you can sustitute the models in that box container
+# Then, just rebuild the docker image to incorporate those new model
+# Models are stored in: https://vicomtech.app.box.com/folder/141170893118?s=rk70xu4bets2g9gsdpe1lqzp43oioro5
+
+#ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+RUN wget https://vicomtech.box.com/shared/static/09qexso2igfekoe95vl6a3ylhxs2jzp6 -O GRACE_en.zip && \
+    unzip GRACE_en.zip && rm GRACE_en.zip
+
+RUN wget https://vicomtech.box.com/shared/static/ay5deqxmzzno58qmdv98d9bjjkcfhedu -O GRACE_es.zip && \
+    unzip GRACE_es.zip && rm GRACE_es.zip
+
+RUN wget https://vicomtech.box.com/shared/static/bnlza2tj200o2oew4g3ajlas9ocmjbdd -O GRACE_fr.zip && \
+    unzip GRACE_fr.zip && rm GRACE_fr.zip
+
+RUN wget https://vicomtech.box.com/shared/static/xbonky9w2rs7f685umepzxvoqxnond0o -O GRACE_pt.zip && \
+    unzip GRACE_pt.zip && rm GRACE_pt.zip
+
+RUN wget https://vicomtech.box.com/shared/static/olyk37h9awyph1nclzmmc398dcpoajyc -O GRACE_de.zip && \
+    unzip GRACE_de.zip && rm GRACE_de.zip
+
+RUN wget https://vicomtech.box.com/shared/static/yt760ppb36ayyq33niwfqc8wwd2qitzi -O GRACE_pl.zip && \
+    unzip GRACE_pl.zip && rm GRACE_pl.zip
+
+RUN wget https://vicomtech.box.com/shared/static/m23evwxott1a66ca6yxktv0xpddhpjf7 -O GRACE_it.zip && \
+    unzip GRACE_it.zip && rm GRACE_it.zip
+
+ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+WORKDIR /workspace/wav2vec2
+COPY . .
+
+EXPOSE 8421/udp
+CMD ["/bin/bash"]

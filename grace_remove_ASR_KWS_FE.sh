@@ -1,0 +1,1 @@
+docker-compose2 rm --force --stop
