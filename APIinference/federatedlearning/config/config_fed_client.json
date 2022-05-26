@@ -5,7 +5,7 @@
     {
       "tasks": ["train", "submit_model"],
       "executor": {
-        "path": "ASRFLtrainer.Cifar10Trainer",
+        "path": "ASRFLtrainer.FLTrainer",
         "args": {
           "lr": 0.01,
           "epochs": 1
