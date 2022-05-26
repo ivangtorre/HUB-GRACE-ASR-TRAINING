@@ -10,3 +10,6 @@ python3.8 -m install requirements.txt
 2. Activate the virtualenv by running the following command:
 
 `source nvflare-env/bin/activate`
+
+
+pip3 install protobuf==3.20
