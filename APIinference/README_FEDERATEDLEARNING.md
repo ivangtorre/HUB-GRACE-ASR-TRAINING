@@ -1,5 +1,12 @@
+# ASR and KWS Federated Learning instructions
 
-1. Create a virtual environment with:
+## Instructions
+```
+sudo apt-get install python3-venv
+```
+
+2. 
+3. Create a virtual environment with:
 
 `python3 -m venv nvflare-env
 `

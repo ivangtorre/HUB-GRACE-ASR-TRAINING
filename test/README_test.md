@@ -10,9 +10,9 @@ el fichero 1_Evaluation.sh
 
 3. Modifica el fichero auxiliar.py configurando los test que desees realizar.
 
-4. Ejecuta bash 1_Evaluation.sh
+4. Ejecuta bash 0_build.sh
 
-5. Ejecuta bash 0_build.sh
+5. Ejecuta bash 1_Evaluation.sh
 
 ## Maintainers
 

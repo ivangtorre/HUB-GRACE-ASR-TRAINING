@@ -7,3 +7,7 @@ pyctcdecode
 transformers==4.18.0
 setuptools
 nvflare
+torchaudio
+soundfile
+packaging
+daatasets
