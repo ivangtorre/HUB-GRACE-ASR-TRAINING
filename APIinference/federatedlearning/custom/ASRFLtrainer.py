@@ -120,7 +120,7 @@ class FLTrainer(Executor):
     def local_train(self, fl_ctx, weights, abort_signal):
         # Set the model weights
         print("LOCAL TRAIN -------------------------------------------------", flush=True)
-
+        print("START LOADING MODEL -------------------------------------------------", flush=True)
         self.model.load_state_dict(state_dict=weights)
         print("MODEL LOADED -------------------------------------------------", flush=True)
         self._train_loader = self.get_data_loader(fl_ctx=fl_ctx, is_for_training=True) if self._train_loader is None else self._train_loader
