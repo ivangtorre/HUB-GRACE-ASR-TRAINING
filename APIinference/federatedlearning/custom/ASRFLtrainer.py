@@ -104,6 +104,10 @@ class FLTrainer(Executor):
         #self.optimizer = SGD(self.model.parameters(), lr=lr, momentum=0.9)
         self.train_dataset, self.eval_dataset = get_data.train_test_dataset()
 
+        self._train_loader = None  # leave them none until first time they are loaded
+        self._test_loader = None
+        self._n_iterations = None  # to be set later
+
         # Setup the persistence manager to save PT model.
         # The default training configuration is used by persistence manager
         # in case no initial model is found.
@@ -119,8 +123,7 @@ class FLTrainer(Executor):
 
         self.model.load_state_dict(state_dict=weights)
         print("MODEL LOADED -------------------------------------------------", flush=True)
-        self._train_loader = self.get_data_loader(fl_ctx=fl_ctx,
-                                                  is_for_training=True) if self._train_loader is None else self._train_loader
+        self._train_loader = self.get_data_loader(fl_ctx=fl_ctx, is_for_training=True) if self._train_loader is None else self._train_loader
         print("GET_DATA_LOADER DONE -------------------------------------------------", flush=True)
 
         data_collator = DataCollatorCTCWithPadding(processor=self.processor, padding=True)
