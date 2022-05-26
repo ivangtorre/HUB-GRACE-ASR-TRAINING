@@ -78,13 +78,19 @@ def compute_metrics(pred):
 
 
 class FLTrainer(Executor):
-    def __init__(self, lr=0.01, epochs=1, train_task_name=AppConstants.TASK_TRAIN,
-                 submit_model_task_name=AppConstants.TASK_SUBMIT_MODEL, exclude_vars=None):
+    def __init__(self,
+                 lr=0.01,
+                 epochs=1,
+                 train_task_name=AppConstants.TASK_TRAIN,
+                 submit_model_task_name=AppConstants.TASK_SUBMIT_MODEL,
+                 validate_task_name=AppConstants.TASK_VALIDATION,
+                 exclude_vars=None):
         super(FLTrainer, self).__init__()
         self._lr = lr
         self._epochs = epochs
         self._train_task_name = train_task_name
         self._submit_model_task_name = submit_model_task_name
+        self._validate_task_name = validate_task_name
         self._exclude_vars = exclude_vars
 
         # Training setup
@@ -184,6 +190,41 @@ class FLTrainer(Executor):
                 # Get the model parameters and create dxo from it
                 dxo = model_learnable_to_dxo(ml)
                 return dxo.to_shareable()
+
+            elif task_name == self._validate_task_name:
+                self.log_info(fl_ctx, f'Starting task for model validation')
+                model_owner = "?"
+                try:
+                    try:
+                        dxo = from_shareable(shareable)
+                    except Exception as ex:
+                        self.log_error(fl_ctx, f"Error in extracting dxo from shareable. Error: {ex}")
+                        return make_reply(ReturnCode.BAD_TASK_DATA)
+
+                    # Ensure data_kind is weights.
+                    if not dxo.data_kind == DataKind.WEIGHTS:
+                        self.log_exception(fl_ctx, f"DXO is of type {dxo.data_kind} but expected type WEIGHTS.")
+                        return make_reply(ReturnCode.BAD_TASK_DATA)
+
+                    # Extract weights and ensure they are tensor.
+                    model_owner = shareable.get_header(AppConstants.MODEL_OWNER, "?")
+                    weights = {k: torch.as_tensor(v, device=self.device) for k, v in dxo.data.items()}
+
+                    # Get validation accuracy
+                    micro_fscore = self.do_validation(weights, abort_signal, fl_ctx)
+                    if abort_signal.triggered:
+                        return make_reply(ReturnCode.TASK_ABORTED)
+
+                    self.log_info(fl_ctx, f"micro_fscore when validating {model_owner}'s model on"
+                                          f" {fl_ctx.get_identity_name()}"f's data: {micro_fscore}')
+
+                    dxo = DXO(data_kind=DataKind.METRICS, data={'micro_fscore': micro_fscore})
+                    return dxo.to_shareable()
+                except Exception as ex:
+                    self.log_exception(fl_ctx, f"Exception in validating model from {model_owner} --> {ex}")
+                    return make_reply(ReturnCode.EXECUTION_EXCEPTION)
+
+
             else:
                 return make_reply(ReturnCode.TASK_UNKNOWN)
         except:
