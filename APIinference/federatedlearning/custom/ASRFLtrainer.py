@@ -110,10 +110,13 @@ class FLTrainer(Executor):
         self._default_train_conf = {"train": {"model": type(self.model).__name__}}
         self.persistence_manager = PTModelPersistenceFormatManager(
             data=self.model.state_dict(), default_train_conf=self._default_train_conf)
+        print("INIT DONE -------------------------------------------------", flush=True)
 
 
     def local_train(self, fl_ctx, weights, abort_signal):
         # Set the model weights
+        print("LOCAL TRAIN -------------------------------------------------", flush=True)
+
         self.model.load_state_dict(state_dict=weights)
         self._train_loader = self.get_data_loader(fl_ctx=fl_ctx,
                                                   is_for_training=True) if self._train_loader is None else self._train_loader
@@ -151,6 +154,7 @@ class FLTrainer(Executor):
 
     def execute(self, task_name: str, shareable: Shareable, fl_ctx: FLContext, abort_signal: Signal) -> Shareable:
         try:
+            print("EXECUTE -------------------------------------------------", flush=True)
             if task_name == self._train_task_name:
                 # Get model weights
                 try:
