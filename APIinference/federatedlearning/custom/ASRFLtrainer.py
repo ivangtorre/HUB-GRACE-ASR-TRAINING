@@ -118,8 +118,10 @@ class FLTrainer(Executor):
         print("LOCAL TRAIN -------------------------------------------------", flush=True)
 
         self.model.load_state_dict(state_dict=weights)
+        print("MODEL LOADED -------------------------------------------------", flush=True)
         self._train_loader = self.get_data_loader(fl_ctx=fl_ctx,
                                                   is_for_training=True) if self._train_loader is None else self._train_loader
+        print("GET_DATA_LOADER DONE -------------------------------------------------", flush=True)
 
         data_collator = DataCollatorCTCWithPadding(processor=self.processor, padding=True)
         args = TrainingArguments(
@@ -148,8 +150,10 @@ class FLTrainer(Executor):
         )
 
         checkpoint = None
+        print("PREPARE TRAINING DONE -------------------------------------------------", flush=True)
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
-        print(train_result)
+        print("TRAINING DONE -------------------------------------------------", flush=True)
+        print(train_result, flush=True)
 
 
     def execute(self, task_name: str, shareable: Shareable, fl_ctx: FLContext, abort_signal: Signal) -> Shareable:
