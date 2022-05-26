@@ -120,11 +120,8 @@ class FLTrainer(Executor):
     def local_train(self, fl_ctx, weights, abort_signal):
         # Set the model weights
         print("LOCAL TRAIN -------------------------------------------------", flush=True)
-        print("START LOADING MODEL -------------------------------------------------", flush=True)
         self.model.load_state_dict(state_dict=weights)
-        print("MODEL LOADED -------------------------------------------------", flush=True)
         # self._train_loader = self.get_data_loader(fl_ctx=fl_ctx, is_for_training=True) if self._train_loader is None else self._train_loader
-        print("GET_DATA_LOADER DONE -------------------------------------------------", flush=True)
 
         data_collator = DataCollatorCTCWithPadding(processor=self.processor, padding=True)
         args = TrainingArguments(
@@ -133,7 +130,7 @@ class FLTrainer(Executor):
             do_eval=True,
             evaluation_strategy="steps",
             no_cuda=True,
-            max_steps=100,
+            max_steps=10,
             eval_steps=250,
             logging_dir=".",
             num_train_epochs=1,
