@@ -22,8 +22,6 @@ python3 -m pip install nvflare
 pip3 install torch jsonschema librosa pandas pydantic pyctcdecode transformers torchaudio soundfile packaging datasets
 ```
 
-python3.8 -m install requirements.txt
-
 
 ## Prepare the models to be deployed
 To get started with a proof of concept (POC) setup after Installation, run this command to generates a poc folder with a server, two clients, and one admin:
