@@ -9,7 +9,7 @@ from nvflare.app_common.app_constant import AppConstants
 from nvflare.app_common.pt.pt_fed_utils import PTModelPersistenceFormatManager
 from pt_constants import PTConstants
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union
 from packaging import version
 import datasets
@@ -17,16 +17,13 @@ import torch
 import os
 import torch.nn as nn
 import numpy as np
-import json
 from transformers import (
-    HfArgumentParser,
     Trainer,
     TrainingArguments,
     Wav2Vec2CTCTokenizer,
     Wav2Vec2FeatureExtractor,
     Wav2Vec2ForCTC,
     Wav2Vec2Processor,
-    set_seed,
 )
 import get_data
 device = torch.device("cpu")
@@ -34,7 +31,6 @@ device = torch.device("cpu")
 if version.parse(torch.__version__) >= version.parse("1.6"):
 
     _is_native_amp_available = True
-    from torch.cuda.amp import autocast
 
 
 def get_processor():
@@ -125,14 +121,14 @@ class FLTrainer(Executor):
 
         data_collator = DataCollatorCTCWithPadding(processor=self.processor, padding=True)
         args = TrainingArguments(
-            output_dir=".",
+            output_dir="",
             do_train=True,
             do_eval=True,
             evaluation_strategy="steps",
             no_cuda=True,
             max_steps=10,
             eval_steps=250,
-            logging_dir=".",
+            logging_dir="",
             num_train_epochs=1,
             per_device_train_batch_size=1,
             per_device_eval_batch_size=1,
