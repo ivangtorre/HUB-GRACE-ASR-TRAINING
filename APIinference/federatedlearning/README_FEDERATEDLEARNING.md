@@ -82,6 +82,14 @@ shutdown server
 ```
 
 
+## Desarrollos futuros
+1. Dockerizar el servidor y los clientes de forma que no sea necesario dependencias locales de software.
+2. Lanzar los entrenamientos de Federated Learning en distintos servidores. La comunicación entre los dockers
+o entre los servidores es algo que Aitor Garcia Pablos creo que lo tiene ya desarrollado para su modelo. Como se trata
+de la capa externa, probablemente se le pueda pedir su solución para implementarla.
+
+
+
 
 
 
