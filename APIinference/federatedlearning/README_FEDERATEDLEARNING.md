@@ -1,21 +1,29 @@
 # ASR and KWS Federated Learning instructions
 
 ## Initial setup
-```
-sudo apt-get install python3-venv
-```
+Es necesario tener Python3.8. No funciona con otras versiones de Python3 o Python2.
+Despues prepara la instalación del entorno virtual de Python y NVflare.
 
-1. Create a virtual environment with:
+```
+sudo apt update
+sudo apt-get install python3.8-venv
+```
+Create a virtual environment with:
+```
+python3 -m venv nvflare-env
+```
+Ahora activa el entorno virtual e instala las dependencias necesarias incluyendo NVFlare
 
-`python3 -m venv nvflare-env
-`
+```
+source nvflare-env/bin/activate
+python3 -m pip install -U pip
+python3 -m pip install -U setuptools
+python3 -m pip install nvflare
+pip3 install torch jsonschema librosa pandas pydantic pyctcdecode transformers torchaudio soundfile packaging datasets
+```
 
 python3.8 -m install requirements.txt
 
-
-2. Activate the virtualenv by running the following command:
-
-`source nvflare-env/bin/activate`
 
 ## Prepare the models to be deployed
 To get started with a proof of concept (POC) setup after Installation, run this command to generates a poc folder with a server, two clients, and one admin:
