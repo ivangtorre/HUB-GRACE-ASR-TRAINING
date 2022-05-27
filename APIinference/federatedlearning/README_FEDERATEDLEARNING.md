@@ -52,7 +52,7 @@ Pay close attention to what happens in each of four terminals.
 You can see how the admin controls the server and clients with each command.
 
 ```
-upload_app hello-pt
+upload_app ASR_FL
 ```
 
 Uploads the application from the admin client to the server’s staging area.
@@ -62,7 +62,7 @@ set_run_number 1
 
 Creates a run directory in the workspace for the run_number on the server and all clients. The run directory allows for the isolation of different runs so the information in one particular run does not interfere with other runs.
 ```
-deploy_app hello-pt all
+deploy_app ASR_FL all
 ```
 
 This will make the hello-pt application the active one in the run_number workspace. After the above two commands, the server and all the clients know the hello-pt application will reside in the run_1 workspace.
