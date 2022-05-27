@@ -41,7 +41,8 @@ Open another terminal and start the second client:
 ```
 ./poc/site-2/startup/start.sh
 ```
-In one last terminal, start the admin:
+In one last terminal, start the admin (user:admin; password:admin):
+
 ```
 ./poc/admin/startup/fl_admin.sh localhost    
 ```
