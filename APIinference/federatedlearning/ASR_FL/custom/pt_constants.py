@@ -9,4 +9,4 @@ class PTConstants:
     PTLocalModelName = "local_model.pt"
     PTModelsDir = "models"
     CrossValResultsJsonFilename = "cross_val_results.json"
-    vocabfile = os.path.dirname(__file__) + "vocab.json"
+    vocabfile = os.path.dirname(__file__) + "/vocab.json"
