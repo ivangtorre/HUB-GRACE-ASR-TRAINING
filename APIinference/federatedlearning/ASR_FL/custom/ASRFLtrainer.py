@@ -9,7 +9,7 @@ from nvflare.app_common.app_constant import AppConstants
 from nvflare.app_common.pt.pt_fed_utils import PTModelPersistenceFormatManager
 from pt_constants import PTConstants
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union
 from packaging import version
 import datasets
@@ -17,35 +17,32 @@ import torch
 import os
 import torch.nn as nn
 import numpy as np
-import json
 from transformers import (
-    HfArgumentParser,
     Trainer,
     TrainingArguments,
     Wav2Vec2CTCTokenizer,
     Wav2Vec2FeatureExtractor,
     Wav2Vec2ForCTC,
     Wav2Vec2Processor,
-    set_seed,
 )
 import get_data
 device = torch.device("cpu")
 
 if version.parse(torch.__version__) >= version.parse("1.6"):
+
     _is_native_amp_available = True
-    from torch.cuda.amp import autocast
 
 
 def get_processor():
-    print(os.getcwd(), flush=True)
     feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16_000, padding_value=0.0,
                                                  do_normalize=True, return_attention_mask=True)
-    tokenizer = Wav2Vec2CTCTokenizer("/home/ivan/Desktop/vocab.json", unk_token="[UNK]", pad_token="[PAD]", word_delimiter_token="|")
+    tokenizer = Wav2Vec2CTCTokenizer(PTConstants.vocabfile, unk_token="[UNK]", pad_token="[PAD]", word_delimiter_token="|")
     processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
     return processor
 
 
 def get_model():
+    
     processor = get_processor()
     model = Wav2Vec2ForCTC.from_pretrained(
         "facebook/wav2vec2-large-xlsr-53",
@@ -76,13 +73,19 @@ def compute_metrics(pred):
 
 
 class FLTrainer(Executor):
-    def __init__(self, lr=0.01, epochs=1, train_task_name=AppConstants.TASK_TRAIN,
-                 submit_model_task_name=AppConstants.TASK_SUBMIT_MODEL, exclude_vars=None):
+    def __init__(self,
+                 lr=0.01,
+                 epochs=1,
+                 train_task_name=AppConstants.TASK_TRAIN,
+                 submit_model_task_name=AppConstants.TASK_SUBMIT_MODEL,
+                 validate_task_name=AppConstants.TASK_VALIDATION,
+                 exclude_vars=None):
         super(FLTrainer, self).__init__()
         self._lr = lr
         self._epochs = epochs
         self._train_task_name = train_task_name
         self._submit_model_task_name = submit_model_task_name
+        self._validate_task_name = validate_task_name
         self._exclude_vars = exclude_vars
 
         # Training setup
@@ -96,30 +99,35 @@ class FLTrainer(Executor):
         #self.optimizer = SGD(self.model.parameters(), lr=lr, momentum=0.9)
         self.train_dataset, self.eval_dataset = get_data.train_test_dataset()
 
+        self._train_loader = None  # leave them none until first time they are loaded
+        self._test_loader = None
+        self._n_iterations = None  # to be set later
+
         # Setup the persistence manager to save PT model.
         # The default training configuration is used by persistence manager
         # in case no initial model is found.
         self._default_train_conf = {"train": {"model": type(self.model).__name__}}
         self.persistence_manager = PTModelPersistenceFormatManager(
             data=self.model.state_dict(), default_train_conf=self._default_train_conf)
+        print("INIT DONE -------------------------------------------------", flush=True)
 
 
     def local_train(self, fl_ctx, weights, abort_signal):
         # Set the model weights
+        print("LOCAL TRAIN -------------------------------------------------", flush=True)
         self.model.load_state_dict(state_dict=weights)
-        self._train_loader = self.get_data_loader(fl_ctx=fl_ctx,
-                                                  is_for_training=True) if self._train_loader is None else self._train_loader
+        # self._train_loader = self.get_data_loader(fl_ctx=fl_ctx, is_for_training=True) if self._train_loader is None else self._train_loader
 
         data_collator = DataCollatorCTCWithPadding(processor=self.processor, padding=True)
         args = TrainingArguments(
-            output_dir=".",
+            output_dir="",
             do_train=True,
             do_eval=True,
             evaluation_strategy="steps",
             no_cuda=True,
             max_steps=10,
-            eval_steps=25,
-            logging_dir=".",
+            eval_steps=250,
+            logging_dir="",
             num_train_epochs=1,
             per_device_train_batch_size=1,
             per_device_eval_batch_size=1,
@@ -137,12 +145,15 @@ class FLTrainer(Executor):
         )
 
         checkpoint = None
+        print("PREPARE TRAINING DONE -------------------------------------------------", flush=True)
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
-        print(train_result)
+        print("TRAINING DONE -------------------------------------------------", flush=True)
+        print(train_result, flush=True)
 
 
     def execute(self, task_name: str, shareable: Shareable, fl_ctx: FLContext, abort_signal: Signal) -> Shareable:
         try:
+            print("EXECUTE -------------------------------------------------", flush=True)
             if task_name == self._train_task_name:
                 # Get model weights
                 try:
@@ -182,6 +193,41 @@ class FLTrainer(Executor):
                 # Get the model parameters and create dxo from it
                 dxo = model_learnable_to_dxo(ml)
                 return dxo.to_shareable()
+
+            elif task_name == self._validate_task_name:
+                self.log_info(fl_ctx, f'Starting task for model validation')
+                model_owner = "?"
+                try:
+                    try:
+                        dxo = from_shareable(shareable)
+                    except Exception as ex:
+                        self.log_error(fl_ctx, f"Error in extracting dxo from shareable. Error: {ex}")
+                        return make_reply(ReturnCode.BAD_TASK_DATA)
+
+                    # Ensure data_kind is weights.
+                    if not dxo.data_kind == DataKind.WEIGHTS:
+                        self.log_exception(fl_ctx, f"DXO is of type {dxo.data_kind} but expected type WEIGHTS.")
+                        return make_reply(ReturnCode.BAD_TASK_DATA)
+
+                    # Extract weights and ensure they are tensor.
+                    model_owner = shareable.get_header(AppConstants.MODEL_OWNER, "?")
+                    weights = {k: torch.as_tensor(v, device=self.device) for k, v in dxo.data.items()}
+
+                    # Get validation accuracy
+                    micro_fscore = self.do_validation(weights, abort_signal, fl_ctx)
+                    if abort_signal.triggered:
+                        return make_reply(ReturnCode.TASK_ABORTED)
+
+                    self.log_info(fl_ctx, f"micro_fscore when validating {model_owner}'s model on"
+                                          f" {fl_ctx.get_identity_name()}"f's data: {micro_fscore}')
+
+                    dxo = DXO(data_kind=DataKind.METRICS, data={'micro_fscore': micro_fscore})
+                    return dxo.to_shareable()
+                except Exception as ex:
+                    self.log_exception(fl_ctx, f"Exception in validating model from {model_owner} --> {ex}")
+                    return make_reply(ReturnCode.EXECUTION_EXCEPTION)
+
+
             else:
                 return make_reply(ReturnCode.TASK_UNKNOWN)
         except:

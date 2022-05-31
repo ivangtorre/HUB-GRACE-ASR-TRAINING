@@ -1,9 +1,0 @@
-torch
-jsonschema
-librosa
-pandas
-pydantic
-pyctcdecode
-transformers==4.18.0
-setuptools
-nvflare

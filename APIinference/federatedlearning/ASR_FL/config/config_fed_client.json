@@ -3,20 +3,12 @@
 
   "executors": [
     {
-      "tasks": ["train", "submit_model"],
+      "tasks": ["train", "submit_model", "validate"],
       "executor": {
-        "path": "ASRFLtrainer.Cifar10Trainer",
+        "path": "ASRFLtrainer.FLTrainer",
         "args": {
           "lr": 0.01,
           "epochs": 1
-        }
-      }
-    },
-    {
-      "tasks": ["validate"],
-      "executor": {
-        "path": "cifar10validator.Cifar10Validator",
-        "args": {
         }
       }
     }

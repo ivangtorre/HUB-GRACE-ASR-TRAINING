@@ -1,3 +1,3 @@
 import ASRFLtrainer
-objeto=ASRFLtrainer.FLTrainer()
+objeto= ASRFLtrainer.FLTrainer()
 objeto.trainer()
